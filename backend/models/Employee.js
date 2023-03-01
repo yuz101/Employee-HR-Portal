@@ -4,11 +4,11 @@ const refType = Schema.Types.ObjectId;
 
 const EmployeeSchema = new Schema(
     {
-        username: {type: String, required: true},
-        email: {type: String, required: true},
+        username: {type: String, required: true, unique: true},
+        email: {type: String, required: true, unique: true},
         password: {type: String, required: true},
-        firstName: {type: String, required: true},
-        lastName: {type: String, required: true},
+        firstName: {type: String},
+        lastName: {type: String},
         middleName: {type: String},
         preferredName: {type: String},
         profilePicture: {type: String},
@@ -26,7 +26,7 @@ const EmployeeSchema = new Schema(
         emergencyContacts: [{type: refType, ref: "EmergencyContact"}],
         documents: [{type: refType, ref: "Document"}],
         visa: {type: refType, ref: "Visa"},
-        employeeType: {type: String, required: true},
+        employeeType: {type: String},
         application: {type: refType, ref: "Application"},
         employment: {
             startDate: {type: String},
