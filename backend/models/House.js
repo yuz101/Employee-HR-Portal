@@ -4,8 +4,49 @@ const refType = Schema.Types.ObjectId;
 
 const HouseSchema = new Schema(
     {
-        address: {type: String, required: true},
-        roomates: [{ type: refType, ref: "Employee"}],
+        address: {
+            streetName: {type: String},
+            buildingNumber: {type: String},
+            city: {required: true, type: String},
+            state: {required: true, type: String},
+            zip: {required: true, type: String}
+        },
+        landlord: {
+            fullName: {
+                required: true,
+                type: String,
+            },
+            phoneNumber: {
+                required: true,
+                type: String 
+            },
+            email: {
+                required: true,
+                type:String 
+            }
+        },
+        facility: {
+            beds: {
+                required: true,
+                type: Number 
+            },
+            mattresses: {
+                required: true,
+                type: Number 
+            },
+            tables: {
+                required: true,
+                type: Number 
+            },
+            chairs: {
+                required: true,
+                type: Number 
+            }
+        },
+        residents: {
+            type: Number 
+        },
+        roomates: [{ type: refType, ref: "Employee"}],   
         reports: [{ type: refType, ref: "FacilityReport"}]
     }
 )

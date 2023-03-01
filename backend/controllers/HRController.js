@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const HRService = require('../services/HRService');
 
 exports.send_email = async (req, res) => {
     // Generate test SMTP service account from ethereal.email
@@ -31,5 +32,16 @@ exports.send_email = async (req, res) => {
         res.status(200).json(info.messageId)
     } catch (err) {
         res.status(404).json(err)
+    }
+}
+
+exports.add_house = async(req, res) => {
+    console.log("controller: adding a house");
+    console.log("req.body: ", req.body);
+    try {
+        const newHouse = await HRService.add_house(req.body)
+        res.status(200).json({message: 'House created successfully', newHouse});
+    } catch (err) {
+        res.status(404).json(err);
     }
 }
