@@ -14,6 +14,7 @@ app.use('/', express.json()) // parse requests with JSON payload/body
 app.use('/public', express.static(path.join(__dirname, '/public'))) // serve static files
 
 // Importing other routes
+app.use('/', routes.EmployeeRouter)
 app.use('/hr', routes.HRRouter)
 
 // Catch-all route for unsupported paths
