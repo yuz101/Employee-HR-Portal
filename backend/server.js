@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const path = require('path')
-// const routes = require('./routes')
+const routes = require('./routes')
 // const cookieParser = require('cookie-parser');
 
 // Configuring .env
@@ -14,6 +14,7 @@ app.use('/', express.json()) // parse requests with JSON payload/body
 app.use('/public', express.static(path.join(__dirname, '/public'))) // serve static files
 
 // Importing other routes
+app.use('/hr', routes.HRRouter)
 
 // Catch-all route for unsupported paths
 app.all('*', (req, res) => {
