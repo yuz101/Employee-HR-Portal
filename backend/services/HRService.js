@@ -1,6 +1,31 @@
+const Employee = require("../models/Employee");
 const House = require("../models/House");
 
 class HRService {
+  static async get_profiles(searchInput) {
+    try {
+        let employees = []
+        if(searchInput) {
+          const matchedEmployees = await Employee.aggregate([
+            {
+              $match: {
+                $or: [
+                  { firstName: { $regex: `.*${searchInput}.*`, $options: 'i'} },
+                  { lastName: { $regex: `.*${searchInput}.*` , $options: 'i'} },
+                  { preferredName: { $regex: `.*${searchInput}.*`, $options: 'i'} },
+                ],
+              },
+            },
+          ])
+          return matchedEmployees
+        } else {
+            employees = await Employee.find()
+        }
+    } catch (err) {
+      console.error(err);
+      throw error;
+    }
+  }
   static async add_house(houseData) {
     console.log("service: adding house");
     // console.log(req);
