@@ -6,7 +6,7 @@ const EmployeeSchema = new Schema(
     {
         username: {type: String, required: true, unique: true},
         email: {type: String, required: true, unique: true},
-        password: {type: String, required: true},
+        f: {type: String, required: true},
         firstName: {type: String},
         lastName: {type: String},
         middleName: {type: String},
@@ -15,7 +15,7 @@ const EmployeeSchema = new Schema(
         address: {
             streetName: {type: String},
             buildingNumber: {type: String},
-            city: {type: String},
+            s: {type: String},
             state: {type: String},
             zip: {type: String}
         },

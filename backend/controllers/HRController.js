@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
 const HRService = require('../services/HRService');
+const crypto = require("crypto");
 
 exports.send_email = async (req, res) => {
     // Generate test SMTP service account from ethereal.email
@@ -32,6 +33,16 @@ exports.send_email = async (req, res) => {
         res.status(200).json(info.messageId)
     } catch (err) {
         res.status(404).json(err)
+    }
+}
+
+exports.get_profiles = async(req, res) => {
+    const qSearch = req.query.search
+    try {
+        const employees = await HRService.get_profiles(qSearch)
+        res.status(200).json({message: "Retrieved matching profile successfully", employees})
+    } catch (err) {
+        res.status(404).json(err);
     }
 }
 
