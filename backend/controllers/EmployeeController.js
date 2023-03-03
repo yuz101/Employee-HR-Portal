@@ -63,3 +63,15 @@ exports.getHouseInfo = async(req, res) => {
         res.status(500);
     }
 }
+
+exports.createReport = async(req, res) => {
+    console.log("creating a facility report");
+    console.log("req.body: ", req.body);
+    try {
+        const reportData = await EmployeeService.createReport(req);
+        res.status(200).json({ message: 'Report created successfully', reportData });
+    } catch (err) {
+        res.status(404).json(err);
+    }
+    
+}

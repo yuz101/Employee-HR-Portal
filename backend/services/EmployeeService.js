@@ -3,6 +3,8 @@ const ObjectAlreadyExistsException = require('../exceptions/ObjectAlreadyExistsE
 const bcrypt = require('bcrypt')
 
 const House = require('../models/House');
+const { report } = require('../routes/HRRouter');
+const Report = require('../models/FacilityReport');
 
 class EmployeeService {
     static async signup(username, email, password) {
@@ -89,6 +91,34 @@ class EmployeeService {
             }));
 
             return houseData;
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }
+
+    static async createReport(req) {
+        console.log("service: creating a report");
+
+        try {
+            const employeeId = req.params.id;
+            const employee = await Employee.findById(employeeId);
+            if (!employee) {
+                return res.status(400).json({ msg: 'Invalid employee ID' });
+            }
+            const { title, description, createdBy, status} = req.body;
+            if (!title || !description) {
+                return res.status(400).json({ msg: 'Please fill in all required fields' });
+            }
+            const newReport = new Report({ 
+                title: req.body.title, 
+                description: req.body.description,
+                status: req.body.status,
+                createdBy: req.params.id
+            });
+            await newReport.save();
+            
+            return newReport;
         } catch (err) {
             console.error(err);
             throw err;
