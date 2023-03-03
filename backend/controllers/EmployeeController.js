@@ -86,3 +86,25 @@ exports.viewReport = async(req, res) => {
         res.status(404).json(err);
     }
 }
+
+exports.createComment = async(req, res) => {
+    console.log("adding comments");
+    console.log("req.body: ", req.body);
+    try {
+        const comment = await EmployeeService.createComment(req);
+        res.status(200).json({ message: 'adding comments', comment});
+    } catch (err) {
+        res.status(404).json(err);
+    }
+}
+
+exports.getComment = async(req, res) => {
+    console.log("a report's list of comments");
+    console.log("req.body:", req.body);
+    try {
+        const comments = await EmployeeService.getComment(req);
+        res.status(200).json({ message: 'view a report\'s list of comments', comments });
+    } catch (err) {
+        res.status(404).json(err);
+    }
+}
