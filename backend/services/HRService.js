@@ -1,6 +1,6 @@
-const House = require("../models/House");
 const Employee = require("../models/Employee");
-const mongoose = require("mongoose");
+const House = require("../models/House");
+const nodemailer = require("nodemailer");
 
 class HRService {
   static async add_house(houseData) {
