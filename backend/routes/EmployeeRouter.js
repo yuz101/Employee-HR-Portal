@@ -14,4 +14,10 @@ router.post('/housing/:id/report', EmployeeController.createReport);
 // view existing reports 
 router.get('/housing/:id/report', EmployeeController.viewReport);
 
+// Adding comments
+router.post('/housing/:id/report/:reportId', EmployeeController.createComment);
+
+// viewing a report's list of comments
+router.get('/housing/:id/report/:reportId', EmployeeController.getComment);
+
 module.exports = router

@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt')
 const House = require('../models/House');
 const { report } = require('../routes/HRRouter');
 const Report = require('../models/FacilityReport');
+const Comment = require('../models/Comment');
+const FacilityReport = require('../models/FacilityReport');
 
 class EmployeeService {
     static async signup(username, email, password) {
@@ -127,16 +129,76 @@ class EmployeeService {
 
     static async viewReport(employeeId) {
         console.log("service: view reports");
-        const employee = await Employee.findById(employeeId);
-        if (!employee) {
-            res.status(404).json({ message: 'invalid employee id'});
+        try {
+            const employee = await Employee.findById(employeeId);
+            if (!employee) {
+                return res.status(404).json({ message: 'invalid employee id'});
+            }
+            const reports = await Report.find({ createdBy: employeeId});
+    
+            return reports;
+        } catch (err) {
+            res.error(err);
+            throw err;
         }
-        const reports = await Report.find({ createdBy: employeeId});
+    } 
 
-        return reports;
-    } catch (err) {
-        res.error(err);
-        throw err;
+    static async createComment(req, res) {
+        console.log("service: adding comments");
+        try {
+            const employeeId = req.params.id;
+            const employee = await Employee.findById(employeeId);
+            if (!employee) {
+                return res.status(404).json({ message: 'Invalid employee ID' });
+            }
+            const reportId = req.params.reportId;
+            const report = await FacilityReport.findById(reportId);
+            if (!report) {
+                return res.status(404).json({ message: 'Invalid report ID' });
+            }
+    
+            if (report.createdBy.toString() !== employeeId) {
+                return res.status(403).json({ message: "You are not authorized to add comments to this report" });
+            }
+            const comment = new Comment({
+                description: req.body.description,
+                createdBy: employeeId
+            });
+    
+            report.comments.push(comment);
+            await report.save();
+            const savedComment = await comment.save();
+
+            return savedComment;
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+    } 
+    
+    static async getComment(req, res) {
+        console.log("service: viewing comments");
+        try {
+            const employeeId = req.params.id;
+            const employee = await Employee.findById(employeeId);
+            if (!employee) {
+                return res.status(404).json({ message: 'invalid employee ID' });
+            }
+            const reportId = req.params.reportId;
+            const report = await FacilityReport.findById(reportId).populate('comments');
+            if (!report) {
+                return res.status(404).json({ message: 'invalid report ID' });
+            }
+
+            if (report.createdBy.toString() !== employeeId) {
+                return res.status(403).json({ message: "You are not authorized to view comments for this report" });
+            }
+              
+            return report;
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
     }
 }
 
