@@ -39,7 +39,7 @@ exports.add_house = async(req, res) => {
         const newHouse = await HRService.add_house(req.body);
         res.status(200).json({message: 'House created successfully', newHouse});
     } catch (err) {
-        res.status(404).json({ error: error.message });
+        res.status(404).json({ err: err.message });
     }
 }
 
@@ -72,6 +72,6 @@ exports.delete_house = async(req, res) => {
         const house = await HRService.delete_house(houseId);
         res.status(200).json({ message: 'House deleted successfully', house });
     } catch(err) {
-        res.status(404).json({ error: error.message });
+        res.status(404).json({ err: err.message });
     }
 }
