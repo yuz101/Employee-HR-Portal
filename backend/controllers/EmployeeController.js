@@ -49,3 +49,17 @@ exports.updateProfile = async (req, res) => {
         res.status(500)
     }
 }
+
+exports.getHouseInfo = async(req, res) => {
+    console.log("getHouseInfo");
+    try {
+        const employeeId = req.params.id;
+        console.log("Employee Controller employeeId: ", employeeId);
+        const houseData = await EmployeeService.getHouseInfo(employeeId);
+
+        res.status(200).json(houseData);
+    } catch (err) {
+        console.error(err);
+        res.status(500);
+    }
+}
