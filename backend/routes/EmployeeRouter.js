@@ -11,4 +11,7 @@ router.get('/housing/:id', EmployeeController.getHouseInfo);
 // Users should be able to report facility issuses
 router.post('/housing/:id/report', EmployeeController.createReport);
 
+// view existing reports 
+router.get('/housing/:id/report', EmployeeController.viewReport);
+
 module.exports = router

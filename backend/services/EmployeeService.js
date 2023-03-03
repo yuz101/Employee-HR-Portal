@@ -124,6 +124,20 @@ class EmployeeService {
             throw err;
         }
     }
+
+    static async viewReport(employeeId) {
+        console.log("service: view reports");
+        const employee = await Employee.findById(employeeId);
+        if (!employee) {
+            res.status(404).json({ message: 'invalid employee id'});
+        }
+        const reports = await Report.find({ createdBy: employeeId});
+
+        return reports;
+    } catch (err) {
+        res.error(err);
+        throw err;
+    }
 }
 
 module.exports = EmployeeService;

@@ -75,3 +75,14 @@ exports.createReport = async(req, res) => {
     }
     
 }
+
+exports.viewReport = async(req, res) => {
+    console.log("view facility reports");
+    try {
+        const employeeId = req.params.id;
+        const reports = await EmployeeService.viewReport(employeeId);
+        res.status(200).json({ message: 'view all submitted reports', reports });
+    } catch (err) {
+        res.status(404).json(err);
+    }
+}
