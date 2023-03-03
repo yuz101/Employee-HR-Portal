@@ -29,9 +29,9 @@ exports.signup = async (req, res) => {
     } 
 }
 
-exports.getProfile = async (req, res) => {
+exports.get_profile = async (req, res) => {
     try {
-        const profile = await EmployeeService.getProfile(req.body.userId)
+        const profile = await EmployeeService.get_profile(req.body.userId)
         res.status(200).json(profile)
     } catch (err) {
         console.error(err)
@@ -39,10 +39,10 @@ exports.getProfile = async (req, res) => {
     }
 }
 
-exports.updateProfile = async (req, res) => {
+exports.update_profile = async (req, res) => {
     try {
         const {userId, ...profile} = req.body
-        const updatedProfile = await EmployeeService.updateProfile(userId, profile)
+        const updatedProfile = await EmployeeService.update_profile(userId, profile)
         res.status(200).json(updatedProfile)
     } catch (err) {
         console.error(err)

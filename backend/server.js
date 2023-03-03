@@ -15,6 +15,7 @@ app.use('/public', express.static(path.join(__dirname, '/public'))) // serve sta
 
 // Importing other routes
 app.use('/', routes.EmployeeRouter)
+app.use('/', routes.ApplicationRouter)
 app.use('/hr', routes.HRRouter)
 
 // Catch-all route for unsupported paths

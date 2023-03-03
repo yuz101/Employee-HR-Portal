@@ -1,9 +1,13 @@
 const router = require('express').Router()
 const HRController = require('../controllers/HRController')
 
+// send registration email
 router.post('/email', HRController.send_email);
 
-// Adding houses
+// view all profiles
+router.get("/profiles", HRController.get_profiles)
+
+// add a house
 router.post('/housing', HRController.add_house);
 
 // view all houses

@@ -1,37 +1,34 @@
-const nodemailer = require("nodemailer");
 const HRService = require('../services/HRService');
+const jwt = require('jsonwebtoken')
 
 exports.send_email = async (req, res) => {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
     try {
-        // create reusable transporter object using the default SMTP transport
-        let transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'teamnull2023@gmail.com',
-                pass: 'walmiaczzpxlcdvn',
+        const emailToken = jwt.sign(
+            {
+                name: req.body.name,
+                email: req.body.email,
             },
-        });
-
-        // send mail with defined transport object
-        let info = await transporter.sendMail({
-            from: '"Beaconfire Solution"', // sender address
-            to: req.body.email, // list of receivers
-            subject: "[Important] Registration Link for Beaconfire", // Subject line
-            text: "Welcome to Beaconfire Solution", // plain text body
-            html: "<b>Welcome to Beaconfire Solution</b>", // html body
-        });
-
-        console.log("Message sent: %s", info.messageId);
-        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-        // Preview only available when sending through an Ethereal account
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-        res.status(200).json(info.messageId)
+                process.env.JWT_SEC,
+            {
+                expiresIn: '3h',
+            }
+        )
+        const registration = await HRService.send_email(req.body.name, req.body.email, emailToken)
+        res.status(200).json({ message: "Send registration email successfully", registration})
     } catch (err) {
         res.status(404).json(err)
+    }
+}
+
+exports.get_profiles = async(req, res) => {
+    const qSearch = req.query.search
+    try {
+        const employees = await HRService.get_profiles(qSearch)
+        res.status(200).json({message: "Retrieved matching profile successfully", employees})
+    } catch (err) {
+        res.status(404).json(err);
     }
 }
 

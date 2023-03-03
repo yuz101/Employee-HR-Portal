@@ -35,7 +35,7 @@ class EmployeeService {
         }
     }
 
-    static async getProfile(userId) {
+    static async get_profile(userId) {
         try {
             const retrievedProfile = await Employee.findById (
                 userId, 
@@ -48,7 +48,7 @@ class EmployeeService {
         }
     }
 
-    static async updateProfile(userId, profile) {
+    static async update_profile(userId, profile) {
         try {
             const retrievedProfile = await Employee.findByIdAndUpdate (
                 userId, 
