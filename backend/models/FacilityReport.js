@@ -7,7 +7,7 @@ const FacilityReportSchema = new Schema(
         title: {type: String, required: true},
         description: {type: String, required: true},
         createdBy: {type: refType, ref: "Employee", required: true},
-        status: {type: String, required: true},
+        status: {type: String, default: "pending"},
         comments: [{ type: refType, ref: "Comment" }]
     }, {
         timestamps: true,
