@@ -10,13 +10,13 @@ require('dotenv').config({ path: path.join(__dirname, './.env') })
 // app.use(cookieParser());
 
 // Applying middleware
-app.use('/', express.json()) // parse requests with JSON payload/body
+app.use(express.json()) // parse requests with JSON payload/body
 app.use('/public', express.static(path.join(__dirname, '/public'))) // serve static files
 
 // Importing other routes
-app.use('/', routes.EmployeeRouter)
-app.use('/', routes.ApplicationRouter)
-app.use('/hr', routes.HRRouter)
+app.use('/', routes.EmployeeRouter);
+app.use('/application', routes.ApplicationRouter);
+app.use('/hr', routes.HRRouter);
 
 // Catch-all route for unsupported paths
 app.all('*', (req, res) => {
@@ -28,4 +28,4 @@ app.all('*', (req, res) => {
     })
 })
 
-module.exports = app
+module.exports = app;
