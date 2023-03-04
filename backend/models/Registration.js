@@ -7,6 +7,7 @@ const RegistrationSchema = new Schema(
         name: {type: String, required: true},
         email: {type: String, required: true},
         token: {type: String, required: true},
+        expiration: {type: Date, required: true},
         status: {type: String, required: true}
     }, {
         timestamps: true,

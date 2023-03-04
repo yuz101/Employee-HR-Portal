@@ -17,6 +17,15 @@ class ApplicationService {
     }
   }
 
+  static async getApplications() {
+    try {
+      const retrievedApplications = await Application.find()
+      return retrievedApplications
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   static async ChangeStatus(userID, status) {
     try {
       const retrievedApplication = await Application.findById(userID)

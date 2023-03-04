@@ -1,4 +1,4 @@
-const ApplicationService = require('../services/Application');
+const ApplicationService = require('../services/ApplicationService');
 
 // const application =
 // {
