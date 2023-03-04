@@ -1,34 +1,47 @@
 const HRService = require('../services/HRService');
-const jwt = require('jsonwebtoken')
+const crypto = require('crypto');
+const ApplicationService = require('../services/ApplicationService');
+const DocumentService = require('../services/DocumentService');
 
-exports.send_email = async (req, res) => {
+exports.sendEmail = async (req, res) => {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
     try {
-        const emailToken = jwt.sign(
-            {
-                name: req.body.name,
-                email: req.body.email,
-            },
-                process.env.JWT_SEC,
-            {
-                expiresIn: '3h',
-            }
-        )
-        const registration = await HRService.send_email(req.body.name, req.body.email, emailToken)
+        const token = crypto.randomUUID()
+        const registration = await HRService.send_email(req.body.name, req.body.email, token)
         res.status(200).json({ message: "Send registration email successfully", registration})
     } catch (err) {
         res.status(404).json(err)
     }
 }
 
-exports.get_profiles = async(req, res) => {
+exports.getProfiles = async(req, res) => {
     const qSearch = req.query.search
     try {
         const employees = await HRService.get_profiles(qSearch)
         res.status(200).json({message: "Retrieved matching profile successfully", employees})
     } catch (err) {
         res.status(404).json(err);
+    }
+}
+
+exports.getApplications = async(req, res) => {
+    try {
+        const applications = await ApplicationService.getApplications()
+        res.status(200).json({message: "Retrieved applications successfully", applications})
+    } catch (err) {
+        res.status(404).json(err);
+    }
+}
+
+exports.getVisas = async (req, res) => {
+    try {
+        console.log("hello")
+        const visas = await DocumentService.getAllDocumentsForEmployee(req.body.userId)
+        console.log(visas)
+        res.status(200).json({message: "Retrieved visas successfully", visas})
+    } catch (err) {
+        res.status(404).json(err)
     }
 }
 
