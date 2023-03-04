@@ -36,7 +36,6 @@ exports.getApplications = async(req, res) => {
 
 exports.getVisas = async (req, res) => {
     try {
-        console.log("hello")
         const visas = await DocumentService.getAllDocumentsForEmployee(req.body.userId)
         console.log(visas)
         res.status(200).json({message: "Retrieved visas successfully", visas})
