@@ -1,68 +1,20 @@
 const ApplicationService = require('../services/ApplicationService');
+const { check, validationResult } = require('express-validator');
 
-// const application =
-// {
-//     userID: '63e5ca1801c88ecb8d82f487',
-//     status: 'Pending',
-//     email: 'example@email.com',
-//     firstName: 'John',
-//     lastName: 'Doe',
-//     middleName: '',
-//     preferredName: 'Johnny',
-//     profilePicture: 'https://example.com/profilepic.jpg',
-//     address: {
-//         streetName: 'Main St',
-//         buildingNumber: '123',
-//         city: 'Anytown',
-//         state: 'Anystate',
-//         zip: '12345'
-//     },
-//     phoneNumber: '5551234567',
-//     workPhoneNumber: '5552345678',
-//     carInformation: {
-//         make: 'Toyota',
-//         model: 'Camry',
-//         color: 'Blue'
-//     },
-//     SSN: '123456789',
-//     birthday: '1990/01/01',
-//     gender: 'Male',
-//     identifyType: {
-//         visaTitle: 'Work Visa',
-//         startDate: '2022/01/01',
-//         endDate: '2025/01/01'
-//     },
-//     driversLicense: {
-//         licenseNumber: '1234567890',
-//         expirationDate: '2026/01/01'
-//     },
-//     reference: {
-//         firstName: 'Jane',
-//         lastName: 'Doe',
-//         middleName: '',
-//         phoneNumber: '5556789012',
-//         email: 'janedoe@email.com',
-//         relationship: 'Friend'
-//     },
-//     emergencyContacts: {
-//         firstName: 'Jim',
-//         lastName: 'Smith',
-//         middleName: '',
-//         phoneNumber: '5555555555',
-//         email: 'jimsmith@email.com',
-//         relationship: 'Spouse'
-//     }
-// };
 
-exports.createNewApplication = async (req, res) => {
-    try {
-        const newApplication = await ApplicationService.createFile(req.body)
-        res.status(200).json({ message: 'create successful' });
-    } catch (e) {
-        res.status(404).json({ error: error.message });
+exports.createNewApplication =  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
+    try {
+        await ApplicationService.createFile(req.body);
+        res.status(200).json({ message: 'Create successful.' });
+    } catch (e) {
+        res.status(404).json({ error: e.message });
+    }
+};
 
-}
 
 exports.searchByID = async (req, res) => {
     try {
@@ -70,7 +22,29 @@ exports.searchByID = async (req, res) => {
         const Application = await ApplicationService.getApplicationById(req.body)
         res.status(200).json(Application);
     } catch (e) {
-        res.status(404).json({ error: error.message });
+        res.status(404).json({ error: e.message });
+    }
+
+}
+
+exports.getAllInfo = async (req, res) => {
+    try {
+        const Application = await ApplicationService.getApplications()
+        res.status(200).json(Application);
+    } catch (e) {
+        res.status(404).json({ error: e.message });
+    }
+
+}
+
+exports.updateStatus = async (req, res) => {
+    try {
+        //下面req.session.id 需要改成存储于前端的userID（无论是存在cookie里还是哪的）
+        //req.body为修改的状态
+        const Application = await ApplicationService.ChangeStatus(req.session.id, req.body)
+        res.status(200).json(Application);
+    } catch (e) {
+        res.status(404).json({ error: e.message });
     }
 
 }

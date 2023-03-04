@@ -3,9 +3,14 @@ const { default: mongoose } = require('mongoose');
 
 class ApplicationService {
   static async createFile(inputObject) {
-    const newInputObject = new Application(inputObject)
-    await newInputObject.save()
-    return 'yes'
+    try{
+      const newInputObject = new Application(inputObject)
+      await newInputObject.save()
+      return 'create success'
+
+    }catch(e){
+      console.error(e)
+    }
   }
 
   static async getApplicationById(userID) {
@@ -26,13 +31,20 @@ class ApplicationService {
     }
   }
 
-  static async ChangeStatus(userID, status) {
+  static async ChangeStatus(userID, newStatus) {
     try {
       const retrievedApplication = await Application.findById(userID)
+      if (!retrievedApplication) {
+        throw new Error('Application not found');
+      }
+      retrievedApplication.status = newStatus;
+      await retrievedApplication.save();
       return retrievedApplication
     } catch (e) {
       console.error(e)
     }
   }
+
+  
 }
 module.exports = ApplicationService;
