@@ -4,9 +4,10 @@ const jwt = require('jsonwebtoken')
 
 exports.signup = async (req, res) => {
     try {
+        console.log("hello")
         const {username, email, password} = req.body
         const newUser = await EmployeeService.signup(username, email, password)
-        const accessToken = jwt.sign(
+        const token = jwt.sign(
             {
                 userId: newUser._id,
                 username: newUser.username,
@@ -16,10 +17,7 @@ exports.signup = async (req, res) => {
                 expiresIn: '3d',
             }
         )
-        res.cookie('accessToken', accessToken)
-        res.status(201).json({
-            userId: newUser._id
-        })
+        res.status(201).json({ jwt: token })
     } catch (err) {
         console.error(err);
         if (err instanceof ObjectAlreadyExistsException) {
