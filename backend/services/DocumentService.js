@@ -32,16 +32,7 @@ class DocumentService {
         return DocumentService.#instance;
     }
 
-    /**
-     * Upload the file to S3 under the employeeId folder
-     * @date 3/3/2023 - 8:31:34 AM
-     *
-     * @async
-     * @param {{ employeeId: string; fileName: string; documentType: string; }} { employeeId, fileName, documentType }
-     * @returns {unknown}
-     */
-    async uploadEmployeeDocument({ employeeId, fileName, documentType }) {
-        const filePath = path.join(__dirname, '..', 'temp', fileName);
+    async uploadEmployeeDocument({ employeeId, filePath, documentType }) {
         const fileContent = fs.readFileSync(filePath);
         const standardizedFileName = this.standardizeFileName(documentType);
         const key = `documents/${employeeId}/${standardizedFileName}`;
@@ -62,6 +53,15 @@ class DocumentService {
         }
     }
 
+    /**
+     * Get all uploaded document names and download links of an employee
+     * @date 3/4/2023 - 9:00:44 AM
+     * @author Paul
+     *
+     * @async
+     * @param {{ employeeId: string; }} { employeeId }
+     * @returns {{ fileName: string; downloadLink: string; }}
+     */
     async getAllDocumentsForEmployee({ employeeId }) {
         const prefix = `documents/${employeeId}`;
         const params = {
@@ -90,12 +90,12 @@ class DocumentService {
 
 
     /**
-     * Description placeholder
+     * Standardize file name based on document type
      * @date 3/3/2023 - 9:16:49 AM
      * @author Paul
      *
      * @param {string} documentType
-     * @returns {("cpt.pdf" | "opt.pdf")}
+     * @returns {string} fileName
      */
     standardizeFileName(documentType) {
         switch (documentType) {
