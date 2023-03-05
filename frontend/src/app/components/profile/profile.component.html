@@ -17,7 +17,7 @@
               </div>
               
               <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Middle name</label>
+                <label for="middle-name" class="block text-sm font-medium leading-6 text-gray-900">Middle name</label>
                <input type="text" pInputText required class="relative block w-full p-inputtext-sm" formControlName="middlename"> 
               </div>
 
@@ -40,12 +40,42 @@
 
               <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                 <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">SSN</label>
-                <p-inputMask mask="999-99-9999" placeholder="999-99-9999"></p-inputMask>
+                <p-inputMask mask="999-99-9999" placeholder="999-99-9999" formControlName="ssn"></p-inputMask>
               </div>
 
               <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                 <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">Date of Birth</label>
-                <p-calendar inputId="basic" ></p-calendar>
+                <p-calendar inputId="basic" formControlName="dob" ></p-calendar>
+              </div>
+
+              <div class="col-span-6">
+                <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">Gender</label>
+                <div class="my-2">
+                    <div class="p-field-radiobutton">
+                        <p-radioButton name="gender" value="Female" inputId="gender1" formControlName="gender"></p-radioButton>
+                        <label for="gender1">Female</label>
+                    </div>
+                    <div class="p-field-radiobutton">
+                        <p-radioButton name="gender" value="Male" inputId="gender2" formControlName="gender"></p-radioButton>
+                        <label for="gender2">Male</label>
+                    </div>
+                    <div class="p-field-radiobutton">
+                        <p-radioButton name="gender" value="Non-binary" inputId="gender3" formControlName="gender"></p-radioButton>
+                        <label for="gender3">Non-binary</label>
+                    </div>
+                    <div class="p-field-radiobutton">
+                        <p-radioButton name="gender" value="Transgender" inputId="gender4" formControlName="gender"></p-radioButton>
+                        <label for="gender4">Transgender</label>
+                    </div>
+                    <div class="p-field-radiobutton">
+                        <p-radioButton name="gender" value="Intersex" inputId="gender5" formControlName="gender"></p-radioButton>
+                        <label for="gender5">Intersex</label>
+                    </div>
+                    <div class="p-field-radiobutton">
+                        <p-radioButton name="gender" value="Not say" inputId="gender6" formControlName="gender" ></p-radioButton>
+                        <label for="gender6">I prefer not to say</label>
+                    </div>
+                </div>
               </div>
 
               <div class="col-span-6 sm:col-span-3">

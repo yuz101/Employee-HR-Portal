@@ -13,6 +13,8 @@ import { PasswordModule } from 'primeng/password'
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputMaskModule } from 'primeng/inputmask';
 import { CalendarModule } from 'primeng/calendar';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import { AppComponent } from './app.component';
 import { SignupComponent } from './components/signup/signup.component';
@@ -40,6 +42,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     FileUploadModule,
     InputMaskModule,
     CalendarModule,
+    RadioButtonModule,
+    BrowserAnimationsModule,
     StoreModule.forRoot({
       employee: userReducer,
     }),
