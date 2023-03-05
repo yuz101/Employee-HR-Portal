@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const path = require('path');
 const routes = require('./routes');
@@ -6,6 +7,8 @@ const routes = require('./routes');
 
 // Configuring .env
 require('dotenv').config({ path: path.join(__dirname, './.env') });
+
+app.use(cors());
 
 // app.use(cookieParser());
 

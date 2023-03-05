@@ -1,0 +1,26 @@
+<div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="w-full m-10 max-w-md shadow-lg">
+        <div class="text-center">
+            <img class="mx-auto h-16 w-auto" src="https://assets.dice.com/techpro/companies/brandMax/Beaconfire/logo.png" alt="Beaconfire Solution">
+            <h2 class="mt-4 text-center text-3xl font-bold tracking-tight text-gray-900">Welcome to Beaconfire</h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Please login to your account.
+            </p>
+        </div>
+        <form  class="space-y-4 rounded-lg p-4 sm:p-6 lg:p-8" [formGroup]="form">
+            <div>
+                <label for="username" class="block">Username</label>
+                <input type="text" pInputText required class="relative block w-full p-inputtext-sm" formControlName="username"> 
+            </div>
+            <div>
+                <label for="email" class="block">Email</label>
+                <input type="text" pInputText required class="relative block w-full p-inputtext-sm" formControlName="email"> 
+            </div>
+            <div>
+                <label for="password" class="block">Password</label>
+                <input type="password" pPassword required class="relative block w-full p-inputtext-sm" formControlName="password" [feedback]="false" >
+            </div>
+            <button pButton pRipple label="Login" icon="pi pi-user" class="relative w-full p-button-sm" (click)="login()"></button>
+        </form>
+    </div>
+</div>
