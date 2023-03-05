@@ -1,6 +1,6 @@
 const EmployeeDocumentType = {
     CPT: 'cpt',
-    OPT: 'OPT',
+    OPT: 'opt',
 }
 
 Object.freeze(EmployeeDocumentType);
