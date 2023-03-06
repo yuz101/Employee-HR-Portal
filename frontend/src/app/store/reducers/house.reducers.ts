@@ -1,21 +1,62 @@
 import { createReducer, on } from '@ngrx/store';
-import { House } from '../../house.module';
 import * as HousesActions from '../actions/house.actions';
+import { House, HouseResponse } from '../../models/house';
+import * as HouseActions from '../actions/house.actions';
 
-export interface HousesState {
+export const houseFeatureKey = 'house';
+
+export interface State {
+  house: House | null;
+  selectedEmployeeId: string | null;
+  error: any;
   entities: House[];
   selectedId: string | null;
   summaryView: boolean;
 }
 
-export const initialState: HousesState = {
+export const initialState: State = {
+  house: null,
+  selectedEmployeeId: null,
+  error: null,
   entities: [],
   selectedId: null,
   summaryView: true,
 };
 
-export const housesReducer = createReducer(
+export const reducer = createReducer(
   initialState,
+
+  on(HouseActions.loadHouse, state => state),
+
+  on(HouseActions.loadHouseSuccess, (state, { house }) => ({
+    ...state,
+    house,
+    error: null
+  })),
+
+  on(HouseActions.loadHouseFailure, (state, { error }) => ({
+    ...state,
+    house: null,
+    error
+  })),
+
+  on(HouseActions.selectHouse, (state, { employeeId }) => ({
+    ...state,
+    selectedEmployeeId: employeeId,
+    error: null
+  })),
+
+  on(HouseActions.selectHouseSuccess, (state, { houseResponse }) => ({
+    ...state,
+    house: houseResponse.house,
+    error: null
+  })),
+
+  on(HouseActions.selectHouseFailure, (state, { error }) => ({
+    ...state,
+    house: null,
+    error
+  })),
 
   on(HousesActions.loadHousesSuccess, (state, { houses }) => ({
     ...state,

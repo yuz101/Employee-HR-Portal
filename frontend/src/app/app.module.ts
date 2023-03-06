@@ -5,6 +5,8 @@ import { HouseListComponent } from './components/house-list/house-list.component
 import { HouseDetailComponent } from './components/house-detail/house-detail.component';
 import { HouseService } from './services/house.service';
 import { HouseAddComponent } from './components/house-add/house-add.component';
+import { houseFeatureKey } from './store/reducers/house.reducers';
+import { FormsModule } from '@angular/forms'
 import { housesReducer } from './store/reducers/house.reducers';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -29,13 +31,7 @@ import { OnboardingComponent } from './components/onboarding/onboarding.componen
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { VisaManagementHrComponent } from './components/visa-management-hr/visa-management-hr.component';
-
-const appRoutes: Routes = [
-  { path: '', redirectTo: '/houses', pathMatch: 'full' },
-  { path: 'housing', component: HouseAddComponent },
-  { path: 'houses', component: HouseListComponent },
-  { path: 'houses/:id', component: HouseDetailComponent },
-];
+import { EmployeeHouseDetailComponent } from './components/employee-house-detail/employee-house-detail.component';
 
 
 @NgModule({
@@ -46,6 +42,10 @@ const appRoutes: Routes = [
     LoginComponent,
     ProfileComponent,
     VisaManagementHrComponent,
+    HouseAddComponent, 
+    HouseListComponent, 
+    HouseDetailComponent, 
+    EmployeeHouseDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,8 +53,8 @@ const appRoutes: Routes = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes),
-    StoreModule.forRoot({ house: housesReducer }),
+    RouterModule.forRoot([]),
+    StoreModule.forRoot({  [houseFeatureKey]:userReducer }),
     InputTextModule,
     ButtonModule,
     DialogModule,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { House, HouseResponse } from '../house.module';
+import { House, HouseResponse } from '../models/house';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class HouseService {
   private apiUrl = 'http://localhost:3000/hr/housing';
+  private baseUrl = 'http://localhost:3000/housing'
 
   constructor(private http: HttpClient) {}
 
@@ -23,16 +24,6 @@ export class HouseService {
     return this.http.get<House[]>(this.apiUrl);
   }
 
-  // getHouse(id: string): Observable<House> {
-  //   return this.http.get<HouseResponse>(`${this.apiUrl}/${id}`).pipe(
-  //     map((response: HouseResponse) => response.house),
-  //     catchError((error: HttpErrorResponse) => {
-  //       console.error(error);
-  //       return throwError('Error retrieving house');
-  //     })
-  //   );
-  // }
-
   getHouseDetails(id: string): Observable<HouseResponse> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<HouseResponse>(url);
@@ -44,5 +35,10 @@ export class HouseService {
 
   deleteHouse(id: string): Observable<House> {
     return this.http.delete<House>(`${this.apiUrl}/${id}`);
+  }
+
+  getHouseByEmployeeId(employeeId: string): Observable<HouseResponse> {
+    const url = `${this.baseUrl}/${employeeId}`;
+    return this.http.get<HouseResponse>(url);
   }
 }

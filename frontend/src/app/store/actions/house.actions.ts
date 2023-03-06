@@ -1,5 +1,14 @@
 import { createAction, props } from '@ngrx/store';
-import { House } from '../../house.module';
+import { Action } from '@ngrx/store';
+import { House, HouseResponse } from '../../models/house';
+
+export const loadHouse = createAction('[House] Load House');
+export const loadHouseSuccess = createAction('[House] Load House Success', props<{ house: House }>());
+export const loadHouseFailure = createAction('[House] Load House Failure', props<{ error: any }>());
+
+export const selectHouse = createAction('[House] Select House', props<{ employeeId: string }>());
+export const selectHouseSuccess = createAction('[House] Select House Success', props<{ houseResponse: HouseResponse }>());
+export const selectHouseFailure = createAction('[House] Select House Failure', props<{ error: any }>());
 
 export const loadHouses = createAction('[Houses] Load Houses');
 export const loadHousesSuccess = createAction(
@@ -30,3 +39,14 @@ export const loadHouseDetailsFailure = createAction(
 );
 
 export const toggleSummaryView = createAction('[Houses] Toggle Summary View');
+
+
+export const DELETE_HOUSE = '[House] Delete House';
+
+export class DeleteHouse implements Action {
+  readonly type = DELETE_HOUSE;
+
+  constructor(public payload: string) {}
+}
+
+export type HouseActions = DeleteHouse;

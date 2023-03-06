@@ -1,0 +1,20 @@
+<div *ngIf="house">
+    <h4>Address:</h4>
+    <p>
+      {{ house.address.buildingNumber }} {{ house.address.streetName }},
+      {{ house.address.city }}, {{ house.address.state }}, {{ house.address.zip }}
+    </p>
+  
+    <h4>Roommates:</h4>
+    <ul>
+      <li *ngFor="let roommate of house.roommates">
+        <p>First Name: {{ roommate.firstName }}</p>
+        <p>Last Name: {{ roommate.lastName }}</p>
+        <p>Phone Number: {{ roommate.phoneNumber }}</p>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="!house">
+    <p>Error: Unable to retrieve house information.</p>
+  </div>
+  
