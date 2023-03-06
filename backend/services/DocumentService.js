@@ -34,7 +34,7 @@ class DocumentService {
 
     async uploadEmployeeDocument({ employeeId, filePath, documentType }) {
         const fileContent = fs.readFileSync(filePath);
-        const standardizedFileName = this.standardizeFileName(documentType);
+        const standardizedFileName = this.getStandardizedFileName(documentType);
         const key = `documents/${employeeId}/${standardizedFileName}`;
 
         const uploadParams = {
@@ -53,16 +53,7 @@ class DocumentService {
         }
     }
 
-    /**
-     * Get all uploaded document names and download links of an employee
-     * @date 3/4/2023 - 9:00:44 AM
-     * @author Paul
-     *
-     * @async
-     * @param {{ employeeId: string; }} { employeeId }
-     * @returns {{ fileName: string; downloadLink: string; }}
-     */
-    async getAllDocumentsForEmployee({ employeeId }) {
+    async getAllDocumentDownloadLinksForEmployee({ employeeId }) {
         const prefix = `documents/${employeeId}`;
         const params = {
             Bucket: this.#bucketName,
@@ -88,16 +79,26 @@ class DocumentService {
         }
     }
 
+    async getDocumentDownloadLinkForEmployee({ employeeId, documentType }) {
+        const documentName = this.getStandardizedFileName(documentType);
+        const key = `documents/${employeeId}/${documentName}`;
+        try {
+            const url = await this.#s3.getSignedUrlPromise('getObject', {
+                Bucket: this.#bucketName,
+                Key: key,
+                Expires: 60 * 60,
+            });
+            return { fileName: documentName, downloadLink: url };
+        } catch (error) {
+            console.error(error);
+            if (error.code === 'NoSuchKey') {
+                throw new Error('Document not found.');
+            }
+            throw error;
+        }
+    }
 
-    /**
-     * Standardize file name based on document type
-     * @date 3/3/2023 - 9:16:49 AM
-     * @author Paul
-     *
-     * @param {string} documentType
-     * @returns {string} fileName
-     */
-    standardizeFileName(documentType) {
+    getStandardizedFileName(documentType) {
         switch (documentType) {
             case EmployeeDocumentType.CPT:
                 return 'cpt.pdf';

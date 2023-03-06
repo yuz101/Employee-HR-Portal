@@ -25,3 +25,13 @@ exports.uploadSingleDocument = async (req, res) => {
         }
     }
 }
+
+exports.getEmployeeWorkAuthorizationStatus = async (req, res) => {
+    const { employeeId } = req.body;
+    try {
+        
+    } catch (error) {
+        console.error(error);
+        return res.status(404);
+    }
+}

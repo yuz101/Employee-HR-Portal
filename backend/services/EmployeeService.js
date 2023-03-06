@@ -8,6 +8,8 @@ const Report = require('../models/FacilityReport');
 const Comment = require('../models/Comment');
 const FacilityReport = require('../models/FacilityReport');
 
+const EmployeeWorkAuthorizationStatus = require('../models/EmployeeWorkAuthorizationStatus');
+
 class EmployeeService {
     static async signup(username, email, password) {
         try {
@@ -41,8 +43,8 @@ class EmployeeService {
 
     static async getProfile(userId) {
         try {
-            const retrievedProfile = await Employee.findById (
-                userId, 
+            const retrievedProfile = await Employee.findById(
+                userId,
             )
             const { password, ...others } = retrievedProfile._doc
             return others
@@ -54,8 +56,8 @@ class EmployeeService {
 
     static async updateProfile(userId, profile) {
         try {
-            const retrievedProfile = await Employee.findByIdAndUpdate (
-                userId, 
+            const retrievedProfile = await Employee.findByIdAndUpdate(
+                userId,
                 {
                     $set: profile,
                 },
@@ -73,12 +75,12 @@ class EmployeeService {
             const employee = await Employee.findById(employeeId);
             const houses = await House.find({ roommates: employeeId });
 
-            console.log("houses:" , houses);
+            console.log("houses:", houses);
             await Promise.all(
                 houses.map(async (house) => {
                     await house.populate({
                         path: "roommates",
-                        select:"firstName lastName phoneNumber"
+                        select: "firstName lastName phoneNumber"
                     });
                 })
             );
@@ -86,9 +88,9 @@ class EmployeeService {
             const houseData = houses.map((house) => ({
                 address: house.address,
                 roommates: house.roommates.map((roommate) => ({
-                  firstName: roommate.firstName,
-                  lastName: roommate.lastName,
-                  phoneNumber: roommate.phoneNumber,
+                    firstName: roommate.firstName,
+                    lastName: roommate.lastName,
+                    phoneNumber: roommate.phoneNumber,
                 })),
             }));
 
@@ -108,18 +110,18 @@ class EmployeeService {
             if (!employee) {
                 return res.status(400).json({ msg: 'Invalid employee ID' });
             }
-            const { title, description, createdBy, status} = req.body;
+            const { title, description, createdBy, status } = req.body;
             if (!title || !description) {
                 return res.status(400).json({ msg: 'Please fill in all required fields' });
             }
-            const newReport = new Report({ 
-                title: req.body.title, 
+            const newReport = new Report({
+                title: req.body.title,
                 description: req.body.description,
                 status: req.body.status,
                 createdBy: req.params.id
             });
             await newReport.save();
-            
+
             return newReport;
         } catch (err) {
             console.error(err);
@@ -132,16 +134,16 @@ class EmployeeService {
         try {
             const employee = await Employee.findById(employeeId);
             if (!employee) {
-                return res.status(404).json({ message: 'invalid employee id'});
+                return res.status(404).json({ message: 'invalid employee id' });
             }
-            const reports = await Report.find({ createdBy: employeeId});
-    
+            const reports = await Report.find({ createdBy: employeeId });
+
             return reports;
         } catch (err) {
             res.error(err);
             throw err;
         }
-    } 
+    }
 
     static async createComment(req, res) {
         console.log("service: adding comments");
@@ -156,7 +158,7 @@ class EmployeeService {
             if (!report) {
                 return res.status(404).json({ message: 'Invalid report ID' });
             }
-    
+
             if (report.createdBy.toString() !== employeeId) {
                 return res.status(403).json({ message: "You are not authorized to add comments to this report" });
             }
@@ -164,7 +166,7 @@ class EmployeeService {
                 description: req.body.description,
                 createdBy: employeeId
             });
-    
+
             report.comments.push(comment);
             await report.save();
             const savedComment = await comment.save();
@@ -174,8 +176,8 @@ class EmployeeService {
             console.error(err);
             return res.status(500).json({ message: 'Internal server error' });
         }
-    } 
-    
+    }
+
     static async getComment(req, res) {
         console.log("service: viewing comments");
         try {
@@ -193,11 +195,22 @@ class EmployeeService {
             if (report.createdBy.toString() !== employeeId) {
                 return res.status(403).json({ message: "You are not authorized to view comments for this report" });
             }
-              
+
             return report;
         } catch (err) {
             console.error(err);
             throw err;
+        }
+    }
+
+    static async getWorkAuthorizationStatus(employeeId) {
+        try {
+            const workAuthorizationStatus = await EmployeeWorkAuthorizationStatus
+                .findOne({ userId: employeeId }).exec();
+            return workAuthorizationStatus;
+        } catch (error) {
+            console.error(error);
+            throw error;
         }
     }
 }
