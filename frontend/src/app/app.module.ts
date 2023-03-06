@@ -34,19 +34,13 @@
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-<<<<<<< HEAD
 import { RouterModule, Routes } from '@angular/router';
-
-
 import { HouseListComponent } from './components/house-list/house-list.component';
 import { HouseDetailComponent } from './components/house-detail/house-detail.component';
 import { HouseService } from './services/house.service';
 import { HouseAddComponent } from './components/house-add/house-add.component';
 import { housesReducer } from './store/reducers/house.reducers';
-import { FormsModule } from '@angular/forms'
-=======
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'
->>>>>>> 78e3d70 (Working)
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { InputTextModule } from 'primeng/inputtext'
