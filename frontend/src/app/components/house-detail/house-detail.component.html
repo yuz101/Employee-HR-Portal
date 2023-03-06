@@ -32,37 +32,7 @@
     <p *ngIf="house.reports && house.reports.length > 0">
       Reports: {{ house.reports.join(", ") }}
     </p>
-  
-    <!-- <h3>Edit House</h3>
-  
-    <form [formGroup]="houseForm">
-      <div>
-        <label for="streetName">Street Name:</label>
-        <input type="text" id="streetName" formControlName="streetName" />
-      </div>
-  
-      <div>
-        <label for="buildingNumber">Building Number:</label>
-        <input type="text" id="buildingNumber" formControlName="buildingNumber" />
-      </div>
-  
-      <div>
-        <label for="city">City:</label>
-        <input type="text" id="city" formControlName="city" />
-      </div>
-  
-      <div>
-        <label for="state">State:</label>
-        <input type="text" id="state" formControlName="state" />
-      </div>
-  
-      <div>
-        <label for="zip">Zip:</label>
-        <input type="text" id="zip" formControlName="zip" />
-      </div>
-  
-      <button type="submit" [disabled]="houseForm.invalid">Update</button>
-    </form> -->
+    <button (click)="deleteHouse()">Delete</button>
 </div>
   
 
