@@ -206,7 +206,7 @@ class EmployeeService {
     static async getWorkAuthorizationStatus(employeeId) {
         try {
             const workAuthorizationStatus = await EmployeeWorkAuthorizationStatus
-                .findOne({ userId: employeeId }).exec();
+                .findOne({ employeeId: employeeId }).exec();
             return workAuthorizationStatus;
         } catch (error) {
             console.error(error);

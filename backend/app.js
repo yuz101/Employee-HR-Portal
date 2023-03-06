@@ -7,6 +7,7 @@ const routes = require('./routes');
 
 // Configuring .env
 require('dotenv').config({ path: path.join(__dirname, './.env') });
+const connection = require("./config/db");
 
 app.use(cors());
 
@@ -26,10 +27,11 @@ app.use(function(req, res, next) {
 });
 
 // Importing other routes
-app.use('/', routes.EmployeeRouter);
+app.use('/employee', routes.EmployeeRouter);
 app.use('/application', routes.ApplicationRouter);
 app.use('/hr', routes.HRRouter);
 app.use('/documents', routes.DocumentRouter);
+app.use('/test', routes.TestRouter);
 
 // Catch-all route for unsupported paths
 app.all('*', (req, res) => {
