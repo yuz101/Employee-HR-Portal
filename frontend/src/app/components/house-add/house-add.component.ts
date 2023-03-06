@@ -41,7 +41,7 @@ export class HouseAddComponent {
   onSubmit(): void {
     const house = this.form.value;
     this.houseService.addHouse(house).subscribe(() => {
-      this.router.navigate(['/houses/add']);
+      this.router.navigate(['/houses']);
     });
   }
 }
