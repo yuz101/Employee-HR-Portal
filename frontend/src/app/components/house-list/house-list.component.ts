@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { House } from '../../house.module';
+import { House } from '../../models/house';
 import { HouseService } from '../../services/house.service';
 import { catchError, filter, map } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
