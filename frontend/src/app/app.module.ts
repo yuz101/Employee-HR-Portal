@@ -34,6 +34,7 @@
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+<<<<<<< HEAD
 import { RouterModule, Routes } from '@angular/router';
 
 
@@ -43,11 +44,16 @@ import { HouseService } from './services/house.service';
 import { HouseAddComponent } from './components/house-add/house-add.component';
 import { housesReducer } from './store/reducers/house.reducers';
 import { FormsModule } from '@angular/forms'
+=======
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+>>>>>>> 78e3d70 (Working)
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { InputTextModule } from 'primeng/inputtext'
 import { ButtonModule } from 'primeng/button';
-import { ReactiveFormsModule } from '@angular/forms';
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { StoreModule } from '@ngrx/store';
 import { userReducer } from './store/user.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -57,7 +63,6 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-
 import { AppComponent } from './app.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
@@ -92,12 +97,15 @@ const appRoutes: Routes = [
     StoreModule.forRoot({ house: housesReducer }),
     InputTextModule,
     ButtonModule,
+    DialogModule,
+    DynamicDialogModule,
     PasswordModule,
     FileUploadModule,
     InputMaskModule,
     CalendarModule,
     RadioButtonModule,
     BrowserAnimationsModule,
+    TableModule,
     StoreModule.forRoot({
       employee: userReducer,
     }),
