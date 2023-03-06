@@ -5,14 +5,14 @@ const jwt = require('jsonwebtoken')
 exports.signup = async (req, res) => {
     try {
         console.log("hello")
-        const {username, email, password} = req.body
+        const { username, email, password } = req.body
         const newUser = await EmployeeService.signup(username, email, password)
         const token = jwt.sign(
             {
                 userId: newUser._id,
                 username: newUser.username,
             },
-                process.env.JWT_SEC,
+            process.env.JWT_SEC,
             {
                 expiresIn: '3d',
             }
@@ -24,7 +24,7 @@ exports.signup = async (req, res) => {
             return res.status(409).json({ message: 'Username or email already exists.' });
         }
         return res.sendStatus(500);
-    } 
+    }
 }
 
 exports.getPofile = async (req, res) => {
@@ -39,7 +39,7 @@ exports.getPofile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
     try {
-        const {userId, ...profile} = req.body
+        const { userId, ...profile } = req.body
         const updatedProfile = await EmployeeService.updateProfile(userId, profile)
         res.status(200).json(updatedProfile)
     } catch (err) {
@@ -48,7 +48,7 @@ exports.updateProfile = async (req, res) => {
     }
 }
 
-exports.getHouseInfo = async(req, res) => {
+exports.getHouseInfo = async (req, res) => {
     console.log("getHouseInfo");
     try {
         const employeeId = req.params.id;
@@ -62,7 +62,7 @@ exports.getHouseInfo = async(req, res) => {
     }
 }
 
-exports.createReport = async(req, res) => {
+exports.createReport = async (req, res) => {
     console.log("creating a facility report");
     console.log("req.body: ", req.body);
     try {
@@ -71,10 +71,10 @@ exports.createReport = async(req, res) => {
     } catch (err) {
         res.status(404).json(err);
     }
-    
+
 }
 
-exports.viewReport = async(req, res) => {
+exports.viewReport = async (req, res) => {
     console.log("view facility reports");
     try {
         const employeeId = req.params.id;
@@ -85,18 +85,18 @@ exports.viewReport = async(req, res) => {
     }
 }
 
-exports.createComment = async(req, res) => {
+exports.createComment = async (req, res) => {
     console.log("adding comments");
     console.log("req.body: ", req.body);
     try {
         const comment = await EmployeeService.createComment(req);
-        res.status(200).json({ message: 'adding comments', comment});
+        res.status(200).json({ message: 'adding comments', comment });
     } catch (err) {
         res.status(404).json(err);
     }
 }
 
-exports.getComment = async(req, res) => {
+exports.getComment = async (req, res) => {
     console.log("a report's list of comments");
     console.log("req.body:", req.body);
     try {
@@ -104,5 +104,42 @@ exports.getComment = async(req, res) => {
         res.status(200).json({ message: 'view a report\'s list of comments', comments });
     } catch (err) {
         res.status(404).json(err);
+    }
+}
+
+exports.getWorkAuthorizationStatus = async (req, res) => {
+    const apiResponse = {
+        started: true,
+        completed: false,
+        documentType: null,
+        documentStatus: null,
+        feedback: null,
+    }
+    const { employeeId } = req.body;
+    try {
+        const workAuthStatus = await EmployeeService.getWorkAuthorizationStatus(employeeId);
+        if (!workAuthStatus.started) {
+            apiResponse.started = false;
+            return res.json(apiResponse);
+        }
+        if (workAuthStatus.completed) {
+            apiResponse.completed = true;
+            return res.json(apiResponse);
+        }
+        const uploadFlow = workAuthStatus.uploadFlow;
+        for (const state of uploadFlow) {
+            if (state.status !== 'Approved') {
+                apiResponse.documentType = state.documentType;
+                apiResponse.documentStatus = state.status;
+                if (state.status === 'Rejected') {
+                    apiResponse.feedback = state.feedback;
+                }
+                break;
+            }
+        }
+        res.json(apiResponse);
+    } catch (error) {
+        console.error(error);
+        res.status(500);
     }
 }
