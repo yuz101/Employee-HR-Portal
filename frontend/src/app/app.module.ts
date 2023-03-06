@@ -21,6 +21,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { VisaManagementHrComponent } from './components/visa-management-hr/visa-management-hr.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     OnboardingComponent,
     LoginComponent,
     ProfileComponent,
+    VisaManagementHrComponent,
   ],
   imports: [
     BrowserModule,
