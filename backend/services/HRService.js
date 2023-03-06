@@ -138,7 +138,9 @@ class HRService {
     }
   }
 
+
   static async view_house() {
+    console.log("service: view houses");
     try {
       const houses = await House.find().select("address landlord residents");
       if (!houses) {
