@@ -114,6 +114,9 @@ exports.getWorkAuthorizationStatus = async (req, res) => {
         documentType: null,
         documentStatus: null,
         feedback: null,
+        action: {
+            name: null,
+        },
     }
     const { employeeId } = req.body;
     try {
@@ -131,12 +134,22 @@ exports.getWorkAuthorizationStatus = async (req, res) => {
             if (state.status !== 'Approved') {
                 apiResponse.documentType = state.documentType;
                 apiResponse.documentStatus = state.status;
-                if (state.status === 'Rejected') {
-                    apiResponse.feedback = state.feedback;
+                if (state.status === 'Not Uploaded') {
+                    const action = {
+                        name: 'Send Notification',
+                    }
+                    apiResponse.action = action;
+                }
+                else if (state.status === 'Pending for Review') {
+                    const action = {
+                        name: 'Review',
+                    }
+                    apiResponse.action = action;
                 }
                 break;
             }
         }
+
         res.json(apiResponse);
     } catch (error) {
         console.error(error);
