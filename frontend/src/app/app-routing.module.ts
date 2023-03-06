@@ -6,6 +6,9 @@ import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { VisaManagementHrComponent } from './components/visa-management-hr/visa-management-hr.component';
 
+
+// const routes: Routes = [];
+
 const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
@@ -14,8 +17,9 @@ const routes: Routes = [
   { path: 'visa-management-hr', component: VisaManagementHrComponent },
 ];
 
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot([])],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

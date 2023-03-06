@@ -1,5 +1,47 @@
+// import { NgModule } from '@angular/core';
+// import { BrowserModule } from '@angular/platform-browser';
+// import { HttpClientModule } from '@angular/common/http';
+// import { RouterModule, Routes } from '@angular/router';
+
+// import { AppComponent } from './app.component';
+// import { HouseListComponent } from './house/components/house-list/house-list.component';
+// import { HouseDetailComponent } from './house/components/house-detail/house-detail.component';
+// import { HouseService } from './services/house.service';
+// import { HouseAddComponent } from './house/components/house-add/house-add.component';
+
+// const appRoutes: Routes = [
+//   { path: '', redirectTo: '/houses', pathMatch: 'full' },
+//   { path: 'housing', component: HouseAddComponent },
+//   { path: 'houses', component: HouseListComponent },
+//   { path: 'houses/:id', component: HouseDetailComponent },
+// ];
+
+// @NgModule({
+//   declarations: [
+//     AppComponent
+//   ],
+//   imports: [
+//     BrowserModule,
+//     HttpClientModule,
+//     RouterModule.forRoot(appRoutes)
+//   ],
+//   providers: [
+//     HouseService
+//   ],
+//   bootstrap: [AppComponent]
+// })
+// export class AppModule { }
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule, Routes } from '@angular/router';
+
+
+import { HouseListComponent } from './components/house-list/house-list.component';
+import { HouseDetailComponent } from './components/house-detail/house-detail.component';
+import { HouseService } from './services/house.service';
+import { HouseAddComponent } from './components/house-add/house-add.component';
+import { housesReducer } from './store/reducers/house.reducers';
 import { FormsModule } from '@angular/forms'
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,6 +65,14 @@ import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { VisaManagementHrComponent } from './components/visa-management-hr/visa-management-hr.component';
 
+const appRoutes: Routes = [
+  { path: '', redirectTo: '/houses', pathMatch: 'full' },
+  { path: 'housing', component: HouseAddComponent },
+  { path: 'houses', component: HouseListComponent },
+  { path: 'houses/:id', component: HouseDetailComponent },
+];
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +88,8 @@ import { VisaManagementHrComponent } from './components/visa-management-hr/visa-
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule.forRoot(appRoutes),
+    StoreModule.forRoot({ house: housesReducer }),
     InputTextModule,
     ButtonModule,
     PasswordModule,
@@ -53,7 +105,7 @@ import { VisaManagementHrComponent } from './components/visa-management-hr/visa-
       maxAge: 25, // Retains last 25 states
     }),
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [HouseService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
