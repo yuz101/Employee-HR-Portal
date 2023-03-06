@@ -25,4 +25,6 @@ router.post('/housing/:id/report/:reportId', EmployeeController.createComment);
 // viewing a report's list of comments
 router.get('/housing/:id/report/:reportId', EmployeeController.getComment);
 
+router.get('/work-authorization-status', EmployeeController.getWorkAuthorizationStatus);
+
 module.exports = router

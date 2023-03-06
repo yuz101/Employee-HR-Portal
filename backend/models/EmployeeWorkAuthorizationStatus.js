@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 
 const EmployeeWorkAuthorizationStatusSchema = new mongoose.Schema({
     employeeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee', },
+    workAuthorizationType: { type: String, required: true, },
+    started: { type: Boolean, default: false, },
+    completed: { type: Boolean, default: false, },
     uploadFlow: [{
         status: {
             type: String,
@@ -15,8 +18,6 @@ const EmployeeWorkAuthorizationStatusSchema = new mongoose.Schema({
         },
         feedback: { type: String, },
     }],
-    started: { type: Boolean, default: false, },
-    completed: { type: Boolean, default: false, },
 });
 
 const EmployeeWorkAuthorizationStatus = mongoose.model(
