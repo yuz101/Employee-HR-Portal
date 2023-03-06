@@ -25,7 +25,9 @@ class HRService {
             <p>Please click the button below to register your account.</p> 
             <a style="padding: 10px 20px;" href="http://localhost:4200/signup?email=${email}&token=${token}">Registration</a>`, // html body
         });
-        const registration = await Registration.create({ name, email, token, status: "Sent"})
+        const date = new Date()
+        const expiration = date.setHours(date.getHours() + 3);
+        const registration = await Registration.create({ name, email, token, expiration: expiration, status: "Sent"})
 
         console.log("Message sent: %s", info.messageId);
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
@@ -39,7 +41,7 @@ class HRService {
       throw error;
     }
   }
-  static async get_profiles(searchInput) {
+  static async getProfiles(searchInput) {
     try {
         let employees = []
         if(searchInput) {

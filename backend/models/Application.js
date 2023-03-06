@@ -153,9 +153,9 @@ const applicationSchema = new Schema(
             trim: true,
             validate: {
                 validator: function (value) {
-                    return /^\d{4}\/\d{2}\/\d{2}$/.test(value);
+                    return /^\d{4}-\d{2}-\d{2}$/.test(value);
                 },
-                message: 'Birthday must be in the format of yyyy/mm/dd'
+                message: 'Birthday must be in the format of yyyy-mm-dd'
             }
         },
         gender: { type: String },
@@ -192,9 +192,9 @@ const applicationSchema = new Schema(
                 trim: true,
                 validate: {
                     validator: function (value) {
-                        return /^\d{4}\/\d{2}\/\d{2}$/.test(value);
+                        return /^\d{4}-\d{2}-\d{2}$/.test(value);
                     },
-                    message: 'Birthday must be in the format of yyyy/mm/dd'
+                    message: 'Birthday must be in the format of yyyy-mm-dd'
                 }
             }
         },

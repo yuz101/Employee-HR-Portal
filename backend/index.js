@@ -1,4 +1,4 @@
-const app = require('./server');
+const app = require('./app');
 const connection = require("./config/db");
 
 // Make sure the database is connected before starting the server
