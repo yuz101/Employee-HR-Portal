@@ -37,4 +37,7 @@ router.post('/',
     validateDocumentUpload(),
     DocumentController.uploadSingleDocument);
 
+router.get('/',
+    DocumentController.getDownloadLinkForOneEmployeeDocument);
+
 module.exports = router;

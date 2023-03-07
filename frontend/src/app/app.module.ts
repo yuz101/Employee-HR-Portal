@@ -6,16 +6,16 @@ import { HouseDetailComponent } from './components/house-detail/house-detail.com
 import { HouseService } from './services/house.service';
 import { HouseAddComponent } from './components/house-add/house-add.component';
 import { houseFeatureKey } from './store/reducers/house.reducers';
-import { FormsModule } from '@angular/forms'
-import { housesReducer } from './store/reducers/house.reducers';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-import { InputTextModule } from 'primeng/inputtext'
+import { InputTextModule } from 'primeng/inputtext';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { StoreModule } from '@ngrx/store';
 import { userReducer } from './store/user.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -34,6 +34,14 @@ import { VisaManagementHrComponent } from './components/visa-management-hr/visa-
 import { EmployeeHouseDetailComponent } from './components/employee-house-detail/employee-house-detail.component';
 import { EmployeeProfilesComponent } from './components/employee-profiles/employee-profiles.component';
 import { FilterPipe } from './pipes/filter.pipe';
+import { DocumentReviewComponent } from './components/visa-management-hr/document-review/document-review.component';
+
+const appRoutes: Routes = [
+  { path: '', redirectTo: '/houses', pathMatch: 'full' },
+  { path: 'housing', component: HouseAddComponent },
+  { path: 'houses', component: HouseListComponent },
+  { path: 'houses/:id', component: HouseDetailComponent },
+];
 
 @NgModule({
   declarations: [
@@ -43,12 +51,13 @@ import { FilterPipe } from './pipes/filter.pipe';
     LoginComponent,
     ProfileComponent,
     VisaManagementHrComponent,
-    HouseAddComponent, 
-    HouseListComponent, 
-    HouseDetailComponent, 
-    EmployeeHouseDetailComponent, 
+    HouseAddComponent,
+    HouseListComponent,
+    HouseDetailComponent,
+    EmployeeHouseDetailComponent,
     EmployeeProfilesComponent,
     FilterPipe,
+    DocumentReviewComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,7 +66,7 @@ import { FilterPipe } from './pipes/filter.pipe';
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([]),
-    StoreModule.forRoot({  [houseFeatureKey]:userReducer }),
+    StoreModule.forRoot({ [houseFeatureKey]: userReducer }),
     InputTextModule,
     ButtonModule,
     DialogModule,
@@ -69,6 +78,8 @@ import { FilterPipe } from './pipes/filter.pipe';
     RadioButtonModule,
     BrowserAnimationsModule,
     TableModule,
+    PdfViewerModule,
+    InputTextareaModule,
     StoreModule.forRoot({
       employee: userReducer,
     }),
@@ -79,4 +90,4 @@ import { FilterPipe } from './pipes/filter.pipe';
   providers: [HouseService],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
