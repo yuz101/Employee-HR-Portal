@@ -5,7 +5,7 @@ export interface Employee {
     password: string;
     firstName: string;
     lastName: string;
-    middleName: string;
+    middleName?: string;
     preferredName?: string;
     ssn?: string;
     workAuthorizationTitle?: string;
