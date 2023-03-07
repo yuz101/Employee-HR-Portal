@@ -1,14 +1,4 @@
-<!-- <h2>List of Houses</h2>
-<h3>house</h3>
-<div *ngFor="let house of houses$ | async">
-    <p><strong>Address:</strong> {{ house.address.streetName }} {{ house.address.buildingNumber }}, {{ house.address.city }} {{ house.address.state }} {{ house.address.zip }}</p>
-    <p><strong>Landlord:</strong> {{ house.landlord.fullName }} </p>
-    <p><strong>Number of Employee Residents:</strong> {{ house.residents }}</p>
-    <button routerLink="/houses/{{ house._id }}">Details</button>
-</div> -->
-
 <h2>List of Houses</h2>
-<h3>house</h3>
 <div *ngIf="houses$ | async as houses">
   <div *ngIf="houses.length > 0">
     <div *ngFor="let house of houses">
