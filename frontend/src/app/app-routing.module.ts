@@ -12,8 +12,8 @@ import { EmployeeHouseDetailComponent } from './components/employee-house-detail
 
 
 const routes: Routes = [
-  { path: 'signup', component: SignupComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'auth/signup', component: SignupComponent },
+  { path: 'auth/login', component: LoginComponent },
   { path: 'onboarding', component: OnboardingComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'visa-management-hr', component: VisaManagementHrComponent },
