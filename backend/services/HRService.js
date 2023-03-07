@@ -169,8 +169,8 @@ class HRService {
     
       // Assign the first n employees from the shuffled array to the new house,
       // where n is the number of roommates needed for the house
-      // const numRoommatesNeeded = roommates.length;
-      const numRoommatesNeeded = 0;
+      const numRoommatesNeeded = roommates.length;
+      // const numRoommatesNeeded = 0;
       const assignedEmployees = employeeIds.slice(0, numRoommatesNeeded);
 
       // Create a new House object with the assigned roommates' IDs

@@ -20,7 +20,7 @@ const EmployeeSchema = new Schema(
             state: {type: String},
             zip: {type: String}
         },
-        phoneNumber: {type: String},
+        phoneNumber: {type: String, required: true},
         dateOfBirth: {type: String},
         gender: {type: String},
         // reference: {type: refType, ref: "Reference"},

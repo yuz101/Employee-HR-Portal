@@ -72,7 +72,8 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([]),
-    StoreModule.forRoot({ [houseFeatureKey]: userReducer }),
+    StoreModule.forRoot({  employee: userReducer,
+    }),
     InputTextModule,
     ButtonModule,
     DialogModule,
@@ -98,4 +99,6 @@ const appRoutes: Routes = [
   providers: [HouseService],
   bootstrap: [AppComponent],
 })
+
 export class AppModule { }
+

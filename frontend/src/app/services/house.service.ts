@@ -10,7 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class HouseService {
   private apiUrl = 'http://localhost:3000/hr/housing';
-  private baseUrl = 'http://localhost:3000/housing'
+  private baseUrl = 'http://localhost:3000/employee/housing'
 
   constructor(private http: HttpClient) {}
 
