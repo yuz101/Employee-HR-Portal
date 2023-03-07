@@ -2,11 +2,34 @@ const EmployeeService = require('../services/EmployeeService');
 const ObjectAlreadyExistsException = require('../exceptions/ObjectAlreadyExistsException');
 const jwt = require('jsonwebtoken')
 
+exports.signup = async (req, res) => {
+    try {
+        console.log("hello")
+        const { username, email, password } = req.body
+        const newUser = await EmployeeService.signup(username, email, password)
+        const token = jwt.sign(
+            {
+                userId: newUser._id,
+                username: newUser.username,
+            },
+            process.env.JWT_SEC,
+            {
+                expiresIn: '3d',
+            }
+        )
+        res.status(201).json({ jwt: token })
+    } catch (err) {
+        console.error(err);
+        if (err instanceof ObjectAlreadyExistsException) {
+            return res.status(409).json({ message: 'Username or email already exists.' });
+        }
+        return res.sendStatus(500);
+    }
+}
+
 exports.getPofile = async (req, res) => {
     try {
-        const profile = await EmployeeService.getProfile("6406a1ebe4b8843c1c90cecd")
-        // const profile = await EmployeeService.getProfile(req.body.userId)
-        console.log(profile)
+        const profile = await EmployeeService.getProfile(req.body.userId)
         res.status(200).json(profile)
     } catch (err) {
         console.error(err)
@@ -16,7 +39,6 @@ exports.getPofile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
     try {
-        console.log(req.body)
         const { userId, ...profile } = req.body
         const updatedProfile = await EmployeeService.updateProfile(userId, profile)
         res.status(200).json(updatedProfile)
