@@ -32,7 +32,8 @@ import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { VisaManagementHrComponent } from './components/visa-management-hr/visa-management-hr.component';
 import { EmployeeHouseDetailComponent } from './components/employee-house-detail/employee-house-detail.component';
-
+import { EmployeeProfilesComponent } from './components/employee-profiles/employee-profiles.component';
+import { FilterPipe } from './pipes/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,9 @@ import { EmployeeHouseDetailComponent } from './components/employee-house-detail
     HouseAddComponent, 
     HouseListComponent, 
     HouseDetailComponent, 
-    EmployeeHouseDetailComponent,
+    EmployeeHouseDetailComponent, 
+    EmployeeProfilesComponent,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,

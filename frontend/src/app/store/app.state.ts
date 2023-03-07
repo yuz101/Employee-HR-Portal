@@ -1,4 +1,6 @@
-import { HousesState } from './reducers/house.reducers';
+import { EmployeeState } from './employee.state';
+
 export interface AppState {
-  houses: HousesState;
+  employee: EmployeeState;
 }
+

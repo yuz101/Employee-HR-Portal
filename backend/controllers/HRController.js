@@ -18,7 +18,7 @@ exports.sendEmail = async (req, res) => {
 exports.getProfiles = async(req, res) => {
     const qSearch = req.query.search
     try {
-        const employees = await HRService.get_profiles(qSearch)
+        const employees = await HRService.getProfiles(qSearch)
         res.status(200).json({message: "Retrieved matching profile successfully", employees})
     } catch (err) {
         res.status(404).json(err);
