@@ -10,13 +10,15 @@ import { HouseDetailComponent } from './components/house-detail/house-detail.com
 import { HouseAddComponent } from './components/house-add/house-add.component';
 import { EmployeeHouseDetailComponent } from './components/employee-house-detail/employee-house-detail.component';
 import { EmployeeProfilesComponent } from './components/employee-profiles/employee-profiles.component';
+import { RegistrationEmailsComponent } from './components/registration-emails/registration-emails.component';
 
 
 const routes: Routes = [
-  { path: 'signup', component: SignupComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'auth/signup', component: SignupComponent },
+  { path: 'auth/login', component: LoginComponent },
   { path: 'onboarding', component: OnboardingComponent },
   { path: 'profile', component: ProfileComponent },
+  { path: 'registration-emails', component: RegistrationEmailsComponent},
   { path: 'visa-management-hr', component: VisaManagementHrComponent },
   { path: 'housing', component: HouseAddComponent },
   { path: 'houses', component: HouseListComponent },

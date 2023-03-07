@@ -4,7 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router'
 import { Store } from '@ngrx/store';
-import { UserAction } from 'src/app/store/user.action';
+import { UserAction } from 'src/app/store/actions/user.action';
 import { User } from '../../models/user';
 
 @Component({

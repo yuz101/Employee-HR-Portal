@@ -4,6 +4,7 @@ const fs = require('fs');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') })
 console.log('process.env.aws_access_key_id=', process.env.aws_access_key_id);
 AWS.config.update({
+    region: 'us-east-2',
     accessKeyId: process.env.aws_access_key_id,
     secretAccessKey: process.env.aws_secret_access_key,
 });
@@ -104,6 +105,8 @@ class DocumentService {
                 return 'cpt.pdf';
             case EmployeeDocumentType.OPT:
                 return 'opt.pdf';
+            case EmployeeDocumentType.OPT_RECEIPT:
+                return 'opt-receipt.pdf';
             default:
                 throw Error('Unsupported document type.');
         }

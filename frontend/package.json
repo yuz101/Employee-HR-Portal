@@ -22,6 +22,7 @@
     "@ngrx/entity": "^15.3.0",
     "@ngrx/store": "^15.3.0",
     "@ngrx/store-devtools": "^15.3.0",
+    "ng2-pdf-viewer": "^9.1.4",
     "primeflex": "^2.0.0",
     "primeicons": "^6.0.1",
     "primeng": "^15.2.0",

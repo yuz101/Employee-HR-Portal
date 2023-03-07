@@ -19,7 +19,7 @@ exports.createNewApplication =  async (req, res) => {
 exports.searchByID = async (req, res) => {
     try {
         //下面req.body 需要改成存储于前端的userID（无论是存在cookie里还是哪的）
-        const Application = await ApplicationService.getApplicationById(req.body)
+        const Application = await ApplicationService.getApplicationById(req.params.id)
         res.status(200).json(Application);
     } catch (e) {
         res.status(404).json({ error: e.message });

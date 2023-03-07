@@ -25,10 +25,27 @@
                     </ng-template>
                 </p-dialog>
             </td>
-            <td></td>
             <td>
-                <button pButton pRipple type="button" class="p-button-raised" label={{employee.visaStatus.action.name}}>
-                </button>
+                <ng-container
+                    *ngIf="employee.workAuthorizationStatus">
+                    <div>{{employee.workAuthorizationStatus.documentStatus}}</div>
+                </ng-container>
+            </td>
+            <td>
+                <ng-container
+                    *ngIf="employee.workAuthorizationStatus && employee.workAuthorizationStatus.documentStatus === allWorkAuthorizationStatus.PENDING_FOR_REVIEW">
+                    <button type="button" (click)="showDocumentReviewDialog(employee._id)" pButton pRipple
+                        class="p-button-raised" icon="pi pi-info-circle" label="Review">
+                    </button>
+                </ng-container>
+                <ng-container
+                    *ngIf="employee.workAuthorizationStatus && employee.workAuthorizationStatus.documentStatus === allWorkAuthorizationStatus.NOT_UPLOADED">
+                    <button pButton pRipple type="button" class="p-button-raised"
+                        label={{employee.workAuthorizationStatus.action.name}}>
+                    </button>
+                </ng-container>
+                <!-- <button pButton pRipple type="button" class="p-button-raised" label={{employee.visaStatus.action.name}}>
+                </button> -->
             </td>
         </tr>
     </ng-template>

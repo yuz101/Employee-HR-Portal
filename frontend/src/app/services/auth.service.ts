@@ -7,7 +7,7 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = 'http://localhost:3000/auth';
   constructor(private http: HttpClient) { }
 
   signup(username: string|null, email: string|null, password: string|null): Observable<User>{
