@@ -15,7 +15,7 @@ class ApplicationService {
 
   static async getApplicationById(userID) {
     try {
-      const retrievedApplication = await Application.findById(userID)
+      const retrievedApplication = await Application.findOne({"userID": userID})
       return retrievedApplication
     } catch (e) {
       console.error(e)
