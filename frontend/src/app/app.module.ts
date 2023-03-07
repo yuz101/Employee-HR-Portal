@@ -6,8 +6,6 @@ import { HouseDetailComponent } from './components/house-detail/house-detail.com
 import { HouseService } from './services/house.service';
 import { HouseAddComponent } from './components/house-add/house-add.component';
 import { houseFeatureKey } from './store/reducers/house.reducers';
-import { FormsModule } from '@angular/forms'
-import { housesReducer } from './store/reducers/house.reducers';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
