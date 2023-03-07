@@ -1,67 +1,70 @@
-<div class="container">
-    <h2>Add a New House</h2>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <h4>Address Information</h4>
-      <div formGroupName="address">
-        <div class="form-group">
-          <label>Street Name:</label>
-          <input type="text" formControlName="streetName" class="form-control" />
+<div class="container mx-auto">
+    <h2 class="text-2xl font-bold">Add a New House</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
+      <h4 class="text-lg font-semibold">Address Information</h4>
+      <div formGroupName="address" class="mt-4">
+        <div class="mb-4">
+          <label class="block font-medium">Street Name:</label>
+          <input type="text" formControlName="streetName" class="form-input w-full mt-2 rounded-md border-gray-300" />
         </div>
-        <div class="form-group">
-          <label>Building Number:</label>
-          <input type="text" formControlName="buildingNumber" class="form-control" />
+        <div class="mb-4">
+          <label class="block font-medium">Building Number:</label>
+          <input type="text" formControlName="buildingNumber" class="form-input w-full mt-2 rounded-md border-gray-300" />
         </div>
-        <div class="form-group">
-          <label>City:</label>
-          <input type="text" formControlName="city" class="form-control" />
+        <div class="mb-4">
+          <label class="block font-medium">City:</label>
+          <input type="text" formControlName="city" class="form-input w-full mt-2 rounded-md border-gray-300" />
         </div>
-        <div class="form-group">
-          <label>State:</label>
-          <input type="text" formControlName="state" class="form-control" />
+        <div class="mb-4">
+          <label class="block font-medium">State:</label>
+          <input type="text" formControlName="state" class="form-input w-full mt-2 rounded-md border-gray-300" />
         </div>
-        <div class="form-group">
-          <label>ZIP Code:</label>
-          <input type="text" formControlName="zip" class="form-control" />
-        </div>
-      </div>
-  
-      <h4>Landlord Information</h4>
-      <div formGroupName="landlord">
-        <div class="form-group">
-          <label>Full Name:</label>
-          <input type="text" formControlName="fullName" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label>Phone Number:</label>
-          <input type="text" formControlName="phoneNumber" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label>Email:</label>
-          <input type="email" formControlName="email" class="form-control" />
+        <div class="mb-4">
+          <label class="block font-medium">ZIP Code:</label>
+          <input type="text" formControlName="zip" class="form-input w-full mt-2 rounded-md border-gray-300" />
         </div>
       </div>
   
-      <h4>Facility Information</h4>
-      <div formGroupName="facility">
-        <div class="form-group">
-          <label>Number of Beds:</label>
-          <input type="number" formControlName="beds" class="form-control" />
+      <h4 class="text-lg font-semibold mt-4">Landlord Information</h4>
+      <div formGroupName="landlord" class="mt-4">
+        <div class="mb-4">
+          <label class="block font-medium">Full Name:</label>
+          <input type="text" formControlName="fullName" class="form-input w-full mt-2 rounded-md border-gray-300" />
         </div>
-        <div class="form-group">
-          <label>Number of Mattresses:</label>
-          <input type="number" formControlName="mattresses" class="form-control" />
+        <div class="mb-4">
+          <label class="block font-medium">Phone Number:</label>
+          <input type="text" formControlName="phoneNumber" class="form-input w-full mt-2 rounded-md border-gray-300" />
         </div>
-        <div class="form-group">
-          <label>Number of Tables:</label>
-          <input type="number" formControlName="tables" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label>Number of Chairs:</label>
-          <input type="number" formControlName="chairs" class="form-control" />
+        <div class="mb-4">
+          <label class="block font-medium">Email:</label>
+          <input type="email" formControlName="email" class="form-input w-full mt-2 rounded-md border-gray-300" />
         </div>
       </div>
   
-      <button type="submit" class="btn btn-primary">Add House</button>
-    </form>
-  </div>
+      <h4 class="text-lg font-semibold mt-4">Facility Information</h4>
+      <div formGroupName="facility" class="mt-4">
+        <div class="mb-4">
+          <label class="block font-medium">Number of Beds:</label>
+          <input type="number" formControlName="beds" class="form-input w-full mt-2 rounded-md border-gray-300" />
+        </div>
+        <div class="mb-4">
+          <label class="block font-medium">Number of Mattresses:</label>
+          <input type="number" formControlName="mattresses" class="form-input w-full mt-2 rounded-md border-gray-300" />
+        </div>
+        <div class="mb-4">
+          <label class="block font-medium">Number of Tables:</label>
+          <input type="number" formControlName="mattresses" class="form-input w-full mt-2 rounded-md border-gray-300" />
+        </div>
+        <div class="mb-4">
+          <label class="block font-medium">Number of Chairs:</label>
+          <input type="number" formControlName="mattresses" class="form-input w-full mt-2 rounded-md border-gray-300" />
+        </div>
+        </div>
+        <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+          <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Add House</button>
+      </div>
+      </form>
+    </div>
+
+  
   

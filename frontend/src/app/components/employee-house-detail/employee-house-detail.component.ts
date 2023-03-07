@@ -17,7 +17,7 @@ export class EmployeeHouseDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const employeeId = "63fd1a2e84e93b2b00f51947";
+    const employeeId = "6406b7d8d0dd20a9c3902ff4";
     if (employeeId) {
       this.houseService.getHouseByEmployeeId(employeeId).subscribe(
         (res) => {
