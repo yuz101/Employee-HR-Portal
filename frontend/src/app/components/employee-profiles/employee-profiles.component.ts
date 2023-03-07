@@ -27,9 +27,12 @@ export class EmployeeProfilesComponent implements OnInit {
             _id: employee._id,
             firstName: employee.firstName,
             lastName: employee.lastName,
+            preferredName: employee.preferredName,
             email: employee.email,
             phoneNumber: employee.phoneNumber,
+            ssn: employee.ssn,
             address: employee.address,
+            workAuthorizationTitle: employee.workAuthorizationTitle,
             showDetails: false
           }
         });
@@ -52,6 +55,8 @@ export class EmployeeProfilesComponent implements OnInit {
 
   toggleDetailView(employee: Employee) {
     employee.showDetails = !employee.showDetails;
+    // console.log("employeeId: ", employee._id);
+    // console.log("employee: ", employee);
     const profileUrl = `/employees/${employee._id}`;
     const newWindow = window.open(profileUrl, '_blank');
     if (newWindow) {
@@ -62,17 +67,50 @@ export class EmployeeProfilesComponent implements OnInit {
         </head>
         <body>
           <div *ngIf="employee.showDetails">
-            <hr>
             <h3>${employee.firstName ?? ''} ${employee.lastName ?? ''}</h3>
-            <p>Prefered Name: ${employee.preferredName ?? ''}</p>
-            <p>SSN: ${employee.ssn ?? ''}</p>
-            <p>Work Authorization Title: ${employee.workAuthorizationTitle ?? ''}</p>
-            <p>Email: ${employee.email ?? ''}</p>
-            <p>Phone: ${employee.phoneNumber ?? ''}</p>
+            <p>
+              ${employee.preferredName ? (
+                `<div>
+                  <label>Preferred Name: </label>
+                  <span>${employee.preferredName}</span>
+                </div>`
+              ) : ''}
+            </p>
+            <p>
+            ${employee.ssn ? (
+              `<div>
+                <label>SSN: </label>
+                <span>${employee.ssn}</span>
+              </div>`
+            ) : ''}
+            </p>
+            <p>
+            ${employee.workAuthorizationTitle ? (
+              `<div>
+                <label>Work Authorization Title: </label>
+                <span>${employee.workAuthorizationTitle}</span>
+              </div>`
+            ) : ''}
+            </p>
+            ${employee.email ? (
+              `<div>
+                <label>Email: </label>
+                <span>${employee.email}</span>
+              </div>`
+            ) : ''}
+            </p>
+            ${employee.phoneNumber ? (
+              `<div>
+                <label>Phone: </label>
+                <span>${employee.phoneNumber}</span>
+              </div>`
+            ) : ''}
+            </p>
           </div>
         </body>
       </html>
     `);
+    newWindow.document.close();
     }
   }
 
