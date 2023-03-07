@@ -100,7 +100,6 @@ const applicationSchema = new Schema(
             zip: {
                 type: String,
                 required: true,
-                trim: true,
                 validate: {
                     validator: function (value) {
                         return /^\d+$/.test(value);
@@ -123,11 +122,14 @@ const applicationSchema = new Schema(
         workPhoneNumber: {
             type: String,
             trim: true,
-            validate: {
-                validator: function (value) {
-                    return /^\d+$/.test(value);
-                },
-                message: 'Work phone number must contain only numbers'
+            validate: function (value) {
+                if (value == null || value == undefined || value.length === 0) {
+                    return true;
+                }
+                if (/^\d+$/.test(value)) {
+                    throw new Error('Work Phone number must contain only numbers');
+                }
+                return true;
             }
         },
         carInformation: {
@@ -177,24 +179,17 @@ const applicationSchema = new Schema(
         driversLicense: {
             licenseNumber: {
                 type: String,
-                required: true,
-                trim: true,
-                validate: {
-                    validator: function (value) {
-                        return /^\d+$/.test(value);
-                    },
-                    message: 'Zip must contain only numbers'
-                }
             },
             expirationDate: {
                 type: String,
-                required: true,
-                trim: true,
-                validate: {
-                    validator: function (value) {
-                        return /^\d{4}-\d{2}-\d{2}$/.test(value);
-                    },
-                    message: 'Birthday must be in the format of yyyy-mm-dd'
+                validate: function (value) {
+                    if (value == null || value == undefined || value.length === 0) {
+                        return true;
+                    }
+                    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+                        throw new Error('Drivers License date must be in the format of yyyy-mm-dd');
+                    }
+                    return true;
                 }
             }
         },

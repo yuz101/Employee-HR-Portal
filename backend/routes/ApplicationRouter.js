@@ -15,10 +15,10 @@ const validateApplication = [
         .isEmail().withMessage('Email is invalid.'),
     check('firstName')
         .exists().withMessage('First name is required.')
-        .isEmpty().withMessage('First name cannot be empty or only contain whitespaces.'),
+        .not().isEmpty().withMessage('First name cannot be empty or only contain whitespaces.'),
     check('lastName')
         .exists().withMessage('Last name is required.')
-        .isEmpty().withMessage('Last name cannot be empty or only contain whitespaces.'),
+        .not().isEmpty().withMessage('Last name cannot be empty or only contain whitespaces.'),
     check('middleName')
         .optional().isString().withMessage('middle must be String.'),
     check('preferredName')
@@ -27,20 +27,18 @@ const validateApplication = [
         .exists().withMessage('Phone number is required.')
         .isMobilePhone().withMessage('Phone number is invalid.'),
     check('workPhoneNumber')
-        .optional()
-        .isMobilePhone().withMessage('Work phone number is invalid.'),
+        .optional(),
     check('address.streetName')
         .exists().withMessage('Street name is required.')
-        .isEmpty().withMessage('Address name cannot be empty or only contain whitespaces.'),
+        .withMessage('Address name cannot be empty or only contain whitespaces.'),
     check('address.buildingNumber')
         .exists().withMessage('Building number is required.')
-        .isEmpty().withMessage('Building number cannot be empty or only contain whitespaces.'),
+        .not().isEmpty().withMessage('Building number cannot be empty or only contain whitespaces.'),
     check('address.city')
-        .exists().withMessage('City is required.')
-        .isEmpty().withMessage('Address city cannot be empty or only contain whitespaces.'),
+        .exists().withMessage('City is required.'),
     check('address.state')
         .exists().withMessage('State is required.')
-        .isEmpty().withMessage('Address state cannot be empty or only contain whitespaces.'),
+        .not().isEmpty().withMessage('Address state cannot be empty or only contain whitespaces.'),
     check('address.zip')
         .exists().withMessage('Zip code is required.')
         .isPostalCode('US').withMessage('Zip code is invalid.'),
@@ -68,11 +66,9 @@ const validateApplication = [
         .exists().withMessage('End date is required.')
         .isISO8601().withMessage('End date must be in ISO8601 format (YYYY-MM-DD).'),
     check('driversLicense.licenseNumber')
-        .exists().withMessage('Driver license number is required.')
-        .isNumeric().withMessage("Driver's license number must be a numeric value."),
+        .optional({checkFalsy: true}).isNumeric().withMessage("Driver's license number must be a numeric value."),
     check('driversLicense.expirationDate')
-        .exists().withMessage("Driver's license expiration date is required.")
-        .isISO8601().withMessage("Driver's license expiration date must be in ISO8601 format (YYYY-MM-DD)."),
+        .optional({checkFalsy: true}).isISO8601().withMessage("Driver's license expiration date must be in ISO8601 format (YYYY-MM-DD)."),
     check('reference.firstName')
         .exists().withMessage('Reference first name is required.'),
     check('reference.lastName')
@@ -99,7 +95,7 @@ const validateApplication = [
         .exists().withMessage('Emergency contact relationship is required.')
 ];
 
-router.post('/application',validateApplication ,ApplicationController.createNewApplication)
+router.post('/application', validateApplication, ApplicationController.createNewApplication)
 router.get('/applicationID/:id', ApplicationController.searchByID)
 router.get('/allapplication', ApplicationController.getAllInfo)
 router.post('/applicationID', ApplicationController.updateStatus)

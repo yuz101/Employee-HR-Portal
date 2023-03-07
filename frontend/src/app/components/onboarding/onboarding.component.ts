@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { Onboarding } from 'src/app/models/onboarding.model';
 import { AppState } from '../../store/onboarding.state';
+import { HttpClient } from '@angular/common/http';
 import * as OnboardingActions from '../../store/onboarding.actions';
 
 @Component({
@@ -14,23 +16,33 @@ export class OnboardingComponent implements OnInit {
   showCarInformation = false;
   showDriversLicense = false;
   showVisaFileUpload = false;
-  // visaTitleOptions = [
-  //   { label: 'H1b', value: 'H1b' },
-  //   { label: 'L2', value: 'L2' },
-  //   { label: 'F1', value: 'F1' },
-  //   { label: 'H4', value: 'H4' },
-  //   { label: 'Other', value: 'Other' }
-  // ];
-
-
+  disableButton = false;
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private http: HttpClient
   ) { }
 
+  //下面部分的userID需要修改为存在jwt里的userID
+
   ngOnInit() {
+
+    const userID = '63e5ca1801c88ecb8d82f487'
+    this.http.get<Onboarding>(`http://localhost:3000/application/applicationID/${userID}`)
+      .subscribe(response => {
+        if (response.status === 'Pending') {
+          this.showCarInformation = true;
+          this.showDriversLicense = true;
+          this.disableButton = true;
+          this.onboardingForm.patchValue(response);
+          this.onboardingForm.disable();
+
+        } 
+
+      });
+
     this.onboardingForm = this.formBuilder.group({
-      userID: [''],
+      userID: ['63e5ca1801c88ecb8d82f487'],
       status: ['Pending'],
       email: ['test@gmail.com', [Validators.required, Validators.email]],
       firstName: ['', [Validators.required]],
@@ -79,9 +91,10 @@ export class OnboardingComponent implements OnInit {
         relationship: ['', [Validators.required]]
       })
     });
-    
+
 
   }
+
 
   onCarInformationChange(event) {
     this.showCarInformation = event.target.value === 'yes';
@@ -92,9 +105,9 @@ export class OnboardingComponent implements OnInit {
   }
 
 
-  onVisaFileChange(event){
+  onVisaFileChange(event) {
     const file = event.target.files[0];
-     // ... handle the file upload
+    // ... handle the file upload
   }
 
   onDirverFileChange(event) {
@@ -102,11 +115,15 @@ export class OnboardingComponent implements OnInit {
     // ... handle the file upload
   }
 
-  onBasicUpload(event){
+  onBasicUpload(event) {
     //handle file upload
   }
 
   submitForm() {
-    this.store.dispatch(new OnboardingActions.AddOnboarding({ onboarding: this.onboardingForm.value }));
+    this.http.post('http://localhost:3000/application/application', this.onboardingForm.value)
+      .subscribe(response => {
+        console.log(response);
+      });
+    // this.store.dispatch(new OnboardingActions.AddOnboarding({ onboarding: this.onboardingForm.value }));
   }
 }
