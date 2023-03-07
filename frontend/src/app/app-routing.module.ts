@@ -9,6 +9,7 @@ import { HouseListComponent } from './components/house-list/house-list.component
 import { HouseDetailComponent } from './components/house-detail/house-detail.component';
 import { HouseAddComponent } from './components/house-add/house-add.component';
 import { EmployeeHouseDetailComponent } from './components/employee-house-detail/employee-house-detail.component';
+import { EmployeeProfilesComponent } from './components/employee-profiles/employee-profiles.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,8 @@ const routes: Routes = [
   { path: 'houses', component: HouseListComponent },
   { path: 'houses/:id', component: HouseDetailComponent },
   { path: 'employee/housing', component: EmployeeHouseDetailComponent},
+  { path: 'profiles', component: EmployeeProfilesComponent},
+  { path: 'employees/:id', component: EmployeeProfilesComponent }
 ];
 
 

@@ -1,0 +1,13 @@
+<input type="text" [(ngModel)]="searchTerm" (input)="search()" placeholder="Search employees" />
+
+<div *ngIf="(loading$ | async)">Loading...</div>
+<div *ngIf="(error$ | async) as error">{{ error }}</div>
+
+<div *ngIf="!(loading$ | async) && !(error$ | async)">
+  <h2>Employee Profiles</h2>
+  <p>Number of employees: {{ employees.length }}</p>
+
+    <div class="employee-info" *ngFor="let employee of employees | filter:searchTerm">
+      <a (click)="toggleDetailView(employee)" target="_blank"><strong>legal name:</strong> {{ employee.firstName }} {{ employee.lastName}} ,  <strong>email:</strong> {{ employee.email }}</a>
+    </div>
+</div>
