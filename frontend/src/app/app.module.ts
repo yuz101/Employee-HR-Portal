@@ -17,7 +17,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { StoreModule } from '@ngrx/store';
-import { userReducer } from './store/user.reducer';
+import { userReducer } from './store/reducers/user.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { PasswordModule } from 'primeng/password'
 import { FileUploadModule } from 'primeng/fileupload';
@@ -25,6 +25,8 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+
+
 import { AppComponent } from './app.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';

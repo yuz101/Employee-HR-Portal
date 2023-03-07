@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { UserAction } from './user.action';
-import { User } from '../models/user';
+import { UserAction } from '../actions/user.action';
+import { User } from '../../models/user';
 
 // State is immutable
 export const initialState: User = {
