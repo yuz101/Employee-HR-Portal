@@ -27,6 +27,7 @@ app.use(function(req, res, next) {
 });
 
 // Importing other routes
+app.use('/auth', routes.AuthRouter);
 app.use('/employee', routes.EmployeeRouter);
 app.use('/application', routes.ApplicationRouter);
 app.use('/hr', routes.HRRouter);

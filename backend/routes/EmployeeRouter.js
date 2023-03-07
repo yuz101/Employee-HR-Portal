@@ -1,9 +1,6 @@
 const router = require('express').Router()
 const EmployeeController = require('../controllers/EmployeeController')
 
-// sign up
-router.post('/signup', EmployeeController.signup)
-
 // retrieve user profile
 router.get('/profile', EmployeeController.getPofile)
 
