@@ -26,7 +26,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {DataViewModule} from 'primeng/dataview';
-import {ToolbarModule} from 'primeng/toolbar';
+
 
 
 import { AppComponent } from './app.component';
@@ -88,7 +88,6 @@ const appRoutes: Routes = [
     PdfViewerModule,
     InputTextareaModule,
     DataViewModule,
-    ToolbarModule,
     StoreModule.forRoot({
       employee: userReducer,
     }),

@@ -1,12 +1,8 @@
 export interface RegistrationEmail {
-    _id: string,
-    firstName: string,
-    middleName: string,
-    lastName: string,
-    preferredName: string,
+    name: string,
     email: string,
     token: string,
-    expiration: string,
+    expiration: Date,
     status: string
 }
 

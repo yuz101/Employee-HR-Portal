@@ -3,41 +3,13 @@ const crypto = require('crypto');
 const ApplicationService = require('../services/ApplicationService');
 const DocumentService = require('../services/DocumentService');
 
-exports.sendRegistrationEmail = async (req, res) => {
+exports.sendEmail = async (req, res) => {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
     try {
         const token = crypto.randomUUID()
-        const registration = await HRService.sendRegistrationEmail(req.body, token)
+        const registration = await HRService.send_email(req.body.name, req.body.email, token)
         res.status(200).json({ message: "Send registration email successfully", registration})
-    } catch (err) {
-        res.status(404).json(err)
-    }
-}
-
-exports.resendRegistrationEmail = async (req, res) => {
-    try {
-        const registrationEmail = await HRService.resendRegistrationEmails(req.body.registrationEmailId)
-        res.status(200).json({message: "Resend registration emails successfully", registrationEmail})
-    } catch (err) {
-        res.status(404).json(err)
-    }
-}
-
-exports.getRegistrationEmails = async (req, res) => {
-    try {
-        const registrationEmails = await HRService.getRegistrationEmails()
-        res.status(200).json({message: "Retrieved registration emails successfully", registrationEmails})
-    } catch (err) {
-        res.status(404).json(err)
-    }
-}
-
-exports.updateRegistrationEmail = async (req, res) => {
-    try {
-        const {registrationId, ...registration} = req.body
-        const updatedRegistrationEmail = await HRService.updateRegistrationEmail(registrationId, registration)
-        res.status(200).json({message: "Updated registration email successfully", updatedRegistrationEmail})
     } catch (err) {
         res.status(404).json(err)
     }
