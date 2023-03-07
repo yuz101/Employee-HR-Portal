@@ -11,36 +11,6 @@ const FacilityReport = require('../models/FacilityReport');
 const EmployeeWorkAuthorizationStatus = require('../models/EmployeeWorkAuthorizationStatus');
 
 class EmployeeService {
-    static async signup(username, email, password) {
-        try {
-            const existingUser = await Employee.findOne({
-                $or: [
-                    { username },
-                    { email }
-                ]
-            })
-
-            if (existingUser) {
-                throw new ObjectAlreadyExistsException();
-            }
-
-            const hashedPassword = await bcrypt.hash(
-                password,
-                Number(process.env.SALT)
-            )
-            const newUser = await Employee.create({
-                username: username,
-                email: email,
-                password: hashedPassword,
-            })
-
-            return newUser
-        } catch (err) {
-            console.error(err)
-            throw err
-        }
-    }
-
     static async getProfile(userId) {
         try {
             const retrievedProfile = await Employee.findById(
