@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from 'src/app/models/employee';
+import { filter } from 'rxjs/operators';
+
+import { Store, select } from '@ngrx/store';
+import { EmployeeApiActions } from 'src/app/store/employee.action';
+import { selectEmployees } from 'src/app/store/employee.selector';
+import { AppState } from 'src/app/store/app.state';
 
 
 @Component({
@@ -10,16 +16,34 @@ import { Employee } from 'src/app/models/employee';
   styleUrls: ['./employee-profiles.component.css']
 })
 export class EmployeeProfilesComponent implements OnInit {
+  employees$:Observable<Employee[]> = this.store.select(selectEmployees);
+
   loading$: Observable<boolean>;
-  error$: Observable<string>;
+  error$: Observable<string | null>;
   employees: Employee[] = [];
   filteredEmployees: Employee[] = [];
   searchTerm: string = '';
 
-  constructor(private apiService: EmployeeService) {}
+
+  constructor(
+    private apiService: EmployeeService, 
+    private store: Store
+    ) {}
+
+
 
   ngOnInit() {
     this.apiService.getAllProfiles().subscribe(
+      (res) => {
+        console.log('Response from API:', res);
+        this.store.dispatch(EmployeeApiActions.retrievedEmployeesProfiles({ employees: res }));
+      },
+      (error) => {
+        console.log('Error from API:', error);
+      }
+    );
+
+      this.apiService.get_all_profiles().subscribe(
       (data: any) => {
         console.log(data.employees);
         this.employees = data.employees.map((employee: any) => {
@@ -39,7 +63,9 @@ export class EmployeeProfilesComponent implements OnInit {
         this.employees = this.sortEmployees(this.employees);
       }
     );
+  
   }
+
 
   sortEmployees(employees: Employee[]): Employee[] {
     return employees.sort((a, b) => {
@@ -55,8 +81,6 @@ export class EmployeeProfilesComponent implements OnInit {
 
   toggleDetailView(employee: Employee) {
     employee.showDetails = !employee.showDetails;
-    // console.log("employeeId: ", employee._id);
-    // console.log("employee: ", employee);
     const profileUrl = `/employees/${employee._id}`;
     const newWindow = window.open(profileUrl, '_blank');
     if (newWindow) {
