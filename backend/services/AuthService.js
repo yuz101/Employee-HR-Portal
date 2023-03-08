@@ -36,6 +36,26 @@ class AuthService {
             throw err
         }
     }
+
+
+    static async login(username, email, password) {
+        const user = await Employee.findOne({
+            $or: [
+                {username: username},
+                {email: email}
+            ]
+        })
+        if(!user) {
+            throw new Error('wrong credential')
+        } else {
+            const checkPassword = await bcrypt.compare(password, user.password)
+            if ( !checkPassword) {
+                throw new Error('wrong credential')
+            } else {
+                return user 
+            }
+        }
+    }
 }
 
 module.exports = AuthService;

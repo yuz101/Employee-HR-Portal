@@ -8,7 +8,7 @@ import { HouseAddComponent } from './components/house-add/house-add.component';
 import { houseFeatureKey } from './store/reducers/house.reducers';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InputTextModule } from 'primeng/inputtext';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ButtonModule } from 'primeng/button';
@@ -45,6 +45,8 @@ import { RegistrationEmailsComponent } from './components/registration-emails/re
 import { OnboardingApplicationReviewComponent } from './components/onboarding-application-review/onboarding-application-review.component';
 
 import { employeeWorkAuthorizationStatusRecordsReducer } from './store/reducers/employee-work-authorization-status-records.reducer';
+
+import { InterceptorService } from './services/intercepter.service';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/houses', pathMatch: 'full' },
@@ -96,7 +98,7 @@ const appRoutes: Routes = [
     ToolbarModule,
     DropdownModule,
     StoreModule.forRoot({
-      employee: userReducer,
+      user: userReducer,
       [houseFeatureKey]: userReducer,
       employeeWorkAuthorizationStatusRecords: employeeWorkAuthorizationStatusRecordsReducer,
       employees: employeesReducer
@@ -105,7 +107,10 @@ const appRoutes: Routes = [
       maxAge: 25, // Retains last 25 states
     }),
   ],
-  providers: [HouseService],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+    HouseService
+  ],
   bootstrap: [AppComponent],
 })
 
