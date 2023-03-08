@@ -25,16 +25,9 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-<<<<<<< HEAD
 import {DataViewModule} from 'primeng/dataview';
 import {ToolbarModule} from 'primeng/toolbar';
 import {DropdownModule} from 'primeng/dropdown';
-=======
-import { DataViewModule } from 'primeng/dataview';
-
->>>>>>> ba450c3 (Working)
-
-
 import { AppComponent } from './app.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
@@ -82,11 +75,6 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([]),
-<<<<<<< HEAD
-    StoreModule.forRoot({  employee: userReducer,
-    }),
-=======
->>>>>>> ba450c3 (Working)
     InputTextModule,
     ButtonModule,
     DialogModule,
