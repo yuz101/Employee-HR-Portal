@@ -12,11 +12,11 @@ export class OnboardingApplicationReviewService {
 
   constructor(private http: HttpClient) { }
 
-  approveApplication(applicationID): Observable<Onboarding> {
-    return this.http.post<Onboarding>(`${this.baseUrl}/applicationID`, {});
+  approveApplication(applicationID: any): Observable<Onboarding> {
+    return this.http.post<Onboarding>(`${this.baseUrl}/approve/${applicationID}`, {});
   }
 
-  rejectApplication(applicationID): Observable<Onboarding> {
-    return this.http.post<Onboarding>(`${this.baseUrl}/applicationID`, {});
+  rejectApplication(applicationID: any): Observable<Onboarding> {
+    return this.http.post<Onboarding>(`${this.baseUrl}/reject/${applicationID}`, {});
   }
 }
