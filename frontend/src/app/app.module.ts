@@ -25,9 +25,14 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+<<<<<<< HEAD
 import {DataViewModule} from 'primeng/dataview';
 import {ToolbarModule} from 'primeng/toolbar';
 import {DropdownModule} from 'primeng/dropdown';
+=======
+import { DataViewModule } from 'primeng/dataview';
+
+>>>>>>> ba450c3 (Working)
 
 
 import { AppComponent } from './app.component';
@@ -42,6 +47,8 @@ import { FilterPipe } from './pipes/filter.pipe';
 import { DocumentReviewComponent } from './components/visa-management-hr/document-review/document-review.component';
 import { RegistrationEmailsComponent } from './components/registration-emails/registration-emails.component';
 import { OnboardingApplicationReviewComponent } from './components/onboarding-application-review/onboarding-application-review.component';
+
+import { employeeWorkAuthorizationStatusRecordsReducer } from './store/reducers/employee-work-authorization-status-records.reducer';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/houses', pathMatch: 'full' },
@@ -75,8 +82,11 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([]),
+<<<<<<< HEAD
     StoreModule.forRoot({  employee: userReducer,
     }),
+=======
+>>>>>>> ba450c3 (Working)
     InputTextModule,
     ButtonModule,
     DialogModule,
@@ -95,6 +105,8 @@ const appRoutes: Routes = [
     DropdownModule,
     StoreModule.forRoot({
       employee: userReducer,
+      [houseFeatureKey]: userReducer,
+      employeeWorkAuthorizationStatusRecords: employeeWorkAuthorizationStatusRecordsReducer,
     }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
