@@ -1,27 +1,66 @@
+// import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+// import { createReducer, on } from '@ngrx/store';
+// import { Employee } from '../models/employee';
+// import { loadEmployees, loadEmployeesSuccess, loadEmployeesFailure } from './employee.action';
+// import { Action } from '@ngrx/store';
+
+// export interface EmployeeState {
+//   employees: Employee[];
+// }
+
+
+// export const initialState: EmployeeState = {
+//   employees: []
+// };
+
+// // const employeeReducer = createReducer(
+// //   initialState,
+// //   on(loadEmployeesSuccess, (state, { employees }) => ({ ...state, employees }))
+// // );
+
+// export const employeeReducer = createReducer(
+//   initialState,
+//   on(loadEmployeesSuccess, (state, { employees }) => {
+//     console.log('loadEmployeesSuccess reducer called with employees:', employees);
+//     return { ...state, employees };
+//   })
+// );
+
+
 import { Action, createReducer, on } from '@ngrx/store';
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { EmployeeApiActions } from './employee.action';
 import { Employee } from '../models/employee';
-import { GetProfiles, GetProfilesSuccess, GetProfilesFailure } from './employee.action';
 
-export interface EmployeeState extends EntityState<Employee> {
-  loading: boolean;
-  error: string;
-}
+export const initialState: Employee[] = [];
 
-export const adapter = createEntityAdapter<Employee>();
+// export const employeesReducer = createReducer(
+//   initialState,
+//   on(EmployeeApiActions.retrievedEmployeesProfiles, (state, { employees }) => employees)
+// );
 
-export const initialState: EmployeeState = adapter.getInitialState({
-  loading: false,
-  error: '',
-});
-
-const employeeReducer = createReducer(
+export const employeesReducer = createReducer(
   initialState,
-  on(GetProfiles, (state) => ({ ...state, loading: true })),
-  on(GetProfilesSuccess, (state, { employees }) => adapter.setAll(employees, { ...state, loading: false })),
-  on(GetProfilesFailure, (state, { error }) => ({ ...state, loading: false, error })),
+  on(EmployeeApiActions.retrievedEmployeesProfiles, (state, { employees }) => {
+    return state.concat(employees);
+  })
 );
 
-export function reducer(state: EmployeeState | undefined, action: Action) {
-  return employeeReducer(state, action);
-}
+
+// export interface EmployeeState {
+//   employees: Employee[];
+// }
+
+// export const initialState: EmployeeState = {
+//   employees: []
+// };
+
+// export const employeeReducer = createReducer(
+//   initialState,
+//   on(loadEmployeesSuccess, (state, { employees }) => {
+//     return { ...state, employees };
+//   })
+// );
+
+// export function reducer(state: EmployeeState | undefined, action: Action) {
+//   return employeeReducer(state, action);
+// }

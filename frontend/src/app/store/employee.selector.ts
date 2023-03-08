@@ -1,16 +1,31 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { EmployeeState } from './employee.reducer';
-import { adapter } from './employee.reducer';
+import { AppState } from './app.state';
+// import { EmployeeState } from './employee.reducer';
+import { Employee } from '../models/employee';
 
-export const selectEmployeeState = createFeatureSelector<EmployeeState>('employee');
+export const selectEmployees = createFeatureSelector<Employee[]>('employees');
 
-export const {
-  selectAll: selectAllEmployees,
-  selectEntities: selectEmployeeEntities,
-  selectIds: selectEmployeeIds,
-  selectTotal: selectTotalEmployees,
-} = adapter.getSelectors(selectEmployeeState);
+// export const selectEmployeeState = (state: AppState) => state.employee;
 
-export const selectEmployeeLoading = createSelector(selectEmployeeState, (state) => state.loading);
+// export const selectAllEmployees = createSelector(
+//   selectEmployeeState,
+//   (state: EmployeeState) => state.employees
+// );
 
-export const selectEmployeeError = createSelector(selectEmployeeState, (state) => state.error);
+// export const selectEmployeeById = (id: string) => createSelector(
+//   selectAllEmployees,
+//   (employees) => employees.find((employee) => employee._id === id)
+// );
+
+
+// export const selectEmployees = createSelector(
+//   selectEmployeeState,
+//   (state: EmployeeState) => {
+//     console.log('employees selector called with state:', state);
+//     return state.employees;
+//   }
+// );
+
+
+
+

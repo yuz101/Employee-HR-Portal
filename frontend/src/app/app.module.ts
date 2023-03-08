@@ -26,6 +26,9 @@ import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {DataViewModule} from 'primeng/dataview';
+// import { employeeReducer } from './store/employee.reducer';
+// import { EmployeeState } from './store/employee.reducer';
+import { employeesReducer } from './store/employee.reducer';
 import {ToolbarModule} from 'primeng/toolbar';
 import {DropdownModule} from 'primeng/dropdown';
 import { AppComponent } from './app.component';
@@ -75,6 +78,7 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([]),
+    // StoreModule.forRoot({ employees: employeesReducer, employee: userReducer, }),
     InputTextModule,
     ButtonModule,
     DialogModule,
@@ -95,6 +99,7 @@ const appRoutes: Routes = [
       employee: userReducer,
       [houseFeatureKey]: userReducer,
       employeeWorkAuthorizationStatusRecords: employeeWorkAuthorizationStatusRecordsReducer,
+      employees: employeesReducer
     }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
