@@ -28,8 +28,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {DataViewModule} from 'primeng/dataview';
 import {ToolbarModule} from 'primeng/toolbar';
 import {DropdownModule} from 'primeng/dropdown';
-
-
 import { AppComponent } from './app.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
@@ -42,6 +40,8 @@ import { FilterPipe } from './pipes/filter.pipe';
 import { DocumentReviewComponent } from './components/visa-management-hr/document-review/document-review.component';
 import { RegistrationEmailsComponent } from './components/registration-emails/registration-emails.component';
 import { OnboardingApplicationReviewComponent } from './components/onboarding-application-review/onboarding-application-review.component';
+
+import { employeeWorkAuthorizationStatusRecordsReducer } from './store/reducers/employee-work-authorization-status-records.reducer';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/houses', pathMatch: 'full' },
@@ -75,8 +75,6 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([]),
-    StoreModule.forRoot({  employee: userReducer,
-    }),
     InputTextModule,
     ButtonModule,
     DialogModule,
@@ -95,6 +93,8 @@ const appRoutes: Routes = [
     DropdownModule,
     StoreModule.forRoot({
       employee: userReducer,
+      [houseFeatureKey]: userReducer,
+      employeeWorkAuthorizationStatusRecords: employeeWorkAuthorizationStatusRecordsReducer,
     }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
