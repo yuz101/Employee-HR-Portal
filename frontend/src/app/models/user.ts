@@ -1,3 +1,4 @@
 export interface User {
-  jwt: string, 
+  jwt: string
+  hr: boolean
 }

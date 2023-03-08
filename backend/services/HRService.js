@@ -1,10 +1,10 @@
 const Employee = require("../models/Employee");
 const House = require("../models/House");
-const Registration = require("../models/Registration");
+const RegistrationEmail = require("../models/RegistrationEmail");
 const nodemailer = require("nodemailer");
 
 class HRService {
-  static async send_email(name, email, token) {
+  static async sendRegistrationEmail({ firstName, middleName, lastName, email} , token) {
     try {
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
@@ -21,13 +21,13 @@ class HRService {
             to: email, // list of receivers
             subject: "[Important] Registration Link for Beaconfire", // Subject line
             text: "Welcome to Beaconfire Solution", // plain text body
-            html: `<p>Greetings ${name}, </p> 
+            html: `<p>Greetings ${firstName} ${lastName}, </p> 
             <p>Please click the button below to register your account.</p> 
             <a style="padding: 10px 20px;" href="http://localhost:4200/signup?email=${email}&token=${token}">Registration</a>`, // html body
         });
         const date = new Date()
         const expiration = date.setHours(date.getHours() + 3);
-        const registration = await Registration.create({ name, email, token, expiration: expiration, status: "Sent"})
+        const registration = await RegistrationEmail.create({ firstName, middleName, lastName, email, token, expiration: expiration, status: "sent"})
 
         console.log("Message sent: %s", info.messageId);
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
@@ -41,6 +41,93 @@ class HRService {
       throw error;
     }
   }
+
+  static async resendRegistrationEmails(registrationEmailId) {
+
+    try {
+        console.log(registrationEmailId)
+        let registrationEmail = await RegistrationEmail.findById(registrationEmailId)
+        console.log(registrationEmail)
+        const { firstName, middleName, lastName, preferredName, email, token } = registrationEmail
+        // create reusable transporter object using the default SMTP transport
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'teamnull2023@gmail.com',
+                pass: 'walmiaczzpxlcdvn',
+            },
+        });
+
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+            from: 'Beaconfire Solution <teamnull2023@gmail.com>', // sender address
+            to: email, // list of receivers
+            subject: "[Important] Registration Link for Beaconfire", // Subject line
+            text: "Welcome to Beaconfire Solution", // plain text body
+            html: `<p>Greetings ${firstName}(${preferredName}) ${lastName}, </p> 
+            <p>Please click the button below to register your account.</p> 
+            <a style="padding: 10px 20px;" href="http://localhost:4200/auth/signup?email=${email}&token=${token}">Registration</a>`, // html body
+        });
+
+        const date = new Date()
+        const expiration = date.setHours(date.getHours() + 3);
+        const registration = await RegistrationEmail.findByIdAndUpdate(
+          registrationEmailId,
+          { 
+            $set: { expiration: expiration, status: "sent" }
+        })
+
+         console.log("Message sent: %s", info.messageId);
+        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+        // Preview only available when sending through an Ethereal account
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+
+        return registration
+      } catch (err) {
+        console.error(err);
+        throw error;
+      }
+
+  }
+
+  static async getRegistrationEmails() {
+    try{
+        const registrationEmails = await RegistrationEmail.find()
+        return registrationEmails
+    } catch (err) {
+        console.error(err);
+        throw error;
+    }
+  }
+
+   static async findRegistrationEmail(emailToken) {
+        try {
+            const registrationEmail = await RegistrationEmail.findOne({emailToken})
+            return registrationEmail
+        } catch (err) {
+            console.error(err)
+            throw err
+        }
+    }
+
+  static async updateRegistrationEmail(registrationId, registration) {
+    try {
+      const updateRegistrationEmail = await RegistrationEmail.findByIdAndUpdate(
+          registrationId,
+          {
+              $set: registration,
+          },
+          { new: true }
+      )
+      return updateRegistrationEmail
+    } catch (err) {
+        console.error(err);
+        throw error;
+    }
+  }
+
   static async getProfiles(searchInput) {
     try {
         let employees = []

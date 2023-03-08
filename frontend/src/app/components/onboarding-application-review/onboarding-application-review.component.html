@@ -1,0 +1,320 @@
+<div class="flex min-h-full items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div class="card overflow-hidden shadow sm:rounded-md my-10">
+        <p-table #dt2 [value]="applications" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10,25,50]" [loading]="loading" [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="['name','email','status']" [tableStyle]="{'min-width':'75rem'}">
+            <ng-template pTemplate="caption">
+                <div class="flex">
+                    <span class="p-input-icon-left ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt2.filterGlobal($event.target, 'contains')"
+                            placeholder="Search keyword" />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <th>
+                        <p-columnFilter type="text" field="name"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" field="email"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter field="status" matchMode="equals" [showMenu]="false">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)"
+                                    placeholder="Any" [showClear]="true">
+                                    <ng-template let-option pTemplate="item">
+                                        <span
+                                            [class]="'application-badge status-' + option.value">{{option.label}}</span>
+                                    </ng-template>
+                                </p-dropdown>
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="boolean" field="verified"></p-columnFilter>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-application>
+                <tr>
+                    <td>
+                        {{application.firstName}} {{application.lastName}}
+                    </td>
+                    <td>
+                        {{application.email}}
+                    </td>
+                    <td>
+                        <span
+                            [class]="'application-badge status-' + application.status.toLowerCase()">{{application.status}}</span>
+                    </td>
+                    <td>
+                        <button pButton pRipple type="button" icon="pi pi-external-link" label="View Application"
+                            class="p-button-outlined p-button-info"
+                            (click)="viewApplication(application.userID)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="5">No customers found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+        <p-dialog [(visible)]="applicationDialog" [style]="{width: '50%'}" header="Review Application" [modal]="true"
+            styleClass="p-fluid">
+            <ng-template pTemplate="content" [formGroup]="onboardingForm">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" pInputText class="relative block w-full p-inputtext-sm" id="email"
+                        formControlName="email" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" pInputText required class="relative block w-full p-inputtext-sm" id="firstName"
+                        formControlName="firstName">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" pInputText required class="relative block w-full p-inputtext-sm" id="lastName"
+                        formControlName="lastName">
+                </div>
+                <div class="form-group">
+                    <label for="middleName">Middle Name:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="middleName"
+                        formControlName="middleName">
+                </div>
+                <div class="col-span-6 sm:col-span-6">
+                    <label class="block text-sm font-medium leading-6 text-gray-900">Profile Picture</label>
+                    <div class="mt-2 flex items-center">
+                        <!-- <p-fileUpload mode="basic" name="demo[]" url="./upload.php" accept="image/*"
+                            (onUpload)="onBasicUpload($event)" [disabled]="disableButton"></p-fileUpload> -->
+                    </div>
+                </div>
+                <div formGroupName="address">
+                    <h3>Address: </h3>
+                    <div class="form-group">
+                        <label for="streetName">Street Name:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="streetName"
+                            formControlName="streetName">
+                    </div>
+                    <div class="form-group">
+                        <label for="buildingNumber">Building Number:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="buildingNumber"
+                            formControlName="buildingNumber">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="city"
+                            formControlName="city">
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="state"
+                            formControlName="state">
+                    </div>
+                    <div class="form-group">
+                        <label for="zip">Zip:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="zip"
+                            formControlName="zip">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="phoneNumber"
+                        formControlName="phoneNumber">
+                </div>
+                <div class="form-group">
+                    <label for="workPhoneNumber">Work Phone Number:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="workPhoneNumber"
+                        formControlName="workPhoneNumber">
+                </div>
+                <div class="form-group">
+                    <label for="SSN">SSN:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="SSN"
+                        formControlName="SSN">
+                </div>
+                <div class="form-group">
+                    <label for="birthday">Birthday:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="birthday"
+                        formControlName="birthday">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="gender"
+                        formControlName="gender">
+                </div>
+                <div class="form-group">
+                    <label for="carInformation">Do you have a car?</label>
+                    <!-- <select
+                        class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        id="carInformation" (change)="onCarInformationChange($event)" [disabled]="disableButton">
+                        <option value="">--Select--</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select> -->
+                </div>
+                <div *ngIf="showCarInformation" formGroupName='carInformation'>
+                    <h3>Car Information</h3>
+                    <div class="form-group">
+                        <label for="carMake">Make:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="carMake"
+                            formControlName="make">
+                    </div>
+                    <div class="form-group">
+                        <label for="carModel">Model:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="carModel"
+                            formControlName="model">
+                    </div>
+                    <div class="form-group">
+                        <label for="carColor">Color:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="carColor"
+                            formControlName="color">
+                    </div>
+                </div>
+
+                <div formGroupName="identifyType">
+                    <h3>Identify Type</h3>
+                    <div class="form-group">
+                        <label for="visaTitle">Visa Title:</label>
+                        <!-- <select
+                            class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            id="visaTitle" formControlName="visaTitle" [disabled]="disableButton">
+                            <option value="">--Select--</option>
+                            <option value="H1b">H1b</option>
+                            <option value="L2">L2</option>
+                            <option value="F1">F1</option>
+                            <option value="H4">H4</option>
+                            <option value="Other">Other</option>
+                        </select> -->
+                    </div>
+                    <!-- <div *ngIf="showVisaFileUpload">
+                        <label for="visaFile">Visa File:</label>
+                        <input type="file" id="visaFile" (change)="onVisaFileChange($event)" [disabled]="disableButton">
+                    </div> -->
+                    <div class="form-group">
+                        <label for="startDate">Start Date:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="startDate"
+                            formControlName="startDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">End Date:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="endDate"
+                            formControlName="endDate">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="driversLicense">Do you have a driver's license?</label>
+                    <!-- <select
+                        class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        id="driversLicense" (change)="onDriversLicenseChange($event)" [disabled]="disableButton">
+                        <option value="">--Select--</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select> -->
+                </div>
+                <div *ngIf="showDriversLicense" formGroupName='driversLicense'>
+                    <h3>Driver's License Information</h3>
+                    <div class="form-group">
+                        <label for="licenseNumber">License Number:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="licenseNumber"
+                            formControlName="licenseNumber">
+                    </div>
+                    <div class="form-group">
+                        <label for="expirationDate">Expiration Date:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="expirationDate"
+                            formControlName="expirationDate">
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="driverLicenseFile">Driver's License File:</label>
+                        <input type="file" class="form-control-file" id="driverLicenseFile"
+                            (change)="onDirverFileChange($event)" [disabled]="disableButton">
+                    </div> -->
+                </div>
+
+                <div formGroupName='reference'>
+                    <h3>Reference</h3>
+                    <div class="form-group">
+                        <label for="referenceFirstName">First Name:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                            id="referenceFirstName" formControlName="firstName">
+                    </div>
+                    <div class="form-group">
+                        <label for="referenceLastName">Last Name:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="reference
+                    LastName" formControlName="lastName">
+                    </div>
+                    <div class="form-group">
+                        <label for="referenceMiddleName">Middle Name:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                            id="referenceMiddleName" formControlName="middleName">
+                    </div>
+                    <div class="form-group">
+                        <label for="referencePhoneNumber">Phone Number:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                            id="referencePhoneNumber" formControlName="phoneNumber">
+                    </div>
+                    <div class="form-group">
+                        <label for="referenceEmail">Email:</label>
+                        <input type="email" pInputText class="relative block w-full p-inputtext-sm" id="referenceEmail"
+                            formControlName="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="referenceRelationship">Relationship:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                            id="referenceRelationship" formControlName="relationship">
+                    </div>
+                </div>
+
+                <div formGroupName='emergencyContacts'>
+                    <h3>Emergency Contacts</h3>
+                    <div class="form-group">
+                        <label for="emergencyContactsFirstName">First Name:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                            id="emergencyContactsFirstName" formControlName="firstName">
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencyContactsLastName">Last Name:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                            id="emergencyContactsLastName" formControlName="lastName">
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencyContactsMiddleName">Middle Name:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                            id="emergencyContactsMiddleName" formControlName="middleName">
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencyContactsPhoneNumber">Phone Number:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                            id="emergencyContactsPhoneNumber" formControlName="phoneNumber">
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencyContactsEmail">Email:</label>
+                        <input type="email" pInputText class="relative block w-full p-inputtext-sm"
+                            id="emergencyContactsEmail" formControlName="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencyContactsRelationship">Relationship:</label>
+                        <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                            id="emergencyContactsRelationship" formControlName="relationship">
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Approve" icon="pi pi-times" class="p-button-text" (click)="approveApplication(eachUserID)" [disabled]="hideButton"></button>
+                <button pButton pRipple label="Reject" icon="pi pi-check" class="p-button-text" (click)="rejectApplication(eachUserID)" [disabled]="hideButton"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>

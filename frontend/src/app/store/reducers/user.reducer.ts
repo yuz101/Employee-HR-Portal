@@ -5,6 +5,7 @@ import { User } from '../../models/user';
 // State is immutable
 export const initialState: User = {
   jwt: '',
+  hr: true,
 };
 
 // Reducer determines new state based on Action type

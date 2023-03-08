@@ -46,6 +46,7 @@ class EmployeeService {
             const retrievedProfile = await Employee.findById(
                 userId,
             )
+            console.log(retrievedProfile)
             const { password, ...others } = retrievedProfile._doc
             return others
         } catch (err) {

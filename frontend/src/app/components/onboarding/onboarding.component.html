@@ -1,4 +1,4 @@
-<div class="container">
+<div class="flex min-h-full items-center justify-center px-4 sm:px-6 lg:px-8">
     <form class="space-y-4 rounded-lg p-4 sm:p-6 lg:p-8" [formGroup]="onboardingForm">
         <h2 class="mt-4 text-center text-3xl font-bold tracking-tight text-gray-900">Onboarding Form</h2>
         <div class="form-group">
@@ -11,20 +11,22 @@
             <input type="email" pInputText class="relative block w-full p-inputtext-sm" id="email"
                 formControlName="email" readonly>
         </div>
-        <div class="form-group">
-            <label for="firstName">First Name:</label>
-            <input type="text" pInputText required class="relative block w-full p-inputtext-sm" id="firstName"
-                formControlName="firstName">
-        </div>
-        <div class="form-group">
-            <label for="lastName">Last Name:</label>
-            <input type="text" pInputText required class="relative block w-full p-inputtext-sm" id="lastName"
-                formControlName="lastName">
-        </div>
-        <div class="form-group">
-            <label for="middleName">Middle Name:</label>
-            <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="middleName"
-                formControlName="middleName">
+        <div class='grid grid-cols-6 gap-6'>
+            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                <label for="firstName">First Name:</label>
+                <input type="text" pInputText required class="block text-sm font-medium leading-6 text-gray-900"
+                    id="firstName" formControlName="firstName">
+            </div>
+            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                <label for="lastName">Last Name:</label>
+                <input type="text" pInputText required class="block text-sm font-medium leading-6 text-gray-900"
+                    id="lastName" formControlName="lastName">
+            </div>
+            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                <label for="middleName">Middle Name:</label>
+                <input type="text" pInputText class="block text-sm font-medium leading-6 text-gray-900" id="middleName"
+                    formControlName="middleName">
+            </div>
         </div>
         <div class="col-span-6 sm:col-span-6">
             <label class="block text-sm font-medium leading-6 text-gray-900">Profile Picture</label>
@@ -45,6 +47,7 @@
                 <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="buildingNumber"
                     formControlName="buildingNumber">
             </div>
+
             <div class="form-group">
                 <label for="city">City:</label>
                 <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="city"
@@ -82,8 +85,13 @@
         </div>
         <div class="form-group">
             <label for="gender">Gender:</label>
-            <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="gender"
-                formControlName="gender">
+            <select pInputText class="relative block w-full p-inputtext-sm" id="gender" formControlName="gender"
+                [disabled]="disableButton">
+                <option value="">Please select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="I do not wish to answer">I do not wish to answer</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="carInformation">Do you have a car?</label>
@@ -120,7 +128,8 @@
                 <label for="visaTitle">Visa Title:</label>
                 <select
                     class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    id="visaTitle" formControlName="visaTitle" [disabled]="disableButton">
+                    id="visaTitle" formControlName="visaTitle" (change)="onVisaFileChange($event)"
+                    [disabled]="disableButton">
                     <option value="">--Select--</option>
                     <option value="H1b">H1b</option>
                     <option value="L2">L2</option>
@@ -131,7 +140,7 @@
             </div>
             <div *ngIf="showVisaFileUpload">
                 <label for="visaFile">Visa File:</label>
-                <input type="file" id="visaFile" (change)="onVisaFileChange($event)" [disabled]="disableButton">
+                <input type="file" id="visaFile" [disabled]="disableButton">
             </div>
             <div class="form-group">
                 <label for="startDate">Start Date:</label>
@@ -236,9 +245,15 @@
                     formControlName="email">
             </div>
             <div class="form-group">
-                <label for="emergencyContactsRelationship">Relationship:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm"
-                    id="emergencyContactsRelationship" formControlName="relationship">
+                <label for="relationship">Relationship:</label>
+                <select class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                id="relationship" name="relationship" formControlName="relationship">
+                    <option value="parent">Parent</option>
+                    <option value="spouse">Spouse</option>
+                    <option value="adult-child">Adult Child</option>
+                    <option value="trusted-friend">Trusted Friend</option>
+                </select>
+
             </div>
         </div>
         <button type="submit" pButton (click)="submitForm()" [disabled]="disableButton">Submit</button>

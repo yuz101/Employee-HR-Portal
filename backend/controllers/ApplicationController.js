@@ -37,11 +37,22 @@ exports.getAllInfo = async (req, res) => {
 
 }
 
-exports.updateStatus = async (req, res) => {
+exports.updateStatusApprove = async (req, res) => {
     try {
         //下面req.session.id 需要改成存储于前端的userID（无论是存在cookie里还是哪的）
         //req.body为修改的状态
-        const Application = await ApplicationService.ChangeStatus(req.session.id, req.body)
+        const Application = await ApplicationService.changeStatusApprove(req.params.id)
+        res.status(200).json(Application);
+    } catch (e) {
+        res.status(404).json({ error: e.message });
+    }
+}
+
+exports.updateStatusReject = async (req, res) => {
+    try {
+        //下面req.session.id 需要改成存储于前端的userID（无论是存在cookie里还是哪的）
+        //req.body为修改的状态
+        const Application = await ApplicationService.changeStatusReject(req.params.id, req.body.feedback)
         res.status(200).json(Application);
     } catch (e) {
         res.status(404).json({ error: e.message });

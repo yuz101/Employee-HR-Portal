@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {Router} from '@angular/router'
 import { Store } from '@ngrx/store';
 import { Onboarding } from 'src/app/models/onboarding.model';
 import { AppState } from '../../store/onboarding.state';
@@ -20,24 +21,37 @@ export class OnboardingComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) { }
 
   //下面部分的userID需要修改为存在jwt里的userID
 
   ngOnInit() {
 
-    const userID = '63e5ca1801c88ecb8d82f487'
+    const userID = '63e5ca1801c88ecb8d82f401'
     this.http.get<Onboarding>(`http://localhost:3000/application/applicationID/${userID}`)
       .subscribe(response => {
-        if (response.status === 'Pending') {
+        if (response.status&&response.status === 'Pending') {
           this.showCarInformation = true;
           this.showDriversLicense = true;
           this.disableButton = true;
+          
           this.onboardingForm.patchValue(response);
           this.onboardingForm.disable();
 
-        } 
+        }
+        else if(response.status&&response.status === 'Rejected'){
+          this.showCarInformation = true;
+          this.showDriversLicense = true;
+          this.disableButton = true;
+          
+          this.onboardingForm.patchValue(response);
+        }
+        else if(response.status === 'Approved'){
+          this.router.navigate(['/']);
+        }
+        
 
       });
 
@@ -104,9 +118,22 @@ export class OnboardingComponent implements OnInit {
     this.showDriversLicense = event.target.value === 'yes';
   }
 
+  onUpload(event) {
+    // for(let file of event.files) {
+    //     this.uploadedFiles.push(file);
+    // }
+    // this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
+}
+
 
   onVisaFileChange(event) {
-    const file = event.target.files[0];
+    console.log(event.target.value)
+    if(event.target.value === 'F1'){
+      this.showVisaFileUpload = true
+    }else{
+      this.showVisaFileUpload = false
+    }
+    // const file = event.target.files[0];
     // ... handle the file upload
   }
 
@@ -120,6 +147,7 @@ export class OnboardingComponent implements OnInit {
   }
 
   submitForm() {
+    console.log(this.onboardingForm.value)
     this.http.post('http://localhost:3000/application/application', this.onboardingForm.value)
       .subscribe(response => {
         console.log(response);

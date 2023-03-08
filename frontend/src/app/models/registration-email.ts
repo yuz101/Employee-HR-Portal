@@ -1,12 +1,20 @@
 export interface RegistrationEmail {
-    name: string,
+    _id: string,
+    firstName: string,
+    middleName: string,
+    lastName: string,
     email: string,
     token: string,
-    expiration: Date,
+    expiration: string,
     status: string
 }
 
-  export interface RegistrationEmailResponse {
+export interface RegistrationEmailsResponse {
     message: string;
     registrationEmails: RegistrationEmail[];
-  }
+}
+
+export interface RegistrationEmailResponse {
+    message: string;
+    registrationEmail: RegistrationEmail;
+}
