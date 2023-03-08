@@ -24,6 +24,8 @@ export class OnboardingApplicationReviewComponent {
 
   eachUserID: string;
 
+  hideButton: boolean = false
+
   statuses: any[];
 
   showCarInformation = true;
@@ -116,6 +118,12 @@ export class OnboardingApplicationReviewComponent {
         this.onboardingForm.disable();
         this.eachUserID = application.userID
         this.loading = false;
+        if(application.status == "Approved" || application.status == "Rejected"){
+          this.hideButton = true
+        }
+        else{
+          this.hideButton = false
+        }
       }, error: (error) => {
         console.log(error);
       }
@@ -128,6 +136,20 @@ export class OnboardingApplicationReviewComponent {
     this.onboardingApplicationReviewService.approveApplication(userID).subscribe({
       next: (application: Onboarding) => {
         this.messageService.add({severity:'success', summary: 'Success', detail: 'Application Approved'});
+        this.loading = false;
+      }, error: (error) => {
+        console.log(error);
+      }
+    })
+
+  }
+
+  rejectApplication(userID: string) {
+    this.applicationDialog = false;
+    console.log(userID)
+    this.onboardingApplicationReviewService.rejectApplication(userID).subscribe({
+      next: (application: Onboarding) => {
+        this.messageService.add({severity:'success', summary: 'Success', detail: 'Application Rejected'});
         this.loading = false;
       }, error: (error) => {
         console.log(error);

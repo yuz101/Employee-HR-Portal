@@ -312,8 +312,8 @@
                 </div>
             </ng-template>
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Approve" icon="pi pi-times" class="p-button-text" (click)="approveApplication(eachUserID)"></button>
-                <button pButton pRipple label="Reject" icon="pi pi-check" class="p-button-text"></button>
+                <button pButton pRipple label="Approve" icon="pi pi-times" class="p-button-text" (click)="approveApplication(eachUserID)" [disabled]="hideButton"></button>
+                <button pButton pRipple label="Reject" icon="pi pi-check" class="p-button-text" (click)="rejectApplication(eachUserID)" [disabled]="hideButton"></button>
             </ng-template>
         </p-dialog>
     </div>
