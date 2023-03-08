@@ -31,7 +31,7 @@ class ApplicationService {
     }
   }
 
-  static async ChangeStatus(userID, newStatus) {
+  static async changeStatus(userID, newStatus) {
     try {
       const retrievedApplication = await Application.findById(userID)
       if (!retrievedApplication) {

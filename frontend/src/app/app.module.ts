@@ -26,7 +26,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {DataViewModule} from 'primeng/dataview';
-
+import {ToolbarModule} from 'primeng/toolbar';
+import {DropdownModule} from 'primeng/dropdown';
 
 
 import { AppComponent } from './app.component';
@@ -40,6 +41,7 @@ import { EmployeeProfilesComponent } from './components/employee-profiles/employ
 import { FilterPipe } from './pipes/filter.pipe';
 import { DocumentReviewComponent } from './components/visa-management-hr/document-review/document-review.component';
 import { RegistrationEmailsComponent } from './components/registration-emails/registration-emails.component';
+import { OnboardingApplicationReviewComponent } from './components/onboarding-application-review/onboarding-application-review.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/houses', pathMatch: 'full' },
@@ -64,6 +66,7 @@ const appRoutes: Routes = [
     FilterPipe,
     DocumentReviewComponent,
     RegistrationEmailsComponent,
+    OnboardingApplicationReviewComponent,
   ],
   imports: [
     BrowserModule,
@@ -88,6 +91,8 @@ const appRoutes: Routes = [
     PdfViewerModule,
     InputTextareaModule,
     DataViewModule,
+    ToolbarModule,
+    DropdownModule,
     StoreModule.forRoot({
       employee: userReducer,
     }),

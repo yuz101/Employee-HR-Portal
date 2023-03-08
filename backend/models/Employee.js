@@ -8,8 +8,8 @@ const EmployeeSchema = new Schema(
         email: {type: String, required: true, unique: true},
         password: {type: String, required: true},
         firstName: {type: String, required: true},
-        lastName: {type: String, required: true},
-        middleName: {type: String},
+        middleName: {type: String, required: true},
+        lastName: {type: String , required: true} ,
         preferredName: {type: String},
         profilePicture: {type: String},
         address: {
@@ -19,7 +19,7 @@ const EmployeeSchema = new Schema(
             state: {type: String},
             zip: {type: String}
         },
-        phoneNumber: {type: String, required:true},
+        phoneNumber: {type: String},
         dateOfBirth: {type: String},
         gender: {type: String},
         reference: {type: refType, ref: "Reference"},
