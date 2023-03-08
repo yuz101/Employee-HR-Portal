@@ -287,7 +287,8 @@ const applicationSchema = new Schema(
                 }
             },
             email: { type: String, required: true },
-            relationship: { type: String, required: true }
+            relationship: { type: String, required: true },
+            feedback: {type: String}
         }
     }
 
