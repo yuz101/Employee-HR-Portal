@@ -12,8 +12,8 @@ export class OnboardingApplicationService {
 
   constructor(private http: HttpClient) { }
 
-  getOnboardingApplicationByID(id): Observable<Onboarding> {
-    return this.http.get<Onboarding>(`${this.baseUrl}/applicationID/${id}`);
+  getOnboardingApplicationByID(userID): Observable<Onboarding> {
+    return this.http.get<Onboarding>(`${this.baseUrl}/applicationID/${userID}`);
   }
 
   getAllApplications(): Observable<Onboarding[]> {

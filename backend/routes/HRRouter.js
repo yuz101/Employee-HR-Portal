@@ -2,13 +2,7 @@ const router = require('express').Router()
 const HRController = require('../controllers/HRController')
 
 // send registration email
-router.post('/registration-email', HRController.sendRegistrationEmail);
-
-router.post('/resend-registration-email', HRController.resendRegistrationEmail);
-
-router.get('/registration-emails', HRController.getRegistrationEmails);
-
-router.put('/registration-email', HRController.updateRegistrationEmail);
+router.post('/email', HRController.sendEmail);
 
 // view all profiles
 router.get("/profiles", HRController.getProfiles)

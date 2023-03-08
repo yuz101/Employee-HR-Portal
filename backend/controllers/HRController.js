@@ -3,13 +3,13 @@ const crypto = require('crypto');
 const ApplicationService = require('../services/ApplicationService');
 const DocumentService = require('../services/DocumentService');
 
-exports.sendRegistrationEmail = async (req, res) => {
+exports.sendEmail = async (req, res) => {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
     try {
         console.log(req.body)
         const token = crypto.randomUUID()
-        const registration = await HRService.sendRegistrationEmail(req.body, token)
+        const registration = await HRService.send_email(req.body.name, req.body.email, token)
         res.status(200).json({ message: "Send registration email successfully", registration})
     } catch (err) {
         res.status(404).json(err)

@@ -1,6 +1,6 @@
 const Employee = require("../models/Employee");
 const House = require("../models/House");
-const RegistrationEmail = require("../models/RegistrationEmail");
+const Registration = require("../models/Registration");
 const nodemailer = require("nodemailer");
 
 class HRService {
@@ -23,7 +23,7 @@ class HRService {
             text: "Welcome to Beaconfire Solution", // plain text body
             html: `<p>Greetings ${firstName} ${lastName}, </p> 
             <p>Please click the button below to register your account.</p> 
-            <a style="padding: 10px 20px;" href="http://localhost:4200/auth/signup?email=${email}&token=${token}">Registration</a>`, // html body
+            <a style="padding: 10px 20px;" href="http://localhost:4200/signup?email=${email}&token=${token}">Registration</a>`, // html body
         });
         const date = new Date()
         const expiration = date.setHours(date.getHours() + 3);

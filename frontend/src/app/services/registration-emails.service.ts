@@ -10,7 +10,7 @@ export class RegistrationEmailsService {
 
   constructor(private http: HttpClient) { }
 
-  private baseUrl = 'http://localhost:3000/hr'
+  private baseUrl = 'http://localhost:3000/hr/registration-emails'
 
   getRegistrationEmails(): Observable<RegistrationEmailsResponse> {
     return this.http.get<RegistrationEmailsResponse>(`${this.baseUrl}/registration-emails`);
