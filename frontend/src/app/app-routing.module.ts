@@ -15,9 +15,9 @@ import { OnboardingApplicationReviewComponent } from './components/onboarding-ap
 
 
 const routes: Routes = [
+  { path: '', component: OnboardingComponent },
   { path: 'auth/signup', component: SignupComponent },
   { path: 'auth/login', component: LoginComponent },
-  { path: 'onboarding', component: OnboardingComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'registration-emails', component: RegistrationEmailsComponent},
   { path: 'onboarding-application-review', component: OnboardingApplicationReviewComponent},

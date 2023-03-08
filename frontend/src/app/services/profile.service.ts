@@ -13,12 +13,11 @@ export class ProfileService {
   private baseUrl = 'http://localhost:3000/employee/profile'
 
   get(): Observable<Employee> {
-    console.log("get profile")
     return this.http.get<Employee>(`${this.baseUrl}`);
   }
 
   save(profile: Employee): Observable<Employee> {
-    const body = {userId: '6406a1ebe4b8843c1c90cecd', ...profile};
+    const body = {userId: '640798ffdf2c7f706d1a1eb7', ...profile};
     return this.http.put<Employee>(`${this.baseUrl}`, body);
   }
 }
