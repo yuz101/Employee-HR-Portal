@@ -1,26 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DocumentReviewComponent } from './document-review/document-review.component';
-interface EmployeeWorkAuthorizationStatus {
-  started: boolean;
-  completed: boolean;
-  documentType: string;
-  documentStatus: string;
-  feedback: string | null;
-  action: {
-    name: string;
-  } | null
-}
-
-interface Employee {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  preferredName: string;
-  workAuthorization: string;
-  workAuthorizationStatus: EmployeeWorkAuthorizationStatus | null;
-}
+import { EmployeeWorkAuthorizationStatusService } from '../../services/employee-work-authorization-status.service';
+import { EmployeeWorkAuthorizationStatusRecord } from 'src/app/models/work-authorization-status';
+import { selectEmployeeWorkAuthorizationStatusRecords } from 'src/app/store/selectors/employee-work-authorization-status-records.selectors';
+import { EmployeeWorkAuthorizationStatusRecordsActions } from 'src/app/store/actions/employee-work-authorization-status-records.action';
+import { Observable } from 'rxjs';
 
 enum WorkAuthorizationStatus {
   NOT_UPLOADED = 'Not Uploaded',
@@ -33,87 +19,47 @@ enum WorkAuthorizationStatus {
   selector: 'app-visa-management-hr',
   templateUrl: './visa-management-hr.component.html',
   styleUrls: ['./visa-management-hr.component.css'],
-  providers: [DialogService]
+  providers: [DialogService, EmployeeWorkAuthorizationStatusService]
 })
 export class VisaManagementHrComponent implements OnInit {
-  employees: Employee[];
+  workAuthorizationStatusRecords$: Observable<EmployeeWorkAuthorizationStatusRecord[]>
+    = this.store.select(selectEmployeeWorkAuthorizationStatusRecords);
 
   displayWorkAuthorization: boolean;
   allWorkAuthorizationStatus = WorkAuthorizationStatus;
 
-  constructor(public dialogService: DialogService) { }
+  constructor(
+    private store: Store,
+    public dialogService: DialogService,
+    private workAuthorizationStatusService: EmployeeWorkAuthorizationStatusService) { }
 
   ngOnInit() {
-    this.employees = exampleEmployees;
+    this.workAuthorizationStatusService
+      .getEmployees()
+      .subscribe((records) => {
+        return this.store.dispatch(
+          EmployeeWorkAuthorizationStatusRecordsActions.retrieveRecordList({ statusRecords: records })
+        );
+      });
   }
 
   showDocumentReviewDialog(employeeId: string) {
     const ref = this.dialogService.open(DocumentReviewComponent, {
+      data: {
+        employeeId: employeeId,
+      },
+      header: 'Review Document',
+      width: '90%',
     });
   }
+
+  approveDocument(employeeId: string) {
+    this.workAuthorizationStatusService
+      .approveDocument(employeeId)
+      .subscribe((newStatus) => {
+        this.store.dispatch(
+          EmployeeWorkAuthorizationStatusRecordsActions.approveDocument({ employeeId, newStatus })
+        );
+      });
+  }
 }
-
-
-const exampleEmployees = [
-  {
-    _id: '5f5b5b5b5b5b5b5b5b5b5b5b',
-    firstName: 'Yuru', lastName: 'Zhou', middleName: '', preferredName: 'Amy', workAuthorization: 'OPT',
-    workAuthorizationStatus: {
-      started: true,
-      completed: false,
-      documentType: 'OPT Receipt',
-      documentStatus: 'Not Uploaded',
-      feedback: null,
-      action: {
-        name: 'Send Notification',
-      },
-    },
-  },
-  {
-    _id: '5f5b5b5b5b5b5b5b5b5b5b5b',
-    firstName: 'Qingyuan', lastName: 'Liu', middleName: '', preferredName: '', workAuthorization: 'H1-B',
-    workAuthorizationStatus: {
-      started: false,
-      completed: false,
-      documentType: '',
-      documentStatus: '',
-      feedback: null,
-      action: {
-        name: 'Send Notification',
-      },
-    },
-  },
-  {
-    _id: '5f5b5b5b5b5b5b5b5b5b5b5b',
-    firstName: 'Paul', lastName: 'Zhou', middleName: '', preferredName: '', workAuthorization: 'OPT',
-    workAuthorizationStatus: {
-      started: true,
-      completed: false,
-      documentType: 'I-983',
-      documentStatus: 'Pending for Review',
-      feedback: null,
-      action: {
-        name: 'Review',
-      },
-    },
-  },
-  {
-    _id: '5f5b5b5b5b5b5b5b5b5b5b5b',
-    firstName: 'Dafei', lastName: 'Du', middleName: '', preferredName: '', workAuthorization: 'OPT',
-    workAuthorizationStatus: {
-      started: true,
-      completed: true,
-      documentType: 'I-983',
-      documentStatus: 'Approved',
-      feedback: null,
-      action: {
-        name: 'View',
-      },
-    },
-  },
-  {
-    _id: '5f5b5b5b5b5b5b5b5b5b5b5b',
-    firstName: 'John', lastName: 'Doe', middleName: '', preferredName: '', workAuthorization: 'Citizen',
-    workAuthorizationStatus: null
-  },
-];

@@ -13,6 +13,7 @@ import { OnboardingApplicationService } from 'src/app/services/onboarding-applic
   providers: [MessageService, ConfirmationService]
 })
 export class OnboardingApplicationReviewComponent {
+[x: string]: any;
   onboardingForm: FormGroup;
 
   applications: Onboarding[];
@@ -20,6 +21,8 @@ export class OnboardingApplicationReviewComponent {
   applicationDialog: boolean = false;
 
   loading: boolean = true;
+
+  eachUserID: string;
 
   statuses: any[];
 
@@ -36,8 +39,8 @@ export class OnboardingApplicationReviewComponent {
     private confirmationService: ConfirmationService
   ) {
      this.onboardingForm = this.fb.group({
-      userID: ['63e5ca1801c88ecb8d82f487'],
-      status: ['Pending'],
+      userID: [''],
+      status: [''],
       email: ['', [Validators.required, Validators.email]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
@@ -109,9 +112,9 @@ export class OnboardingApplicationReviewComponent {
     this.applicationDialog = true;
     this.onboardingApplicationService.getOnboardingApplicationByID(userID).subscribe({
       next: (application: Onboarding) => {
-        console.log(application)
         this.onboardingForm.patchValue(application);
         this.onboardingForm.disable();
+        this.eachUserID = application.userID
         this.loading = false;
       }, error: (error) => {
         console.log(error);
@@ -121,6 +124,7 @@ export class OnboardingApplicationReviewComponent {
 
   approveApplication(userID: string) {
     this.applicationDialog = false;
+    console.log(userID)
     this.onboardingApplicationReviewService.approveApplication(userID).subscribe({
       next: (application: Onboarding) => {
         this.messageService.add({severity:'success', summary: 'Success', detail: 'Application Approved'});

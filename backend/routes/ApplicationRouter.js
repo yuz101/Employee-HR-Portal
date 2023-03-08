@@ -98,7 +98,9 @@ const validateApplication = [
 router.post('/application', validateApplication, ApplicationController.createNewApplication)
 router.get('/applicationID/:id', ApplicationController.searchByID)
 router.get('/allapplication', ApplicationController.getAllInfo)
-router.post('/applicationID', ApplicationController.updateStatus)
+router.post('/approve/:id', ApplicationController.updateStatusApprove)
+router.post('/reject/:id', ApplicationController.updateStatusReject)
+
 
 
 module.exports = router
