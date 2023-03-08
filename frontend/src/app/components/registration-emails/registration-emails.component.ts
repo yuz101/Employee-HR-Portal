@@ -24,7 +24,6 @@ export class RegistrationEmailsComponent {
 
     registrationDialog: boolean;
 
-
     constructor(
       private fb: FormBuilder,
       private registrationEmailsService : RegistrationEmailsService, 

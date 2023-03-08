@@ -1,11 +1,9 @@
 const router = require('express').Router()
 const EmployeeController = require('../controllers/EmployeeController')
-
-// sign up
-router.post('/signup', EmployeeController.signup)
+const { verifyToken } = require('../middleware/verifyToken')
 
 // retrieve user profile
-router.get('/profile', EmployeeController.getPofile)
+router.get('/profile', verifyToken, EmployeeController.getPofile)
 
 // update user profile
 router.put('/profile', EmployeeController.updateProfile)

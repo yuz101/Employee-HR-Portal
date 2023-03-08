@@ -28,7 +28,7 @@ export class LoginComponent {
     this.authService.login(username, email, password).subscribe({
       next: (user: User) => {
         this.store.dispatch(UserAction.setCurrentUser({ user }));
-        this._router.navigateByUrl('/onboarding');
+        this._router.navigateByUrl('/');
       }, error: (error) => {
         console.log(error);
       }

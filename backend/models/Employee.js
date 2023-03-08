@@ -33,7 +33,7 @@ const EmployeeSchema = new Schema(
             endDate: {type: String},
             visaTitle: {type: String},
         },
-        isAdmin: {type: Boolean, default: false},
+        isHR: {type: Boolean, default: false},
     }, {
         timestamps: true,
     }
