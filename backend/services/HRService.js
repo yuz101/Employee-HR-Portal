@@ -1,6 +1,6 @@
 const Employee = require("../models/Employee");
 const House = require("../models/House");
-const Registration = require("../models/Registration");
+const RegistrationEmail = require("../models/RegistrationEmail");
 const nodemailer = require("nodemailer");
 
 class HRService {

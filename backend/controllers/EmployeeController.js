@@ -29,7 +29,7 @@ exports.signup = async (req, res) => {
 
 exports.getPofile = async (req, res) => {
     try {
-        const profile = await EmployeeService.getProfile(req.body.userId)
+        const profile = await EmployeeService.getProfile("640798ffdf2c7f706d1a1eb7")
         res.status(200).json(profile)
     } catch (err) {
         console.error(err)

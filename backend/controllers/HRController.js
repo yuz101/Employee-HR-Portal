@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const ApplicationService = require('../services/ApplicationService');
 const DocumentService = require('../services/DocumentService');
 
-exports.sendEmail = async (req, res) => {
+exports.sendRegistrationEmail = async (req, res) => {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
     try {
