@@ -11,6 +11,7 @@ import { HouseAddComponent } from './components/house-add/house-add.component';
 import { EmployeeHouseDetailComponent } from './components/employee-house-detail/employee-house-detail.component';
 import { EmployeeProfilesComponent } from './components/employee-profiles/employee-profiles.component';
 import { RegistrationEmailsComponent } from './components/registration-emails/registration-emails.component';
+import { OnboardingApplicationReviewComponent } from './components/onboarding-application-review/onboarding-application-review.component';
 
 
 const routes: Routes = [
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'onboarding', component: OnboardingComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'registration-emails', component: RegistrationEmailsComponent},
+  { path: 'onboarding-application-review', component: OnboardingApplicationReviewComponent},
   { path: 'visa-management-hr', component: VisaManagementHrComponent },
   { path: 'housing', component: HouseAddComponent },
   { path: 'houses', component: HouseListComponent },

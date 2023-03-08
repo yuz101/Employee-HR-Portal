@@ -4,7 +4,7 @@ const RegistrationEmail = require("../models/RegistrationEmail");
 const nodemailer = require("nodemailer");
 
 class HRService {
-  static async sendRegistrationEmail({ firstName, middleName, lastName, preferredName, email} , token) {
+  static async sendRegistrationEmail({ firstName, middleName, lastName, email} , token) {
     try {
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
@@ -21,13 +21,13 @@ class HRService {
             to: email, // list of receivers
             subject: "[Important] Registration Link for Beaconfire", // Subject line
             text: "Welcome to Beaconfire Solution", // plain text body
-            html: `<p>Greetings ${firstName}(${preferredName}) ${lastName}, </p> 
+            html: `<p>Greetings ${firstName} ${lastName}, </p> 
             <p>Please click the button below to register your account.</p> 
             <a style="padding: 10px 20px;" href="http://localhost:4200/auth/signup?email=${email}&token=${token}">Registration</a>`, // html body
         });
         const date = new Date()
         const expiration = date.setHours(date.getHours() + 3);
-        const registration = await RegistrationEmail.create({ firstName, middleName, lastName, preferredName, email, token, expiration: expiration, status: "Sent"})
+        const registration = await RegistrationEmail.create({ firstName, middleName, lastName, email, token, expiration: expiration, status: "sent"})
 
         console.log("Message sent: %s", info.messageId);
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
@@ -74,7 +74,7 @@ class HRService {
         const registration = await RegistrationEmail.findByIdAndUpdate(
           registrationEmailId,
           { 
-            $set: { expiration: expiration, status: "Sent" }
+            $set: { expiration: expiration, status: "sent" }
         })
 
          console.log("Message sent: %s", info.messageId);
@@ -101,6 +101,16 @@ class HRService {
         throw error;
     }
   }
+
+   static async findRegistrationEmail(emailToken) {
+        try {
+            const registrationEmail = await RegistrationEmail.findOne({emailToken})
+            return registrationEmail
+        } catch (err) {
+            console.error(err)
+            throw err
+        }
+    }
 
   static async updateRegistrationEmail(registrationId, registration) {
     try {

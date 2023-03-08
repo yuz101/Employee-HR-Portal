@@ -7,6 +7,7 @@ exports.sendRegistrationEmail = async (req, res) => {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
     try {
+        console.log(req.body)
         const token = crypto.randomUUID()
         const registration = await HRService.sendRegistrationEmail(req.body, token)
         res.status(200).json({ message: "Send registration email successfully", registration})
@@ -38,6 +39,15 @@ exports.updateRegistrationEmail = async (req, res) => {
         const {registrationId, ...registration} = req.body
         const updatedRegistrationEmail = await HRService.updateRegistrationEmail(registrationId, registration)
         res.status(200).json({message: "Updated registration email successfully", updatedRegistrationEmail})
+    } catch (err) {
+        res.status(404).json(err)
+    }
+}
+
+exports.deleteRegistrationEmails = async (req, res) => {
+    try {
+        const registrationEmails = await HRService.deleteRegistrationEmails(req.body.registrationEmailIds)
+        res.status(200).json({message: "Deleted registration emails successfully", registrationEmails})
     } catch (err) {
         res.status(404).json(err)
     }

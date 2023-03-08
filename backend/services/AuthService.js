@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const RegistrationEmail = require('../models/RegistrationEmail');
 
 class AuthService {
-     static async signup(username, email, password, firstName, middleName, lastName, preferredName) {
+     static async signup(username, email, password, firstName, middleName, lastName) {
         try {
             const existingUser = await Employee.findOne({
                 $or: [
@@ -28,20 +28,9 @@ class AuthService {
                 firstName: firstName,
                 middleName: middleName,
                 lastName: lastName,
-                preferredName: preferredName,
             })
 
             return newUser
-        } catch (err) {
-            console.error(err)
-            throw err
-        }
-    }
-
-    static async findRegistrationEmail(emailToken) {
-        try {
-            const registrationEmail = await RegistrationEmail.findOne({emailToken})
-            return registrationEmail
         } catch (err) {
             console.error(err)
             throw err

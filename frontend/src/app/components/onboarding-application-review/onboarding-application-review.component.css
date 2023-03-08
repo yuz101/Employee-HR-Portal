@@ -1,4 +1,4 @@
-.registration-badge {
+.application-badge {
     border-radius: 2px;
     padding: 0.25em 0.5rem;
     text-transform: uppercase;
@@ -7,17 +7,17 @@
     letter-spacing: 0.3px;
 }
 
-.registration-badge.status-registered {
+.application-badge.status-approved {
     background: #C8E6C9;
     color: #256029;
 }
 
-.registration-badge.status-expired {
+.application-badge.status-rejected {
     background: #FFCDD2;
     color: #C63737;
 }
 
-.registration-badge.status-sent {
+.application-badge.status-pending {
     background: #FEEDAF;
     color: #8A5340;
 }

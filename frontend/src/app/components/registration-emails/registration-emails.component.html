@@ -35,11 +35,11 @@
                 <td>
                     <p-tableCheckbox [value]="registration"></p-tableCheckbox>
                 </td>
-                <td>{{registration.name}}</td>
+                <td>{{registration.firstName}} {{registration.lastName}}</td>
                 <td>{{registration.email}}</td>
                 <td>{{registration.token}}</td>
-                <td><span [class]="'product-badge status-' + registration.status.toLowerCase()">{{registration.status}}</span></td>
-                <td><button pButton pRipple type="button" icon="pi pi-envelope" label="Resend" class="p-button-outlined p-button-info" [disabled]="registration.status.toUpperCase() === 'SENT'" (click)="resendEmail(registration._id)"></button></td>
+                <td><span [class]="'registration-badge status-' + registration.status.toLowerCase()">{{registration.status}}</span></td>
+                <td><button pButton pRipple type="button" icon="pi pi-envelope" label="Resend" class="p-button-outlined p-button-info" [disabled]="registration.status.toLowerCase() === 'sent' || registration.status.toLowerCase() === 'registered'" (click)="resendEmail(registration._id)"></button></td>
             </tr>
         </ng-template>
     </p-table>
@@ -48,9 +48,19 @@
     <p-dialog [(visible)]="registrationDialog" [style]="{width: '450px'}" header="Send Registration Email" [modal]="true" styleClass="p-fluid">
         <ng-template pTemplate="content" [formGroup]="form">
             <div class="field">
-                <label for="name">Name</label>
-                <input type="text" pInputText id="name" required autofocus formControlName="name"/>
+                <label for="name">First Name</label>
+                <input type="text" pInputText id="name" required autofocus formControlName="firstName"/>
                 <!-- <small class="p-error" *ngIf="submitted && !registrationEmail.name">Name is required.</small> -->
+            </div>
+             <div class="field">
+                <label for="name">MiddleName</label>
+                <input type="text" pInputText id="email" required autofocus formControlName="middleName"/>
+                <!-- <small class="p-error" *ngIf="submitted && !registrationEmail.email">Name is required.</small> -->
+            </div>
+            <div class="field">
+                <label for="name">LastName</label>
+                <input type="text" pInputText id="email" required autofocus formControlName="lastName"/>
+                <!-- <small class="p-error" *ngIf="submitted && !registrationEmail.email">Name is required.</small> -->
             </div>
             <div class="field">
                 <label for="name">Email</label>
