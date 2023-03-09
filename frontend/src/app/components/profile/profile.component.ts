@@ -5,6 +5,12 @@ import { Store } from '@ngrx/store';
 import { Employee } from 'src/app/models/employee';
 import { ProfileService } from 'src/app/services/profile.service';
 import { MessageService } from 'primeng/api';
+import { ProfileActions } from 'src/app/store/actions/profile.action';
+import { selectProfile } from 'src/app/store/selectors/profile.selector';
+import { Observable } from 'rxjs';
+import { EmployeeDocumentService } from 'src/app/services/employee-document.service';
+import { EmployeeDocumentLink } from 'src/app/models/work-authorization-status';
+import { WorkAuthorizationDocumentTypeEnum } from 'src/app/models/work-authorization-status';
 
 @Component({
   selector: 'app-profile',
@@ -15,14 +21,18 @@ import { MessageService } from 'primeng/api';
 export class ProfileComponent {
 
   form: FormGroup;
-  uploadedFiles: any[] = [];
+
+  uploadedFiles: File[] = [];
+
+  profile$: Observable<Employee> = this.store.select(selectProfile);
 
   constructor(
     private fb: FormBuilder,
     private profileService: ProfileService, 
     private _router: Router, 
     private store: Store,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private employeeDocumentService: EmployeeDocumentService,
   ) {}
 
   ngOnInit() {
@@ -71,23 +81,30 @@ export class ProfileComponent {
     });
   }
 
-  onUpload(event) {
+  customUpload(event) {
       for(let file of event.files) {
-          this.uploadedFiles.push(file);
+        this.uploadedFiles.push(file);
       }
       this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
   }
 
   save() {
     const employee: Employee = { ...this.form.getRawValue() };
-    console.log(employee);
     this.profileService.save(employee).subscribe({
       next: (profile: Employee) => {
-        console.log(profile);
+        this.store.dispatch(ProfileActions.retrievedEmployeeProfile({ profile }));
         this._router.navigateByUrl('/profile');
       }, error: (error) => {
         console.log(error);
       }
+    })
+    this.uploadedFiles.map((file) => {
+      console.log(file);
+      this.employeeDocumentService.uploadDocument(file, WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT).subscribe({
+        next: (documentLink: EmployeeDocumentLink) => {
+          console.log(documentLink);
+        }
+      })
     })
   }
   

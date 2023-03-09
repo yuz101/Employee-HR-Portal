@@ -3,10 +3,7 @@ import { UserAction } from '../actions/user.action';
 import { User } from '../../models/user';
 
 // State is immutable
-export const initialState: User = {
-  jwt: '',
-  isHR: true,
-};
+export const initialState: User = {};
 
 // Reducer determines new state based on Action type
 export const userReducer = createReducer(

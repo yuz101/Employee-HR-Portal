@@ -4,6 +4,7 @@ const saveUploadedFile = require('../middleware/multer_middleware');
 const DocumentController = require('../controllers/DocumentController');
 const { checkSchema, validationResult } = require('express-validator');
 const EmployeeDocumentType = require('../enums/EmployeeDocumentType');
+const { verifyToken } = require('../middleware/verifyToken');
 
 const validateDocumentUpload = () => {
     return [
@@ -33,11 +34,13 @@ const validateDocumentUpload = () => {
 }
 
 router.post('/',
+    verifyToken,
     saveUploadedFile,
     validateDocumentUpload(),
     DocumentController.uploadSingleDocument);
 
 router.get('/',
+    verifyToken,
     DocumentController.getDownloadLinkForOneEmployeeDocument);
 
 module.exports = router;

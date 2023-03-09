@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const ApplicationController = require('../controllers/ApplicationController')
 const { check, validationResult } = require('express-validator');
+const { verifyToken, verifyHR } = require('../middleware/verifyToken');
 
 
 //以下是error check部分，强烈建议不要使用，mongoose可能是一个更好的选择。
@@ -95,11 +96,11 @@ const validateApplication = [
         .exists().withMessage('Emergency contact relationship is required.')
 ];
 
-router.post('/application', validateApplication, ApplicationController.createNewApplication)
-router.get('/applicationID/:id', ApplicationController.searchByID)
-router.get('/allapplication', ApplicationController.getAllInfo)
-router.post('/approve/:id', ApplicationController.updateStatusApprove)
-router.post('/reject/:id', ApplicationController.updateStatusReject)
+router.post('/application', validateApplication, verifyToken, ApplicationController.createNewApplication)
+router.get('/applicationID/:id', verifyToken, verifyHR, ApplicationController.searchByID)
+router.get('/allapplication', verifyToken, verifyHR, ApplicationController.getAllInfo)
+router.post('/approve/:id', verifyToken, verifyHR, ApplicationController.updateStatusApprove)
+router.post('/reject/:id', verifyToken, verifyHR, ApplicationController.updateStatusReject)
 
 
 

@@ -1,5 +1,5 @@
-import { OnboardingActionTypes, OnboardingActions } from './onboarding.actions';
-import { Onboarding } from '../models/onboarding.model';
+import { OnboardingActionTypes, OnboardingActions } from '../actions/onboarding.actions';
+import { Onboarding } from '../../models/onboarding.model';
 
 
 const initialState: Onboarding[] = [];

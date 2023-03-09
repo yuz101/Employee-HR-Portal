@@ -4,11 +4,10 @@
     <p-toolbar styleClass="mb-4 gap-2">
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="addNew()"></button>
-            <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedRegistration()" [disabled]="!selectedRegistrationEmails || !selectedRegistrationEmails.length"></button>
         </ng-template>
     </p-toolbar>
 
-    <p-table [value]="registrationEmails" [rows]="10" [paginator]="true" [(selection)]="selectedRegistrationEmails" [tableStyle]="{'min-width': '60rem'}">
+    <p-table [value]="(registrationEmails$ | async)!" [rows]="10" [paginator]="true" [tableStyle]="{'min-width': '60rem'}">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 Manage Registration Emails
@@ -20,9 +19,6 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 4rem">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                </th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Token</th>
@@ -32,9 +28,6 @@
         </ng-template>
         <ng-template pTemplate="body" let-registration>
             <tr>
-                <td>
-                    <p-tableCheckbox [value]="registration"></p-tableCheckbox>
-                </td>
                 <td>{{registration.firstName}} {{registration.lastName}}</td>
                 <td>{{registration.email}}</td>
                 <td>{{registration.token}}</td>

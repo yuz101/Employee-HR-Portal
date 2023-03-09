@@ -13,23 +13,24 @@ import { EmployeeProfilesComponent } from './components/employee-profiles/employ
 import { RegistrationEmailsComponent } from './components/registration-emails/registration-emails.component';
 import { OnboardingApplicationReviewComponent } from './components/onboarding-application-review/onboarding-application-review.component';
 import { WorkAuthorizationManagementEmployeeComponent } from './components/work-authorization-management-employee/work-authorization-management-employee.component';
+import { AuthGuardService } from './services/auth-guard.service';
 
 
 const routes: Routes = [
-  { path: '', component: OnboardingComponent },
-  { path: 'auth/signup', component: SignupComponent },
+  { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuardService] },
+  { path: 'auth/signup', component: SignupComponent},
   { path: 'auth/login', component: LoginComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'registration-emails', component: RegistrationEmailsComponent },
-  { path: 'onboarding-application-review', component: OnboardingApplicationReviewComponent },
-  { path: 'visa-management-hr', component: VisaManagementHrComponent },
-  { path: 'housing', component: HouseAddComponent },
-  { path: 'houses', component: HouseListComponent },
-  { path: 'houses/:id', component: HouseDetailComponent },
-  { path: 'employee/housing', component: EmployeeHouseDetailComponent },
-  { path: 'profiles', component: EmployeeProfilesComponent },
-  { path: 'employees/:id', component: EmployeeProfilesComponent },
-  { path: 'work-authorization-management', component: WorkAuthorizationManagementEmployeeComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
+  { path: 'registration-emails', component: RegistrationEmailsComponent,canActivate: [AuthGuardService] },
+  { path: 'onboarding-application-review', component: OnboardingApplicationReviewComponent, canActivate: [AuthGuardService]},
+  { path: 'visa-management-hr', component: VisaManagementHrComponent, canActivate: [AuthGuardService]},
+  { path: 'housing', component: HouseAddComponent, canActivate: [AuthGuardService]},
+  { path: 'houses', component: HouseListComponent, canActivate: [AuthGuardService]},
+  { path: 'houses/:id', component: HouseDetailComponent, canActivate: [AuthGuardService]},
+  { path: 'employee/housing', component: EmployeeHouseDetailComponent, canActivate: [AuthGuardService]},
+  { path: 'profiles', component: EmployeeProfilesComponent, canActivate: [AuthGuardService]},
+  { path: 'employees/:id', component: EmployeeProfilesComponent, canActivate: [AuthGuardService]},
+  { path: 'work-authorization-management', component: WorkAuthorizationManagementEmployeeComponent, canActivate: [AuthGuardService]},
 ];
 
 

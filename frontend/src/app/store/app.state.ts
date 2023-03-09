@@ -1,4 +1,4 @@
-import { EmployeeState } from './employee.state';
+import { EmployeeState } from './employees.state';
 
 
 export interface AppState {

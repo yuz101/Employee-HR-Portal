@@ -6,23 +6,24 @@ const { verifyToken } = require('../middleware/verifyToken')
 router.get('/profile', verifyToken, EmployeeController.getPofile)
 
 // update user profile
-router.put('/profile', EmployeeController.updateProfile)
+router.put('/profile', verifyToken, EmployeeController.updateProfile)
 
 // users should be able to view their assigned housing details
-router.get('/housing/:id', EmployeeController.getHouseInfo);
+router.get('/housing/:id', verifyToken, EmployeeController.getHouseInfo);
 
 // users should be able to report facility issuses
-router.post('/housing/:id/report', EmployeeController.createReport);
+router.post('/housing/:id/report',verifyToken, EmployeeController.createReport);
 
 // view existing reports 
-router.get('/housing/:id/report', EmployeeController.viewReport);
+router.get('/housing/:id/report', verifyToken, EmployeeController.viewReport);
 
 // adding comments
-router.post('/housing/:id/report/:reportId', EmployeeController.createComment);
+router.post('/housing/:id/report/:reportId', verifyToken, EmployeeController.createComment);
+
 
 // viewing a report's list of comments
-router.get('/housing/:id/report/:reportId', EmployeeController.getComment);
+router.get('/housing/:id/report/:reportId', verifyToken, EmployeeController.getComment);
 
-router.get('/work-authorization-status', EmployeeController.getWorkAuthorizationStatus);
+router.get('/work-authorization-status', verifyToken, EmployeeController.getWorkAuthorizationStatus);
 
 module.exports = router

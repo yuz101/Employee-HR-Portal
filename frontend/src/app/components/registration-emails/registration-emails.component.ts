@@ -4,6 +4,11 @@ import { RegistrationEmail, RegistrationEmailResponse, RegistrationEmailsRespons
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators'
+import { selectRegistrationEmails } from 'src/app/store/selectors/registration-emails.selector';
+import { RegistrationEmailActions } from 'src/app/store/actions/registration-emails.action';
 
 @Component({
   selector: 'app-registration-emails',
@@ -14,18 +19,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class RegistrationEmailsComponent {
     form: FormGroup;
 
-    registrationEmails: RegistrationEmail[];
-
-    registrationEmail: RegistrationEmail;
-
-    selectedRegistrationEmails: RegistrationEmail[];
-
-    submitted: boolean;
+    registrationEmails$: Observable<RegistrationEmail[]> = this.store.select(selectRegistrationEmails);
 
     registrationDialog: boolean;
 
     constructor(
       private fb: FormBuilder,
+      private store: Store,
       private registrationEmailsService : RegistrationEmailsService, 
       private messageService: MessageService, 
       private confirmationService: ConfirmationService
@@ -41,36 +41,36 @@ export class RegistrationEmailsComponent {
     ngOnInit() {
         this.registrationEmailsService.getRegistrationEmails().subscribe({
             next: (response: RegistrationEmailsResponse) => {
-                this.registrationEmails = response.registrationEmails;
-                for(let i = 0; i < this.registrationEmails.length; i++) {
-                  const expirationDate  = Date.parse(this.registrationEmails[i].expiration)
-                  const currDate = new Date().getTime()
-                    if(expirationDate < currDate) {
-                        this.registrationEmails[i].status = "expired";
-                        this.registrationEmailsService.updateRegistrationEmail(this.registrationEmails[i]).subscribe({
-                            next: (response: RegistrationEmailResponse) => {
-                              console.log(response);
-                                this.messageService.add({severity:'success', summary: 'Successful', detail: 'Registration Record Updated', life: 3000});
-                            }, error: (error) => {
-                                console.log(error);
-                            }
-                        })
-                    }
-                }
+              this.store.dispatch(RegistrationEmailActions.getAllRegistrationEmails({registrationsEmails: response.registrationEmails}))
             }, error: (error) => {
                 console.log(error);
             }
         })
+
+        this.registrationEmails$.pipe(
+          map(registrationEmails => registrationEmails.map(registrationEmail => {
+            const expirationDate  = Date.parse(registrationEmail.expiration)
+            const currDate = new Date().getTime()
+            if(expirationDate < currDate) {
+                registrationEmail.status = "expired";
+                this.registrationEmailsService.updateRegistrationEmail(registrationEmail).subscribe({
+                    next: (response: RegistrationEmailResponse) => {
+                      console.log("update email")
+                        this.store.dispatch(RegistrationEmailActions.updateRegistrationEmail({registrationEmail: response.registrationEmail}))
+                        this.messageService.add({severity:'success', summary: 'Successful', detail: 'Registration Record Updated', life: 3000});
+                    }, error: (error) => {
+                        console.log(error);
+                    }
+                })
+            }
+          }))
+        )
     }
 
     resendEmail(id: string) {
       this.registrationEmailsService.resendRegistrationEmails(id).subscribe({
         next: (response: RegistrationEmailResponse) => {
-          this.registrationEmails.map((registrationEmail, index) => {
-            if(registrationEmail._id === id) {
-             this.registrationEmails[index] = response.registrationEmail
-            }
-          })
+          this.store.dispatch(RegistrationEmailActions.resendRegistrationEmail({registrationEmail: response.registrationEmail}))
           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Registration Email Sent', life: 3000});
         }, error: (error) => {
           console.log(error);
@@ -79,45 +79,44 @@ export class RegistrationEmailsComponent {
     }
 
     addNew() {
-        this.submitted = false;
         this.registrationDialog = true;
     }
 
-    deleteSelectedRegistration() {
-        // this.registrationEmailsService.deleteRegistrationEmails(this.selectedRegistrationEmails).subscribe({
-        //     next: (response: RegistrationEmailsResponse) => {
-        //         this.messageService.add({severity:'success', summary: 'Successful', detail: 'Registration Record Deleted', life: 3000});
-        //     }, error: (error) => {
-        //         console.log(error);
-        //     }
-        // })
-        this.confirmationService.confirm({
-            message: 'Are you sure you want to delete the selected products?',
-            header: 'Confirm',
-            icon: 'pi pi-exclamation-triangle',
-            accept: () => {
-                this.registrationEmails = this.registrationEmails.filter(val => !this.registrationEmails.includes(val));
-                this.selectedRegistrationEmails = [];
-                this.messageService.add({severity:'success', summary: 'Successful', detail: 'Registration Record Deleted', life: 3000});
-            }
-        });
-    }
+    // deleteSelectedRegistration() {
+    //     this.registrationEmailsService.(this.selectedRegistrationEmails).subscribe({
+    //         next: (response: RegistrationEmailsResponse) => {
+    //             this.messageService.add({severity:'success', summary: 'Successful', detail: 'Registration Record Deleted', life: 3000});
+    //         }, error: (error) => {
+    //             console.log(error);
+    //         }
+    //     })
+    //     this.confirmationService.confirm({
+    //         message: 'Are you sure you want to delete the selected products?',
+    //         header: 'Confirm',
+    //         icon: 'pi pi-exclamation-triangle',
+    //         accept: () => {
+    //             this.registrationEmails = this.registrationEmails.filter(val => !this.registrationEmails.includes(val));
+    //             this.selectedRegistrationEmails = [];
+    //             this.messageService.add({severity:'success', summary: 'Successful', detail: 'Registration Record Deleted', life: 3000});
+    //         }
+    //     });
+    // }
 
     hideDialog() {
         this.registrationDialog = false;
-        this.submitted = false;
     }
 
     sendEmail() {
-        this.submitted = true;
-        this.registrationEmailsService.sendRegistrationEmails(this.form.getRawValue().firstName, this.form.getRawValue().middleName, this.form.getRawValue().lastName, this.form.getRawValue().email).subscribe({
-            next: (response: RegistrationEmailResponse) => {
-                this.registrationEmails.push(response.registrationEmail);
-                this.messageService.add({severity:'success', summary: 'Successful', detail: 'Registration Email Sent', life: 3000});
-            }, error: (error) => {
-                console.log(error);
-            }
-        })
-        this.registrationDialog = false;
+      console.log("hello")
+      this.registrationEmailsService.sendRegistrationEmails(this.form.getRawValue().firstName, this.form.getRawValue().middleName, this.form.getRawValue().lastName, this.form.getRawValue().email).subscribe({
+          next: (response: RegistrationEmailResponse) => {
+            console.log("hello")
+              this.store.dispatch(RegistrationEmailActions.addRegistrationEmail({registrationEmail: response.registrationEmail}))
+              this.messageService.add({severity:'success', summary: 'Successful', detail: 'Registration Email Sent', life: 3000});
+          }, error: (error) => {
+              console.log(error);
+          }
+      })
+      this.registrationDialog = false;
     }
 }

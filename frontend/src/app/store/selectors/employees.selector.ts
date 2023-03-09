@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { AppState } from './app.state';
+import { AppState } from '../app.state';
 // import { EmployeeState } from './employee.reducer';
-import { Employee } from '../models/employee';
+import { Employee } from '../../models/employee';
 
 export const selectEmployees = createFeatureSelector<Employee[]>('employees');
 

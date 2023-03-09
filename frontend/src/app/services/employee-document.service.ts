@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
 import { EmployeeDocumentLink, WorkAuthorizationDocumentTypeEnum } from '../models/work-authorization-status';
@@ -7,7 +8,9 @@ import { EmployeeDocumentLink, WorkAuthorizationDocumentTypeEnum } from '../mode
 })
 export class EmployeeDocumentService {
 
-  constructor() { }
+  private baseUrl = 'http://localhost:3000'
+
+  constructor(private http: HttpClient) { }
 
   getOneDocument(
     employeeId: string,
@@ -19,6 +22,16 @@ export class EmployeeDocumentService {
   getAllDocuments(employeeId: string): Observable<Array<EmployeeDocumentLink>> {
     return of(allDocumentsMock);
   }
+  
+  uploadDocument(file: File, documentType: WorkAuthorizationDocumentTypeEnum): Observable<EmployeeDocumentLink> {
+    const formData = new FormData();
+    console.log(file)
+    formData.append('document', file);
+    formData.append('documentType', documentType);
+    console.log(formData)
+    return this.http.post<EmployeeDocumentLink>(`${this.baseUrl}/documents`, formData);
+  }
+
 }
 
 const oneDocumentMock: EmployeeDocumentLink = {

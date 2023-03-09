@@ -43,7 +43,7 @@ class HRService {
     }
   }
 
-  static async resendRegistrationEmails(registrationEmailId) {
+  static async resendRegistrationEmail(registrationEmailId) {
 
     try {
         console.log(registrationEmailId)
@@ -72,11 +72,15 @@ class HRService {
 
         const date = new Date()
         const expiration = date.setHours(date.getHours() + 3);
-        const registration = await RegistrationEmail.findByIdAndUpdate(
+        const updatedRegistrationEmail = await RegistrationEmail.findByIdAndUpdate(
           registrationEmailId,
           { 
             $set: { expiration: expiration, status: "sent" }
-        })
+          },
+          { new: true }
+        )
+
+        console.log("From HR Service: ", updatedRegistrationEmail)
 
          console.log("Message sent: %s", info.messageId);
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
@@ -85,7 +89,7 @@ class HRService {
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
         // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 
-        return registration
+        return updatedRegistrationEmail
       } catch (err) {
         console.error(err);
         throw error;

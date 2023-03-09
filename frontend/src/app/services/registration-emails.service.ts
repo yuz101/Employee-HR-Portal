@@ -21,7 +21,7 @@ export class RegistrationEmailsService {
   }
 
   resendRegistrationEmails(registrationEmailId: string): Observable<RegistrationEmailResponse> {
-    return this.http.post<RegistrationEmailResponse>(`${this.baseUrl}/resend-registration-email`, {registrationEmailId});
+    return this.http.put<RegistrationEmailResponse>(`${this.baseUrl}/resend-registration-email`, {registrationEmailId});
   }
 
   updateRegistrationEmail(registrationEmail: RegistrationEmail): Observable<RegistrationEmailResponse> {

@@ -21,7 +21,7 @@ exports.signup = async (req, res) => {
             }
         )
         await HRService.updateRegistrationEmail(_id, { status: 'registered' })
-        res.status(201).json({ jwt: jwtToken, hr: newUser.isHR })
+        res.status(201).json({ jwt: jwtToken, isHR: newUser.isHR })
     } catch (err) {
         console.error(err);
         if (err instanceof ObjectAlreadyExistsException) {
@@ -46,7 +46,7 @@ exports.login = async (req, res) => {
                 expiresIn: '3d',
             }
         )
-        res.status(201).json({ jwt: token, hr: user.isHR })
+        res.status(201).json({ jwt: token, isHR: user.isHR })
     } catch (err) {
         console.error(err);
         if (err instanceof ObjectAlreadyExistsException) {

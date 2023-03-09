@@ -1,5 +1,5 @@
 import { createAction, createActionGroup, props } from '@ngrx/store';
-import { Employee } from '../models/employee';
+import { Employee } from '../../models/employee';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { Action } from '@ngrx/store';

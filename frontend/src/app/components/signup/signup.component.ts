@@ -39,9 +39,9 @@ export class SignupComponent {
     const {username, password} = { ...this.form.getRawValue() };
     this.authService.signup(username, this.email, password).subscribe({
       next: (user: User) => {
-        this.authService.storeJwtToken(user.jwt);
+        this.authService.storeJwtToken(user.jwt!);
         this.store.dispatch(UserAction.setCurrentUser({ user }));
-        this._router.navigateByUrl('/');
+        this._router.navigateByUrl('/onboarding');
       }, error: (error) => {
         console.log(error);
       }

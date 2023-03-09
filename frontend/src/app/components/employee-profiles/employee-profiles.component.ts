@@ -5,8 +5,8 @@ import { Employee } from 'src/app/models/employee';
 import { filter } from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
-import { EmployeeApiActions } from 'src/app/store/employee.action';
-import { selectEmployees } from 'src/app/store/employee.selector';
+import { EmployeeApiActions } from 'src/app/store/actions/employees.action';
+import { selectEmployees } from 'src/app/store/selectors/employees.selector';
 import { AppState } from 'src/app/store/app.state';
 
 
