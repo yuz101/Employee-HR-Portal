@@ -372,6 +372,64 @@ class HRService {
       throw err;
     }
   }
-}
+   
+  static async updateDocumentStatus(employeeId, documentStatus, action) {
+    try {
+      const workAuthorizationStatus = await EmployeeWorkAuthorizationStatus.findOne({ employeeId: employeeId }).exec();
+  
+      if (!workAuthorizationStatus) {
+        throw new Error("Employee work authorization status not found");
+      }
+  
+      const uploadFlow = workAuthorizationStatus.uploadFlow;
+      let index;
+      for (let i = 0; i < uploadFlow.length; i++) {
+        if (uploadFlow[i].status === "Pending for Review") {
+          index = i;
+          break;
+        }
+      };
 
+      const lastUploadFlow = uploadFlow[index];
+  
+      if (lastUploadFlow.status !== "Pending for Review") {
+        throw new Error(
+          "Cannot update document status, last upload flow status is not 'Pending for Review'"
+        );
+      }
+  
+      const updatedUploadFlow = {
+        ...lastUploadFlow,
+        status: documentStatus,
+        feedback: action
+      };
+  
+      const updatedUploadFlows = [
+        ...uploadFlow.slice(0, uploadFlow.length - 1),
+        updatedUploadFlow
+      ];
+  
+      const updatedWorkAuthorizationStatus = await EmployeeWorkAuthorizationStatus.findOneAndUpdate(
+        {
+          employeeId: employeeId
+        },
+        {
+          $set: {
+            uploadFlow: updatedUploadFlows
+          }
+        },
+        {
+          new: true
+        }
+      ).exec();
+  
+      return updatedWorkAuthorizationStatus;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+  
+}
+ 
 module.exports = HRService;

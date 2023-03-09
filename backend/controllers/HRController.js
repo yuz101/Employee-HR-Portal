@@ -2,6 +2,7 @@ const HRService = require('../services/HRService');
 const crypto = require('crypto');
 const ApplicationService = require('../services/ApplicationService');
 const DocumentService = require('../services/DocumentService');
+const Employee = require('../models/Employee');
 
 exports.sendRegistrationEmail = async (req, res) => {
     // Generate test SMTP service account from ethereal.email
@@ -147,3 +148,39 @@ exports.workAuthorizationStep = async(req, res) => {
     }
 }
 
+exports.updateDocumentStatus = async (req, res) => {
+    const { employeeId, documentStatus, action, completed } = req.body;
+    try {
+      const updatedWorkAuthStatus = await HRService.updateDocumentStatus(employeeId, documentStatus, action);
+      const employee = await Employee.findById(employeeId);
+      const workAuthType = updatedWorkAuthStatus.workAuthoriazationType;
+      const workAuthStatus = updatedWorkAuthStatus.uploadFlow.find((flow) => flow.status !== "Approved" && flow.status !== "Rejected");
+      const documentType = workAuthStatus.documentType;
+      const response = {
+        employeeId: employee._id,
+        firstName: employee.firstName,
+        lastName: employee.lastName,
+        middleName: employee.middleName,
+        preferredName: employee.preferredName,
+        workAuthorization: workAuthType,
+        workAuthorizationStatus: {
+          started: updatedWorkAuthStatus.started,
+          completed: completed,
+          documentType: documentType,
+          documentStatus: documentStatus,
+          feedback: "",
+          action: {
+            name: action
+          }
+        }
+      };
+      res.status(200).json({
+        message: "Work Authorization Status updated",
+        workAuthorizationStatus: response
+      });
+    } catch (err) {
+      res.status(404).json({ err: err.message });
+    }
+  };
+  
+  
