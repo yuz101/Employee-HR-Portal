@@ -23,6 +23,7 @@ import { PasswordModule } from 'primeng/password'
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputMaskModule } from 'primeng/inputmask';
 import { CalendarModule } from 'primeng/calendar';
+import { StepsModule } from 'primeng/steps';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {DataViewModule} from 'primeng/dataview';
@@ -50,6 +51,7 @@ import { RegistrationEmailsComponent } from './components/registration-emails/re
 import { OnboardingApplicationReviewComponent } from './components/onboarding-application-review/onboarding-application-review.component';
 
 import { InterceptorService } from './services/intercepter.service';
+import { WorkAuthorizationManagementEmployeeComponent } from './components/work-authorization-management-employee/work-authorization-management-employee.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/houses', pathMatch: 'full' },
@@ -75,6 +77,7 @@ const appRoutes: Routes = [
     DocumentReviewComponent,
     RegistrationEmailsComponent,
     OnboardingApplicationReviewComponent,
+    WorkAuthorizationManagementEmployeeComponent,
   ],
   imports: [
     BrowserModule,
@@ -100,7 +103,9 @@ const appRoutes: Routes = [
     DataViewModule,
     ToolbarModule,
     DropdownModule,
+    StepsModule,
     StoreModule.forRoot({
+      employee: userReducer,
       user: userReducer,
       profile: profileReducer,
       registrationEmails: registrationEmailReducer,

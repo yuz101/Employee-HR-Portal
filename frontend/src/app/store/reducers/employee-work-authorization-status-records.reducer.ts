@@ -1,9 +1,9 @@
 import { createReducer, on } from "@ngrx/store";
-import { EmployeeWorkAuthorizationStatusRecord } from "src/app/models/work-authorization-status";
+import { EmployeeCurrentWorkAuthorizationStatusRecord } from "src/app/models/work-authorization-status";
 import { EmployeeWorkAuthorizationStatusRecordsActions } from "../actions/employee-work-authorization-status-records.action";
 
 
-export const initialState: EmployeeWorkAuthorizationStatusRecord[] = [];
+export const initialState: EmployeeCurrentWorkAuthorizationStatusRecord[] = [];
 
 export const employeeWorkAuthorizationStatusRecordsReducer = createReducer(
     initialState,

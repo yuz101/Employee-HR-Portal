@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { EmployeeDocumentService } from 'src/app/services/employee-document.service';
 import { EmployeeWorkAuthorizationStatusService } from 'src/app/services/employee-work-authorization-status.service';
 import { EmployeeWorkAuthorizationStatusRecordsActions } from 'src/app/store/actions/employee-work-authorization-status-records.action';
 
@@ -12,10 +13,12 @@ import { EmployeeWorkAuthorizationStatusRecordsActions } from 'src/app/store/act
 export class DocumentReviewComponent implements OnInit {
   pdfSrc: string;
   employeeId: string;
+  documentType: string;
 
   constructor(
     private store: Store,
     private workAuthorizationStatusService: EmployeeWorkAuthorizationStatusService,
+    private employeeDocumentService: EmployeeDocumentService,
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
   ) { }

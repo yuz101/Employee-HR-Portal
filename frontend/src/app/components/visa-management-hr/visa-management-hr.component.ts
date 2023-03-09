@@ -3,17 +3,12 @@ import { Store } from '@ngrx/store';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DocumentReviewComponent } from './document-review/document-review.component';
 import { EmployeeWorkAuthorizationStatusService } from '../../services/employee-work-authorization-status.service';
-import { EmployeeWorkAuthorizationStatusRecord } from 'src/app/models/work-authorization-status';
+import { EmployeeCurrentWorkAuthorizationStatusRecord, EmployeeDocumentLink, WorkAuthorizationStatusEnum } from 'src/app/models/work-authorization-status';
 import { selectEmployeeWorkAuthorizationStatusRecords } from 'src/app/store/selectors/employee-work-authorization-status-records.selectors';
 import { EmployeeWorkAuthorizationStatusRecordsActions } from 'src/app/store/actions/employee-work-authorization-status-records.action';
 import { Observable } from 'rxjs';
-
-enum WorkAuthorizationStatus {
-  NOT_UPLOADED = 'Not Uploaded',
-  PENDING_FOR_REVIEW = 'Pending for Review',
-  APPROVED = 'Approved',
-  REJECTED = 'Rejected',
-}
+import { Table } from 'primeng/table';
+import { EmployeeDocumentService } from 'src/app/services/employee-document.service';
 
 @Component({
   selector: 'app-visa-management-hr',
@@ -22,18 +17,23 @@ enum WorkAuthorizationStatus {
   providers: [DialogService, EmployeeWorkAuthorizationStatusService]
 })
 export class VisaManagementHrComponent implements OnInit {
-  workAuthorizationStatusRecords$: Observable<EmployeeWorkAuthorizationStatusRecord[]>
+  workAuthorizationStatusRecords$: Observable<EmployeeCurrentWorkAuthorizationStatusRecord[]>
     = this.store.select(selectEmployeeWorkAuthorizationStatusRecords);
 
+  isLoading: boolean;
   displayWorkAuthorization: boolean;
-  allWorkAuthorizationStatus = WorkAuthorizationStatus;
+  allWorkAuthorizationStatus = WorkAuthorizationStatusEnum;
+  uploadedDocuments: EmployeeDocumentLink[] = [];
 
   constructor(
     private store: Store,
     public dialogService: DialogService,
-    private workAuthorizationStatusService: EmployeeWorkAuthorizationStatusService) { }
+    private workAuthorizationStatusService: EmployeeWorkAuthorizationStatusService,
+    private employeeDocumentService: EmployeeDocumentService,
+  ) { }
 
   ngOnInit() {
+    this.isLoading = true;
     this.workAuthorizationStatusService
       .getEmployees()
       .subscribe((records) => {
@@ -41,14 +41,20 @@ export class VisaManagementHrComponent implements OnInit {
           EmployeeWorkAuthorizationStatusRecordsActions.retrieveRecordList({ statusRecords: records })
         );
       });
+    this.isLoading = false;
   }
 
-  showDocumentReviewDialog(employeeId: string) {
+  clear(table: Table) {
+    table.clear();
+  }
+
+  showDocumentReviewDialog(employeeId: string, documentType: string) {
     const ref = this.dialogService.open(DocumentReviewComponent, {
       data: {
         employeeId: employeeId,
+        documentType: documentType,
       },
-      header: 'Review Document',
+      header: `Review Document: ${documentType}`,
       width: '90%',
     });
   }
@@ -60,6 +66,14 @@ export class VisaManagementHrComponent implements OnInit {
         this.store.dispatch(
           EmployeeWorkAuthorizationStatusRecordsActions.approveDocument({ employeeId, newStatus })
         );
+      });
+  }
+
+  showWorkAuthorizationDialog(employeeId: string) {
+    this.displayWorkAuthorization = true;
+    this.employeeDocumentService.getAllDocuments(employeeId)
+      .subscribe((documents) => {
+        this.uploadedDocuments = documents;
       });
   }
 }
