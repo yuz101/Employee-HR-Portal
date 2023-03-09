@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Onboarding } from 'src/app/models/onboarding.model';
 import { AppState } from '../../store/onboarding.state';
 import { HttpClient } from '@angular/common/http';
-import * as OnboardingActions from '../../store/onboarding.actions';
+import * as OnboardingActions from '../../store/actions/onboarding.actions';
 
 @Component({
   selector: 'app-onboarding',

@@ -28,8 +28,8 @@
 
 
 import { Action, createReducer, on } from '@ngrx/store';
-import { EmployeeApiActions } from './employee.action';
-import { Employee } from '../models/employee';
+import { EmployeeApiActions } from '../actions/employees.action';
+import { Employee } from '../../models/employee';
 
 export const initialState: Employee[] = [];
 

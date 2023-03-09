@@ -26,12 +26,17 @@ import { CalendarModule } from 'primeng/calendar';
 import { StepsModule } from 'primeng/steps';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { DataViewModule } from 'primeng/dataview';
+import {DataViewModule} from 'primeng/dataview';
+
 // import { employeeReducer } from './store/employee.reducer';
 // import { EmployeeState } from './store/employee.reducer';
-import { employeesReducer } from './store/employee.reducer';
-import { ToolbarModule } from 'primeng/toolbar';
-import { DropdownModule } from 'primeng/dropdown';
+import { employeesReducer } from './store/reducers/employees.reducer';
+import { profileReducer } from './store/reducers/profile.reducer';
+import { registrationEmailReducer } from './store/reducers/registration-emails.reducer';
+import { employeeWorkAuthorizationStatusRecordsReducer } from './store/reducers/employee-work-authorization-status-records.reducer';
+
+import {ToolbarModule} from 'primeng/toolbar';
+import {DropdownModule} from 'primeng/dropdown';
 import { AppComponent } from './app.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
@@ -44,8 +49,6 @@ import { FilterPipe } from './pipes/filter.pipe';
 import { DocumentReviewComponent } from './components/visa-management-hr/document-review/document-review.component';
 import { RegistrationEmailsComponent } from './components/registration-emails/registration-emails.component';
 import { OnboardingApplicationReviewComponent } from './components/onboarding-application-review/onboarding-application-review.component';
-
-import { employeeWorkAuthorizationStatusRecordsReducer } from './store/reducers/employee-work-authorization-status-records.reducer';
 
 import { InterceptorService } from './services/intercepter.service';
 import { WorkAuthorizationManagementEmployeeComponent } from './components/work-authorization-management-employee/work-authorization-management-employee.component';
@@ -104,6 +107,9 @@ const appRoutes: Routes = [
     StoreModule.forRoot({
       employee: userReducer,
       user: userReducer,
+      profile: profileReducer,
+      registrationEmails: registrationEmailReducer,
+      [houseFeatureKey]: userReducer,
       employeeWorkAuthorizationStatusRecords: employeeWorkAuthorizationStatusRecordsReducer,
       employees: employeesReducer
     }),

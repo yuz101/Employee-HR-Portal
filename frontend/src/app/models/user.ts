@@ -1,4 +1,4 @@
 export interface User {
-  jwt: string;
-  isHR: boolean;
+  jwt?: string;
+  isHR?: boolean;
 }
