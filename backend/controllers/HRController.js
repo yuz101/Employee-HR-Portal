@@ -125,3 +125,24 @@ exports.delete_house = async(req, res) => {
         res.status(404).json({ err: err.message });
     }
 }
+
+exports.workAuthorizationStatus = async(req, res) => {
+    console.log("controller: workAuthorizationStatus");
+    try {
+        const workAuthorizationStatus = await HRService.workAuthorizationStatus();
+        res.status(200).json({ message: 'Work Authorization Status', workAuthorizationStatus });
+    } catch(err) {
+        res.status(404).json({ err: err.message });
+    }
+}
+
+exports.workAuthorizationStep = async(req, res) => {
+    console.log("controller: workAuthorizationStep");
+    try {
+        const workAuthorizationStep = await HRService.workAuthorizationStep();
+        res.status(200).json({ message: 'Work Authorization Step', workAuthorizationStep });
+    } catch(err) {
+        res.status(404).json({ err: err.message });
+    }
+}
+

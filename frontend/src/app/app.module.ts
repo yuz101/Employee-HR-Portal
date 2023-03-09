@@ -102,8 +102,8 @@ const appRoutes: Routes = [
     DropdownModule,
     StepsModule,
     StoreModule.forRoot({
+      employee: userReducer,
       user: userReducer,
-      [houseFeatureKey]: userReducer,
       employeeWorkAuthorizationStatusRecords: employeeWorkAuthorizationStatusRecordsReducer,
       employees: employeesReducer
     }),
