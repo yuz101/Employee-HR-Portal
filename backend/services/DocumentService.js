@@ -15,7 +15,7 @@ AWS.config.getCredentials(function (err) {
         console.log("Access key:", AWS.config.credentials.accessKeyId);
     }
 });
-const EmployeeDocumentType = require('../enums/EmployeeDocumentType');
+const EmployeeDocumentTypeEnum = require('../enums/EmployeeDocumentType');
 
 class DocumentService {
     #s3;
@@ -84,6 +84,8 @@ class DocumentService {
         const documentName = this.getStandardizedFileName(documentType);
         const key = `documents/${employeeId}/${documentName}`;
         try {
+            await this.#s3.headObject({ Bucket: this.#bucketName, Key: key }).promise();
+
             const url = await this.#s3.getSignedUrlPromise('getObject', {
                 Bucket: this.#bucketName,
                 Key: key,
@@ -92,7 +94,7 @@ class DocumentService {
             return { fileName: documentName, downloadLink: url };
         } catch (error) {
             console.error(error);
-            if (error.code === 'NoSuchKey') {
+            if (error.code === 'NotFound') {
                 throw new Error('Document not found.');
             }
             throw error;
@@ -117,6 +119,11 @@ class DocumentService {
                 return 'profile.jpg';
             default:
                 throw Error('Unsupported document type.');
+
+            // if (!Object.values(EmployeeDocumentTypeEnum).includes(documentType)) {
+            //     throw Error('Unsupported document type.');
+            // }
+            // return documentType + '.pdf';
         }
     }
 }

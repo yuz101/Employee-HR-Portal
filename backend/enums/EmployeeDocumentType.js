@@ -1,4 +1,4 @@
-const EmployeeDocumentType = {
+const EmployeeDocumentTypeEnum = {
     CPT: 'cpt',
     OPT: 'opt',
     OPT_EAD: 'opt-ead',
@@ -6,9 +6,9 @@ const EmployeeDocumentType = {
     I_983: 'i-983',
     PROFILE: 'profile',
     OPT_RECEIPT: 'opt-receipt',
-    DRIVER_LICENSE: 'driver-license'
+    DRIVER_LICENSE: 'driver-license',
 }
 
-Object.freeze(EmployeeDocumentType);
+Object.freeze(EmployeeDocumentTypeEnum);
 
-module.exports = EmployeeDocumentType;
+module.exports = EmployeeDocumentTypeEnum;
