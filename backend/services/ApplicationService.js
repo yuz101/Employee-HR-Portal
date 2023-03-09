@@ -8,7 +8,6 @@ class ApplicationService {
       const retrievedApplication = await Application.findOne({ "userID": inputObject.userID })
       if (!retrievedApplication) {
         if (inputObject.identifyType.visaTitle === 'F1') {
-          s
           const newEmployeeWorkAuth = new EmployeeWorkAuthorizationStatus(
             {
               employeeId: inputObject.userID,
@@ -26,6 +25,7 @@ class ApplicationService {
         await newInputObject.save()
         return 'create success'
       } else {
+        inputObject.status = 'Pending'
         retrievedApplication.set(inputObject)
         await retrievedApplication.save()
         return 'update success'
