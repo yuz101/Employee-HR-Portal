@@ -1,28 +1,61 @@
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
-import { EmployeeWorkAuthorizationStatusRecord, WorkAuthorizationStatus, WorkAuthorizationStatusEnum } from '../models/work-authorization-status';
+import { EmployeeCurrentWorkAuthorizationStatusRecord, CurrentWorkAuthorizationStatus, WorkAuthorizationStatusEnum, EmployeeWorkAuthorizationStatus } from '../models/work-authorization-status';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeWorkAuthorizationStatusService {
 
-  getEmployees(): Observable<Array<EmployeeWorkAuthorizationStatusRecord>> {
-    return of(recordsMock);
+  getEmployees(): Observable<Array<EmployeeCurrentWorkAuthorizationStatusRecord>> {
+    return of(currentRecordsMock);
   }
 
-  approveDocument(employeeId: string): Observable<WorkAuthorizationStatus> {
+  approveDocument(employeeId: string): Observable<CurrentWorkAuthorizationStatus> {
     return of(approveReturnStatusMock);
   }
 
-  rejectDocument(employeeId: string, feedback: string): Observable<WorkAuthorizationStatus> {
+  rejectDocument(employeeId: string, feedback: string): Observable<CurrentWorkAuthorizationStatus> {
     return of(rejectReturnStatusMock);
+  }
+
+  getEmployeeWorkAuthorizationStatus(employeeId: string): Observable<EmployeeWorkAuthorizationStatus> {
+    return of(statusMock);
   }
 
   constructor() { }
 }
 
-const approveReturnStatusMock: WorkAuthorizationStatus = {
+const statusMock: EmployeeWorkAuthorizationStatus = {
+  employeeId: '1',
+  workAuthorizationType: 'OPT',
+  started: true,
+  completed: false,
+  uploadFlow: [
+    {
+      status: WorkAuthorizationStatusEnum.APPROVED,
+      documentType: 'OPT Receipt',
+      feedback: '',
+    },
+    {
+      status: WorkAuthorizationStatusEnum.APPROVED,
+      documentType: 'OPT EAD',
+      feedback: '',
+    },
+    {
+      status: WorkAuthorizationStatusEnum.NOT_UPLOADED,
+      documentType: 'I-983',
+      feedback: '',
+    },
+    {
+      status: WorkAuthorizationStatusEnum.NOT_UPLOADED,
+      documentType: 'I-20',
+      feedback: '',
+    },
+  ],
+}
+
+const approveReturnStatusMock: CurrentWorkAuthorizationStatus = {
   started: true,
   completed: false,
   documentType: 'The Next Document',
@@ -33,7 +66,7 @@ const approveReturnStatusMock: WorkAuthorizationStatus = {
   },
 }
 
-const rejectReturnStatusMock: WorkAuthorizationStatus = {
+const rejectReturnStatusMock: CurrentWorkAuthorizationStatus = {
   started: true,
   completed: false,
   documentType: 'Still Current Document',
@@ -44,7 +77,7 @@ const rejectReturnStatusMock: WorkAuthorizationStatus = {
   },
 }
 
-const recordsMock: EmployeeWorkAuthorizationStatusRecord[] = [
+const currentRecordsMock: EmployeeCurrentWorkAuthorizationStatusRecord[] = [
   {
     employeeId: '1',
     firstName: 'Yuru', lastName: 'Zhou', middleName: '', preferredName: 'Amy', workAuthorization: 'OPT',

@@ -11,17 +11,17 @@ export enum WorkAuthorizationDocumentTypeEnum {
     I_20 = 'I-20',
 }
 
-export interface EmployeeWorkAuthorizationStatusRecord {
+export interface EmployeeCurrentWorkAuthorizationStatusRecord {
     employeeId: string;
     firstName: string;
     lastName: string;
     middleName: string;
     preferredName: string;
     workAuthorization: string;
-    workAuthorizationStatus: WorkAuthorizationStatus;
+    workAuthorizationStatus: CurrentWorkAuthorizationStatus;
 }
 
-export interface WorkAuthorizationStatus {
+export interface CurrentWorkAuthorizationStatus {
     started: boolean;
     completed: boolean;
     documentType: string;
@@ -35,4 +35,18 @@ export interface WorkAuthorizationStatus {
 export interface EmployeeDocumentLink {
     fileName: string;
     downloadUrl: string;
+}
+
+export interface EmployeeWorkAuthorizationStatus {
+    employeeId: string;
+    workAuthorizationType: string;
+    started: boolean;
+    completed: boolean;
+    uploadFlow: RequiredWorkAuthorizationDocument[];
+}
+
+export interface RequiredWorkAuthorizationDocument {
+    status: WorkAuthorizationStatusEnum;
+    documentType: string;
+    feedback: string;
 }

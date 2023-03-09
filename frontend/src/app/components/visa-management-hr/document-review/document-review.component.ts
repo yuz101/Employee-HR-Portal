@@ -13,6 +13,7 @@ import { EmployeeWorkAuthorizationStatusRecordsActions } from 'src/app/store/act
 export class DocumentReviewComponent implements OnInit {
   pdfSrc: string;
   employeeId: string;
+  documentType: string;
 
   constructor(
     private store: Store,
