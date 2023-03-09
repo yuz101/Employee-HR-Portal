@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { AuthService } from './services/auth.service';
 import { selectUser } from './store/selectors/user.selector';
 
 @Component({
@@ -10,8 +11,8 @@ import { selectUser } from './store/selectors/user.selector';
 export class AppComponent {
   title = 'my-app';
   isHR: boolean;
-  user$ = this.store.select(selectUser).subscribe((user) => {
-    this.isHR = user.isHR!;
-  });
-  constructor(private store: Store) {}
+  constructor(private authService: AuthService) {}
+  ngOnInit() {
+      this.isHR = this.authService.getIsHR();
+  }
 }

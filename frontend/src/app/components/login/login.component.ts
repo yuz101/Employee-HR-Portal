@@ -28,7 +28,7 @@ export class LoginComponent {
     this.authService.login(username, email, password).subscribe({
       next: (user: User) => {
         this.authService.storeJwtToken(user.jwt!);
-        this.store.dispatch(UserAction.setCurrentUser({ user }));
+        this.authService.storeIsHR(user.isHR!);
         console.log(user);
         if(user.isHR) {
           this._router.navigateByUrl('registration-emails');

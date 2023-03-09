@@ -5,10 +5,15 @@ export enum WorkAuthorizationStatusEnum {
     REJECTED = 'Rejected',
 }
 
-export enum WorkAuthorizationDocumentTypeEnum {
-    OPT_RECEIPT = 'OPT Receipt',
-    OPT_EAD = 'OPT EAD',
-    I_20 = 'I-20',
+export enum DocumentTypeEnum {
+    PROFILE = 'profile',
+}
+
+export enum WorkAuthorizationDocumentTypeEnum{
+    OPT_RECEIPT = 'opt-receipt',
+    OPT_EAD = 'opt-ead',
+    I_20 = 'i-20',
+    I_983 = 'i-983',
 }
 
 export interface EmployeeCurrentWorkAuthorizationStatusRecord {
