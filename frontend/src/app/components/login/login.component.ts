@@ -27,6 +27,7 @@ export class LoginComponent {
     const {username, email, password} = { ...this.form.getRawValue() };
     this.authService.login(username, email, password).subscribe({
       next: (user: User) => {
+        this.authService.storeJwtToken(user.jwt);
         this.store.dispatch(UserAction.setCurrentUser({ user }));
         this._router.navigateByUrl('/');
       }, error: (error) => {
