@@ -18,7 +18,8 @@ exports.sendRegistrationEmail = async (req, res) => {
 
 exports.resendRegistrationEmail = async (req, res) => {
     try {
-        const registrationEmail = await HRService.resendRegistrationEmails(req.body.registrationEmailId)
+        const registrationEmail = await HRService.resendRegistrationEmail(req.body.registrationEmailId)
+        console.log(registrationEmail)
         res.status(200).json({message: "Resend registration emails successfully", registrationEmail})
     } catch (err) {
         res.status(500).json(err)

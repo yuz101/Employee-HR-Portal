@@ -41,7 +41,7 @@ export class SignupComponent {
       next: (user: User) => {
         this.authService.storeJwtToken(user.jwt!);
         this.store.dispatch(UserAction.setCurrentUser({ user }));
-        this._router.navigateByUrl('/');
+        this._router.navigateByUrl('/onboarding');
       }, error: (error) => {
         console.log(error);
       }

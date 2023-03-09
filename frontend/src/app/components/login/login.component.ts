@@ -29,7 +29,12 @@ export class LoginComponent {
       next: (user: User) => {
         this.authService.storeJwtToken(user.jwt!);
         this.store.dispatch(UserAction.setCurrentUser({ user }));
-        this._router.navigateByUrl('/');
+        console.log(user);
+        if(user.isHR) {
+          this._router.navigateByUrl('registration-emails');
+        } else {
+          this._router.navigateByUrl('/onboarding');
+        }
       }, error: (error) => {
         console.log(error);
       }
