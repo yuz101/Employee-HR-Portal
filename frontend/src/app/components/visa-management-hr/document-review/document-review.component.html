@@ -1,20 +1,20 @@
-<div class="flex flex-col items-center">
+<div class="flex flex-row align-center">
     <div style="width: 100%;">
-        <pdf-viewer [src]="pdfSrc" [render-text]="true" [original-size]="false"
-            [zoom-scale]="'page-width'"
-            style="height: 800px"
-        ></pdf-viewer>
+        <pdf-viewer [src]="pdfSrc" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+            style="height: 800px"></pdf-viewer>
     </div>
-    <div class="flex justify-around">
-        <div class="flex flex-col flex-1 items-center">
-            <button pButton pRipple type="button" label="Reject" class="p-button-rounded p-button-danger"
-                (click)="onReject(employeeId, '')"></button>
-            <textarea [rows]="5" [cols]="30" pInputTextarea [autoResize]="true">
-            </textarea>
-        </div>
-        <div class="flex flex-1 items-start justify-center">
-            <button pButton pRipple type="button" label="Approve"
-                class="p-button-rounded p-button-success max-w-[fit-content]" (click)="onApprove(employeeId)"></button>
+    <div class="flex flex-col">
+        <div class="flex flex-col flex-1 items-start mx-5">
+            <textarea [rows]="5" [cols]="30" pInputTextarea [autoResize]="true"
+                placeholder="Provide optional feedback here"></textarea>
+            <div class="flex flex-row mt-2">
+                <button pButton pRipple type="button" label="Reject" class="p-button-danger" icon="pi pi-times"
+                    (click)="onReject(employeeId, '')"></button>
+            </div>
+            <div class="mt-auto">
+                <button pButton pRipple type="button" label="Approve" class="p-button-success" icon="pi pi-check"
+                    (click)="onApprove(employeeId)"></button>
+            </div>
         </div>
     </div>
 </div>
