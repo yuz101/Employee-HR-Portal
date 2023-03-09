@@ -5,6 +5,12 @@ export enum WorkAuthorizationStatusEnum {
     REJECTED = 'Rejected',
 }
 
+export enum WorkAuthorizationDocumentTypeEnum {
+    OPT_RECEIPT = 'OPT Receipt',
+    OPT_EAD = 'OPT EAD',
+    I_20 = 'I-20',
+}
+
 export interface EmployeeWorkAuthorizationStatusRecord {
     employeeId: string;
     firstName: string;
@@ -24,4 +30,9 @@ export interface WorkAuthorizationStatus {
     action: {
         name: string;
     }
+}
+
+export interface EmployeeDocumentLink {
+    fileName: string;
+    downloadUrl: string;
 }
