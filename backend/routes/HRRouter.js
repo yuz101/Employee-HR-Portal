@@ -31,4 +31,10 @@ router.get('/housing/:id', HRController.view_house_details);
 // delete a house 
 router.delete('/housing/:id', HRController.delete_house);
 
+// view all employees work authorization status
+router.get('/workAuthorizationStatus', HRController.workAuthorizationStatus);
+
+// view all employees work authorization step
+router.get('/workAuthorizationStep', HRController.workAuthorizationStep);
+
 module.exports = router

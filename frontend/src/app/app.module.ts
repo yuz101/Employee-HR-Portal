@@ -97,7 +97,6 @@ const appRoutes: Routes = [
     DropdownModule,
     StoreModule.forRoot({
       employee: userReducer,
-      [houseFeatureKey]: userReducer,
       employeeWorkAuthorizationStatusRecords: employeeWorkAuthorizationStatusRecordsReducer,
       employees: employeesReducer
     }),

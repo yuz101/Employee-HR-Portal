@@ -2,6 +2,7 @@ const Employee = require("../models/Employee");
 const House = require("../models/House");
 const RegistrationEmail = require("../models/RegistrationEmail");
 const nodemailer = require("nodemailer");
+const EmployeeWorkAuthorizationStatus = require("../models/EmployeeWorkAuthorizationStatus");
 
 class HRService {
   static async sendRegistrationEmail({ firstName, middleName, lastName, email} , token) {
@@ -275,6 +276,60 @@ class HRService {
       }
 
       return house;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
+
+  static async workAuthorizationStatus() {
+    try {
+      const employeesStatus = await EmployeeWorkAuthorizationStatus.find();
+      if (!employeesStatus) {
+        throw new Error("Employee Work Authorization Status not found");
+      }
+
+      return employeesStatus;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
+
+  static async workAuthorizationStep() {
+    try {
+      // filter employees with upflow status "Not Uploaded"
+      const employeesStep = await EmployeeWorkAuthorizationStatus.aggregate([
+        {
+          $match: { "uploadFlow.status": "Not Uploaded" }
+        },
+        {
+          $project: {
+            employeeId: 1,
+            workAuthorizationType: 1,
+            started: 1,
+            completed: 1,
+            uploadFlow: {
+              $filter: {
+                input: "$uploadFlow",
+                as: "flow",
+                cond: { $eq: [ "$$flow.status", "Not Uploaded" ] }
+              }
+            }
+          }
+        },
+        {
+          $addFields: {
+            uploadFlow: { $slice: ["$uploadFlow", 1] }
+          }
+        }
+      ]);
+
+      if (!employeesStep) {
+        throw new Error("Employee Work Authorization Step not found");
+      }
+
+      return employeesStep;
     } catch (err) {
       console.error(err);
       throw err;
