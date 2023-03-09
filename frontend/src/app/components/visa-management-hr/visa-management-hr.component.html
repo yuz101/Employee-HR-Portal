@@ -1,7 +1,23 @@
-<p-table [value]="(workAuthorizationStatusRecords$ | async)!" [rowHover]="true">
+<p-table #dtWorkAuthorizationStatus [value]="(workAuthorizationStatusRecords$ | async)!" [rowHover]="true" [rows]="10"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="isLoading" [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} employees"
+    [globalFilterFields]="['firstName', 'lastName', 'middleName', 'preferredName']">
+    <ng-template pTemplate="caption">
+        <div class="flex flex-row">
+            <span class="p-input-icon-left p-ml-auto">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text"
+                    (input)="dtWorkAuthorizationStatus.filterGlobal($any($event.target).value, 'contains')"
+                    placeholder="Search name" />
+            </span>
+        </div>
+    </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th scope="col">Name</th>
+            <th scope="col">
+                Name
+                <p-columnFilter type="text" field="firstName" display="menu"></p-columnFilter>
+            </th>
             <th scope="col">Work Authorization</th>
             <th scope="col">Status</th>
             <th scope="col">Action</th>
@@ -11,19 +27,24 @@
         <tr>
             <td>{{record.firstName}} {{record.lastName}}</td>
             <td>
-                <p-button (click)="displayWorkAuthorization=true" icon="pi pi-external-link" label="Show"></p-button>
+                <p-button (click)="showWorkAuthorizationDialog(record.employeeId)" icon="pi pi-external-link"
+                    label="Show"></p-button>
                 <p-dialog header="Work Authorization Details" [(visible)]="displayWorkAuthorization" [modal]="true"
-                    [style]="{width: '50vw'}" [draggable]="false" [resizable]="false"
-                >
+                    [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
                     <div class="flex flex-col">
                         <div>Type: {{'OPT'}}</div>
                         <div>Start Date: {{'today'}}</div>
                         <div>End Date: {{'tomorrow'}}</div>
                     </div>
+                    <div class="flex flex-col">
+                        <div *ngFor="let document of uploadedDocuments" class="flex flex-row items-center mb-5">
+                            <a pButton icon="pi pi-cloud-download" href="{{document.downloadUrl}}" target="_blank"></a>
+                            <span class="ml-3">{{document.fileName}}</span>
+                        </div>
+                    </div>
                     <ng-template pTemplate="footer">
                         <p-button icon="pi pi-check" (click)="displayWorkAuthorization=false" label="Ok"
-                            styleClass="p-button-text"
-                        ></p-button>
+                            styleClass="p-button-text"></p-button>
                     </ng-template>
                 </p-dialog>
             </td>
@@ -54,19 +75,16 @@
                 <ng-container
                     *ngIf="record.workAuthorizationStatus
                         && (record.workAuthorizationStatus.documentStatus === allWorkAuthorizationStatus.PENDING_FOR_REVIEW)">
-                    <button type="button" (click)="showDocumentReviewDialog(record.employeeId)" pButton pRipple
-                        class="p-button-raised" icon="pi pi-info-circle" label="Review"
-                    ></button>
+                    <button type="button"
+                        (click)="showDocumentReviewDialog(record.employeeId, record.workAuthorizationStatus.documentType)"
+                        pButton pRipple class="p-button-raised" icon="pi pi-info-circle" label="Review"></button>
                 </ng-container>
                 <ng-container *ngIf="record.workAuthorizationStatus
                         && (record.workAuthorizationStatus.documentStatus === allWorkAuthorizationStatus.NOT_UPLOADED
                             || record.workAuthorizationStatus.documentStatus === allWorkAuthorizationStatus.REJECTED)">
-                    <button pButton pRipple type="button" class="p-button-raised"
-                        [icon]="record.workAuthorizationStatus.action.name === 'Send Notification'
+                    <button pButton pRipple type="button" class="p-button-raised" [icon]="record.workAuthorizationStatus.action.name === 'Send Notification'
                             ? 'pi pi-bell'
-                            : ''"
-                        label={{record.workAuthorizationStatus.action.name}}
-                    ></button>
+                            : ''" label={{record.workAuthorizationStatus.action.name}}></button>
                 </ng-container>
             </td>
         </tr>

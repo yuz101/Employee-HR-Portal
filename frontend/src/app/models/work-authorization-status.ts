@@ -5,17 +5,23 @@ export enum WorkAuthorizationStatusEnum {
     REJECTED = 'Rejected',
 }
 
-export interface EmployeeWorkAuthorizationStatusRecord {
+export enum WorkAuthorizationDocumentTypeEnum {
+    OPT_RECEIPT = 'OPT Receipt',
+    OPT_EAD = 'OPT EAD',
+    I_20 = 'I-20',
+}
+
+export interface EmployeeCurrentWorkAuthorizationStatusRecord {
     employeeId: string;
     firstName: string;
     lastName: string;
     middleName: string;
     preferredName: string;
     workAuthorization: string;
-    workAuthorizationStatus: WorkAuthorizationStatus;
+    workAuthorizationStatus: CurrentWorkAuthorizationStatus;
 }
 
-export interface WorkAuthorizationStatus {
+export interface CurrentWorkAuthorizationStatus {
     started: boolean;
     completed: boolean;
     documentType: string;
@@ -24,4 +30,23 @@ export interface WorkAuthorizationStatus {
     action: {
         name: string;
     }
+}
+
+export interface EmployeeDocumentLink {
+    fileName: string;
+    downloadUrl: string;
+}
+
+export interface EmployeeWorkAuthorizationStatus {
+    employeeId: string;
+    workAuthorizationType: string;
+    started: boolean;
+    completed: boolean;
+    uploadFlow: RequiredWorkAuthorizationDocument[];
+}
+
+export interface RequiredWorkAuthorizationDocument {
+    status: WorkAuthorizationStatusEnum;
+    documentType: string;
+    feedback: string;
 }

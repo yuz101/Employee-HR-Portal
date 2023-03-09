@@ -8,7 +8,7 @@ import { HouseAddComponent } from './components/house-add/house-add.component';
 import { houseFeatureKey } from './store/reducers/house.reducers';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InputTextModule } from 'primeng/inputtext';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ButtonModule } from 'primeng/button';
@@ -23,14 +23,15 @@ import { PasswordModule } from 'primeng/password'
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputMaskModule } from 'primeng/inputmask';
 import { CalendarModule } from 'primeng/calendar';
+import { StepsModule } from 'primeng/steps';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import {DataViewModule} from 'primeng/dataview';
+import { DataViewModule } from 'primeng/dataview';
 // import { employeeReducer } from './store/employee.reducer';
 // import { EmployeeState } from './store/employee.reducer';
 import { employeesReducer } from './store/employee.reducer';
-import {ToolbarModule} from 'primeng/toolbar';
-import {DropdownModule} from 'primeng/dropdown';
+import { ToolbarModule } from 'primeng/toolbar';
+import { DropdownModule } from 'primeng/dropdown';
 import { AppComponent } from './app.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
@@ -45,6 +46,9 @@ import { RegistrationEmailsComponent } from './components/registration-emails/re
 import { OnboardingApplicationReviewComponent } from './components/onboarding-application-review/onboarding-application-review.component';
 
 import { employeeWorkAuthorizationStatusRecordsReducer } from './store/reducers/employee-work-authorization-status-records.reducer';
+
+import { InterceptorService } from './services/intercepter.service';
+import { WorkAuthorizationManagementEmployeeComponent } from './components/work-authorization-management-employee/work-authorization-management-employee.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/houses', pathMatch: 'full' },
@@ -70,6 +74,7 @@ const appRoutes: Routes = [
     DocumentReviewComponent,
     RegistrationEmailsComponent,
     OnboardingApplicationReviewComponent,
+    WorkAuthorizationManagementEmployeeComponent,
   ],
   imports: [
     BrowserModule,
@@ -95,8 +100,10 @@ const appRoutes: Routes = [
     DataViewModule,
     ToolbarModule,
     DropdownModule,
+    StepsModule,
     StoreModule.forRoot({
       employee: userReducer,
+      user: userReducer,
       employeeWorkAuthorizationStatusRecords: employeeWorkAuthorizationStatusRecordsReducer,
       employees: employeesReducer
     }),
@@ -104,7 +111,10 @@ const appRoutes: Routes = [
       maxAge: 25, // Retains last 25 states
     }),
   ],
-  providers: [HouseService],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+    HouseService
+  ],
   bootstrap: [AppComponent],
 })
 

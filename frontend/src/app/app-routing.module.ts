@@ -12,6 +12,7 @@ import { EmployeeHouseDetailComponent } from './components/employee-house-detail
 import { EmployeeProfilesComponent } from './components/employee-profiles/employee-profiles.component';
 import { RegistrationEmailsComponent } from './components/registration-emails/registration-emails.component';
 import { OnboardingApplicationReviewComponent } from './components/onboarding-application-review/onboarding-application-review.component';
+import { WorkAuthorizationManagementEmployeeComponent } from './components/work-authorization-management-employee/work-authorization-management-employee.component';
 
 
 const routes: Routes = [
@@ -19,15 +20,16 @@ const routes: Routes = [
   { path: 'auth/signup', component: SignupComponent },
   { path: 'auth/login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'registration-emails', component: RegistrationEmailsComponent},
-  { path: 'onboarding-application-review', component: OnboardingApplicationReviewComponent},
+  { path: 'registration-emails', component: RegistrationEmailsComponent },
+  { path: 'onboarding-application-review', component: OnboardingApplicationReviewComponent },
   { path: 'visa-management-hr', component: VisaManagementHrComponent },
   { path: 'housing', component: HouseAddComponent },
   { path: 'houses', component: HouseListComponent },
   { path: 'houses/:id', component: HouseDetailComponent },
-  { path: 'employee/housing', component: EmployeeHouseDetailComponent},
-  { path: 'profiles', component: EmployeeProfilesComponent},
-  { path: 'employees/:id', component: EmployeeProfilesComponent }
+  { path: 'employee/housing', component: EmployeeHouseDetailComponent },
+  { path: 'profiles', component: EmployeeProfilesComponent },
+  { path: 'employees/:id', component: EmployeeProfilesComponent },
+  { path: 'work-authorization-management', component: WorkAuthorizationManagementEmployeeComponent },
 ];
 
 

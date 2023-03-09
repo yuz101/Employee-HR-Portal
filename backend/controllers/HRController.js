@@ -9,10 +9,10 @@ exports.sendRegistrationEmail = async (req, res) => {
     try {
         console.log(req.body)
         const token = crypto.randomUUID()
-        const registration = await HRService.send_email(req.body.name, req.body.email, token)
+        const registration = await HRService.sendRegistrationEmail(req.body, token)
         res.status(200).json({ message: "Send registration email successfully", registration})
     } catch (err) {
-        res.status(404).json(err)
+        res.status(500).json(err)
     }
 }
 
@@ -21,7 +21,7 @@ exports.resendRegistrationEmail = async (req, res) => {
         const registrationEmail = await HRService.resendRegistrationEmails(req.body.registrationEmailId)
         res.status(200).json({message: "Resend registration emails successfully", registrationEmail})
     } catch (err) {
-        res.status(404).json(err)
+        res.status(500).json(err)
     }
 }
 

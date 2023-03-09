@@ -8,8 +8,8 @@ const EmployeeSchema = new Schema(
         email: {type: String, required: true, unique: true},
         password: {type: String, required: true},
         firstName: {type: String, required: true},
-        middleName: {type: String, required: true},
-        lastName: {type: String , required: true} ,
+        lastName: {type: String, required: true},
+        middleName: {type: String},
         preferredName: {type: String},
         profilePicture: {type: String},
         address: {
@@ -33,7 +33,7 @@ const EmployeeSchema = new Schema(
             endDate: {type: String},
             visaTitle: {type: String},
         },
-        isAdmin: {type: Boolean, default: false},
+        isHR: {type: Boolean, default: false},
     }, {
         timestamps: true,
     }
