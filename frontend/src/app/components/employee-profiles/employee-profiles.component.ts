@@ -91,7 +91,7 @@ export class EmployeeProfilesComponent implements OnInit {
         </head>
         <body>
           <div *ngIf="employee.showDetails">
-            <h3>${employee.firstName ?? ''} ${employee.lastName ?? ''}</h3>
+            <h3 class="text-base font-semibold leading-6 text-gray-900">${employee.firstName ?? ''} ${employee.lastName ?? ''}</h3>
             <p>
               ${employee.preferredName ? (
                 `<div>

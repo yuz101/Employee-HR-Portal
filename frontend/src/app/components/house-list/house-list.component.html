@@ -1,16 +1,57 @@
-<h2>List of Houses</h2>
+<div class="flex justify-end gap-2 bg-gray-50 px-4 py-3 text-right sm:px-6">
+  <button
+    pButton
+    pRipple
+    label="Add a House"
+    class="p-button-sm"
+    routerLink="/housing"
+  ></button>
+</div>
+<h3 class="text-base font-semibold leading-6 text-gray-900">List of Houses</h3>
 <div *ngIf="houses$ | async as houses">
   <div *ngIf="houses.length > 0">
-    <div *ngFor="let house of houses">
-      <p><strong>Address:</strong> {{ house.address.streetName }} {{ house.address.buildingNumber }}, {{ house.address.city }} {{ house.address.state }} {{ house.address.zip }}</p>
-      <p><strong>Landlord:</strong> {{ house.landlord.fullName }} </p>
-      <p><strong>Number of Employee Residents:</strong> {{ house.residents }}</p>
-      <button routerLink="/houses/{{ house._id }}">Summary View</button>
+    <div class="grid grid-cols-6 gap-6" *ngFor="let house of houses | paginate: { itemsPerPage: pageSize, currentPage: currentPage }">
+      <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+        <label
+          for="first-name"
+          class="block text-sm font-medium leading-6 text-gray-900"
+          >Address: {{ house.address.streetName }}
+          {{ house.address.buildingNumber }}, {{ house.address.city }}
+          {{ house.address.state }} {{ house.address.zip }}</label
+        >
+      </div>
+      <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+        <label
+          for="first-name"
+          class="block text-sm font-medium leading-6 text-gray-900"
+          >Landlord: {{ house.landlord.fullName }}
+        </label>
+      </div>
+      <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+        <label
+          for="first-name"
+          class="block text-sm font-medium leading-6 text-gray-900"
+          >Number of Employee Residents:{{ house.residents }}
+        </label>
+      </div>
+      <div
+        class="flex justify-end gap-2 bg-gray-50 px-4 py-3 text-right sm:px-6"
+      >
+        <button
+          pButton
+          pRipple
+          label="Summary View"
+          class="p-button-sm"
+          routerLink="/houses/{{ house._id }}"
+        ></button>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
     </div>
   </div>
   <div *ngIf="houses.length === 0">
     <p>No houses found.</p>
   </div>
 </div>
-
-  

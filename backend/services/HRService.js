@@ -164,16 +164,6 @@ class HRService {
       const { address, landlord, facility, residents, roommates, reports } =
         houseData;
 
-    //   // Retrieve the data of existing employees
-    //   const existingEmployees = await Employee.find({
-    //     _id: { $in: roommates },
-    //   });
-
-    //   // Extract the ObjectIDs of existing employees from their data
-    //   const existingEmployeeIds = existingEmployees.map(
-    //     (employee) => employee._id
-    //   );
-
     // Retrieve the IDs of all employees in the database
     const employeeIds = await Employee.find().distinct("_id");
     // Shuffle the array of employee IDs randomly using the Fisher-Yates algorithm
@@ -184,14 +174,14 @@ class HRService {
     
       // Assign the first n employees from the shuffled array to the new house,
       // where n is the number of roommates needed for the house
-      const numRoommatesNeeded = roommates.length;
-      // const numRoommatesNeeded = 0;
+      const numRoommatesNeeded = houseData.roommates.roommates;
+      // console.log("roommates: ", houseData.roommates.roommates);
       const assignedEmployees = employeeIds.slice(0, numRoommatesNeeded);
 
       // Create a new House object with the assigned roommates' IDs
       const newHouse = new House({
         address,
-        landlord,
+        landlord,  
         facility,
         residents,
         roommates: assignedEmployees,

@@ -11,6 +11,10 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./house-list.component.css'],
 })
 export class HouseListComponent implements OnInit {
+  houses: any[] = []; // list of houses
+  currentPage = 1; // current page
+  pageSize = 5; // number of houses to display per page
+
   houses$: Observable<House[]> = of([]);
 
   constructor(private houseService: HouseService) {}

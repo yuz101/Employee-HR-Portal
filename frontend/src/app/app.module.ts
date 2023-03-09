@@ -53,6 +53,7 @@ import { OnboardingApplicationReviewComponent } from './components/onboarding-ap
 import { InterceptorService } from './services/intercepter.service';
 import { WorkAuthorizationManagementEmployeeComponent } from './components/work-authorization-management-employee/work-authorization-management-employee.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/houses', pathMatch: 'full' },
@@ -117,6 +118,7 @@ const appRoutes: Routes = [
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
     }),
+    NgxPaginationModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },

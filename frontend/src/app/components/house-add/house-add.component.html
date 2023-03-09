@@ -1,70 +1,84 @@
 <div class="container mx-auto">
     <h2 class="text-2xl font-bold">Add a New House</h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
-      <h4 class="text-lg font-semibold">Address Information</h4>
+      <h3 class="text-base font-semibold leading-6 text-gray-900">Address Information</h3>
       <div formGroupName="address" class="mt-4">
         <div class="mb-4">
-          <label class="block font-medium">Street Name:</label>
-          <input type="text" formControlName="streetName" class="form-input w-full mt-2 rounded-md border-gray-300" />
+          <label class="block text-sm font-medium leading-6 text-gray-900">Street Name:</label>
+          <input type="text" pInputText required class="relative block w-full p-inputtext-sm" formControlName="streetName"/>
         </div>
         <div class="mb-4">
           <label class="block font-medium">Building Number:</label>
-          <input type="text" formControlName="buildingNumber" class="form-input w-full mt-2 rounded-md border-gray-300" />
+          <input type="text" pInputText required class="relative block w-full p-inputtext-sm" formControlName="buildingNumber" />
         </div>
         <div class="mb-4">
           <label class="block font-medium">City:</label>
-          <input type="text" formControlName="city" class="form-input w-full mt-2 rounded-md border-gray-300" />
+          <input type="text" pInputText required class="relative block w-full p-inputtext-sm" formControlName="city"/>
         </div>
         <div class="mb-4">
           <label class="block font-medium">State:</label>
-          <input type="text" formControlName="state" class="form-input w-full mt-2 rounded-md border-gray-300" />
+          <input type="text" pInputText required class="relative block w-full p-inputtext-sm" formControlName="state"/>
         </div>
         <div class="mb-4">
           <label class="block font-medium">ZIP Code:</label>
-          <input type="text" formControlName="zip" class="form-input w-full mt-2 rounded-md border-gray-300" />
+          <input type="text" pInputText required class="relative block w-full p-inputtext-sm" formControlName="zip"/>
         </div>
       </div>
   
-      <h4 class="text-lg font-semibold mt-4">Landlord Information</h4>
+      <h3 class="text-base font-semibold leading-6 text-gray-900">Landlord Information</h3>
       <div formGroupName="landlord" class="mt-4">
         <div class="mb-4">
           <label class="block font-medium">Full Name:</label>
-          <input type="text" formControlName="fullName" class="form-input w-full mt-2 rounded-md border-gray-300" />
+          <input type="text" pInputText required class="relative block w-full p-inputtext-sm" formControlName="fullName" />
         </div>
-        <div class="mb-4">
-          <label class="block font-medium">Phone Number:</label>
-          <input type="text" formControlName="phoneNumber" class="form-input w-full mt-2 rounded-md border-gray-300" />
+        <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+          <label for="phone-number" class="block text-sm font-medium leading-6 text-gray-900">Phone Number:</label>
+          <p-inputMask mask="(999) 999-9999" class="p-inputtext-sm" formControlName="phoneNumber"></p-inputMask>
         </div>
         <div class="mb-4">
           <label class="block font-medium">Email:</label>
-          <input type="email" formControlName="email" class="form-input w-full mt-2 rounded-md border-gray-300" />
+          <input type="email" pInputText required class="relative block w-full p-inputtext-sm" formControlName="email"/>
         </div>
       </div>
   
-      <h4 class="text-lg font-semibold mt-4">Facility Information</h4>
+      <h3 class="text-base font-semibold leading-6 text-gray-900">Facility Information</h3>
       <div formGroupName="facility" class="mt-4">
         <div class="mb-4">
           <label class="block font-medium">Number of Beds:</label>
-          <input type="number" formControlName="beds" class="form-input w-full mt-2 rounded-md border-gray-300" />
+          <input type="number" pInputText required class="relative block w-full p-inputtext-sm" formControlName="beds"/>
         </div>
         <div class="mb-4">
           <label class="block font-medium">Number of Mattresses:</label>
-          <input type="number" formControlName="mattresses" class="form-input w-full mt-2 rounded-md border-gray-300" />
+          <input type="number" pInputText required class="relative block w-full p-inputtext-sm" formControlName="mattresses"/>
         </div>
         <div class="mb-4">
           <label class="block font-medium">Number of Tables:</label>
-          <input type="number" formControlName="mattresses" class="form-input w-full mt-2 rounded-md border-gray-300" />
+          <input type="number" pInputText required class="relative block w-full p-inputtext-sm" formControlName="tables" />
         </div>
         <div class="mb-4">
           <label class="block font-medium">Number of Chairs:</label>
-          <input type="number" formControlName="mattresses" class="form-input w-full mt-2 rounded-md border-gray-300" />
+          <input type="number" pInputText required class="relative block w-full p-inputtext-sm" formControlName="chairs" />
         </div>
+      </div>
+      <h3 class="text-base font-semibold leading-6 text-gray-900">Roommates:</h3>
+      <div formGroupName="roommates" class="mt-4">
+        <div class="mb-4">
+          <label class="block font-medium">Number of Roommates:</label>
+          <input type="number" pInputText required class="relative block w-full p-inputtext-sm" formControlName="roommates" />
         </div>
-        <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-          <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Add House</button>
+      </div>
+      <div class="flex justify-end gap-2 bg-gray-50 px-4 py-3 text-right sm:px-6">
+        <button pButton pRipple label="Add a House" class="p-button-sm" (click)="onSubmit()"></button>
+        <button
+        pButton
+        pRipple
+        label="View houses"
+        class="p-button-sm"
+        routerLink="/houses"
+      ></button>
       </div>
       </form>
     </div>
 
-  
+
   
