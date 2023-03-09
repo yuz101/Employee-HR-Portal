@@ -7,6 +7,7 @@ export enum WorkAuthorizationStatusEnum {
 
 export enum DocumentTypeEnum {
     PROFILE = 'profile',
+    DRIVER_LICENSE = 'driver-license',
 }
 
 export enum WorkAuthorizationDocumentTypeEnum{

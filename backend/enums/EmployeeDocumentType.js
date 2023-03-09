@@ -6,6 +6,7 @@ const EmployeeDocumentType = {
     I_983: 'i-983',
     PROFILE: 'profile',
     OPT_RECEIPT: 'opt-receipt',
+    DRIVER_LICENSE: 'driver-license'
 }
 
 Object.freeze(EmployeeDocumentType);

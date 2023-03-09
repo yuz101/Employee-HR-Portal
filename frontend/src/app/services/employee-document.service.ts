@@ -25,6 +25,8 @@ export class EmployeeDocumentService {
   
   uploadDocument(file: File, documentType: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum): Observable<EmployeeDocumentLink> {
     const formData = new FormData();
+    console.log('file: ', file);
+    console.log('documentType: ', documentType);
     formData.append('document', file);
     formData.append('documentType', documentType);
     return this.http.post<EmployeeDocumentLink>(`${this.baseUrl}/documents`, formData);

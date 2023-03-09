@@ -107,6 +107,14 @@ class DocumentService {
                 return 'opt.pdf';
             case EmployeeDocumentType.OPT_RECEIPT:
                 return 'opt-receipt.pdf';
+            case EmployeeDocumentType.I_20:
+                return 'i-20.pdf';
+            case EmployeeDocumentType.I_983:
+                return 'i-983.pdf';
+            case EmployeeDocumentType.DRIVER_LICENSE:
+                return 'driver-license.pdf';
+            case EmployeeDocumentType.PROFILE:
+                return 'profile.jpg';
             default:
                 throw Error('Unsupported document type.');
         }
