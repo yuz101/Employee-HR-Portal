@@ -21,9 +21,17 @@ import { WorkAuthorizationManagementEmployeeComponent } from '../work-authorizat
 })
 export class ProfileComponent {
 
+  DocumentTypeEnum = DocumentTypeEnum;
+
+  WorkAuthorizationDocumentTypeEnum = WorkAuthorizationDocumentTypeEnum;
+
   form: FormGroup;
 
-  uploadedFiles: File[] = [];
+  uploadedFiles: [File, DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum][] = [];
+
+  profile: File;
+
+  driverLicense: File;
 
   profile$: Observable<Employee> = this.store.select(selectProfile);
 
@@ -82,11 +90,28 @@ export class ProfileComponent {
     });
   }
 
-  customUpload(event) {
-      for(let file of event.files) {
-        this.uploadedFiles.push(file);
-      }
-      this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
+  customUpload(event, type: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum) {
+     for(let file of event.files) {
+         switch (type) {
+          case DocumentTypeEnum.PROFILE:
+            this.profile = file;
+            this.uploadedFiles.push([this.profile, type]);
+            break;
+          case DocumentTypeEnum.DRIVER_LICENSE:
+            this.driverLicense = file;
+            this.uploadedFiles.push([this.driverLicense, type]);
+            break;
+          case WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT:
+            break;
+          case WorkAuthorizationDocumentTypeEnum.I_20:
+            break;
+          case WorkAuthorizationDocumentTypeEnum.I_983:
+            break;
+          default:
+            break;
+        }
+    }
+    this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
   }
 
   save() {
@@ -98,10 +123,10 @@ export class ProfileComponent {
         console.log(error);
       }
     })
-    
-    this.uploadedFiles.map((file) => {
-      console.log(file);
-      this.employeeDocumentService.uploadDocument(file, WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT).subscribe({
+
+    this.uploadedFiles.map((item) => {
+      console.log(item);
+      this.employeeDocumentService.uploadDocument(item[0], item[1]).subscribe({
         next: (documentLink: EmployeeDocumentLink) => {
           console.log(documentLink);
         }

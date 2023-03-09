@@ -40,8 +40,13 @@
               <div class="col-span-6 sm:col-span-6">
                 <label class="block text-sm font-medium leading-6 text-gray-900">Profile Picture</label>
                 <div class="mt-2 flex items-center">
-                   <p-fileUpload mode="basic" name="myfile[]" [customUpload]="true" (uploadHandler)="customUpload($event)" accept="image/*"></p-fileUpload>
-                    <!-- <p-fileUpload mode="basic" type="" name="demo[]" url="./upload.php" accept="image/*" (uploadHandler)="onUpload($event)"></p-fileUpload> -->
+                    <p-fileUpload name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.PROFILE)" [multiple]="false" accept="image/*">
+                      <ng-template pTemplate="content">
+                          <ul *ngIf='profile'>
+                              <li>{{profile.name}} - {{profile.size}} bytes</li>
+                          </ul>
+                      </ng-template>
+                    </p-fileUpload>
                 </div>
               </div>
 
@@ -226,19 +231,14 @@
         
          <div class="overflow-hidden shadow sm:rounded-md my-10">
           <div class="bg-white px-4 py-5 sm:p-6">
-              <p-fileUpload name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event)" [multiple]="true" accept="application/pdf">
-                      <ng-template pTemplate="file">
-                          <ul *ngIf="uploadedFiles.length">
-                              <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes - {{file.name}}</li>
-                              <!-- <li *ngFor="let file of uploadedFiles">
-                                <select name="type" id="type">
-                                  <option value="OPT Recipt">OPT Recipt</option>
-                                  <option value="CPT">CPT</option>
-                                </select>
-                              </li> -->
-                          </ul>
-                      </ng-template>
-              </p-fileUpload>
+              <label class="block text-sm font-medium leading-6 text-gray-900">Driver License</label>
+                <p-fileUpload name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.DRIVER_LICENSE)" [multiple]="false" accept="application/pdf">
+                  <ng-template pTemplate="content">
+                      <ul *ngIf='driverLicense'>
+                          <li>{{driverLicense.name}} - {{driverLicense.size}} bytes</li>
+                      </ul>
+                  </ng-template>
+                </p-fileUpload>
           </div>
         </div>
 
