@@ -1,6 +1,7 @@
 const Application = require('../models/Application');
 const { default: mongoose } = require('mongoose');
-const EmployeeWorkAuthorizationStatus = require('../models/EmployeeWorkAuthorizationStatus')
+const EmployeeWorkAuthorizationStatus = require('../models/EmployeeWorkAuthorizationStatus');
+const { DocumentStatusEnum } = require('../enums/DocumentStatusEnum');
 
 class ApplicationService {
   static async createFile(inputObject) {
@@ -13,10 +14,10 @@ class ApplicationService {
               employeeId: inputObject.userID,
               workAuthorizationType: inputObject.identifyType.visaTitle,
               started: true,
-              uploadFlow: [{ status: 'Pending for Review', documentType: 'OPT receipt' },
-              { status: 'Not Uploaded', documentType: 'OPT EAD' },
-              { status: 'Not Uploaded', documentType: 'I-983' },
-              { status: 'Not Uploaded', documentType: 'I-20' }
+              uploadFlow: [{ status: DocumentStatusEnum.PENDING_FOR_REVIEW, documentType: 'OPT receipt' },
+              { status: DocumentStatusEnum.NOT_UPLOADED, documentType: 'OPT EAD' },
+              { status: DocumentStatusEnum.NOT_UPLOADED, documentType: 'I-983' },
+              { status: DocumentStatusEnum.NOT_UPLOADED, documentType: 'I-20' }
               ]
             })
           await newEmployeeWorkAuth.save()
@@ -63,7 +64,7 @@ class ApplicationService {
       if (!retrievedApplication) {
         return { error: 'Application not found' };
       }
-      retrievedApplication.status = "Approved";
+      retrievedApplication.status = DocumentStatusEnum.APPROVED;
       await retrievedApplication.save();
       return retrievedApplication
     } catch (e) {

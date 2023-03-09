@@ -3,40 +3,41 @@ const House = require("../models/House");
 const RegistrationEmail = require("../models/RegistrationEmail");
 const nodemailer = require("nodemailer");
 const EmployeeWorkAuthorizationStatus = require("../models/EmployeeWorkAuthorizationStatus");
+const { DocumentStatusEnum } = require("../enums/DocumentStatusEnum");
 
 class HRService {
-  static async sendRegistrationEmail({ firstName, middleName, lastName, email} , token) {
+  static async sendRegistrationEmail({ firstName, middleName, lastName, email }, token) {
     try {
-        // create reusable transporter object using the default SMTP transport
-        let transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'teamnull2023@gmail.com',
-                pass: 'walmiaczzpxlcdvn',
-            },
-        });
+      // create reusable transporter object using the default SMTP transport
+      let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'teamnull2023@gmail.com',
+          pass: 'walmiaczzpxlcdvn',
+        },
+      });
 
-        // send mail with defined transport object
-        let info = await transporter.sendMail({
-            from: 'Beaconfire Solution <teamnull2023@gmail.com>', // sender address
-            to: email, // list of receivers
-            subject: "[Important] Registration Link for Beaconfire", // Subject line
-            text: "Welcome to Beaconfire Solution", // plain text body
-            html: `<p>Greetings ${firstName} ${lastName}, </p> 
+      // send mail with defined transport object
+      let info = await transporter.sendMail({
+        from: 'Beaconfire Solution <teamnull2023@gmail.com>', // sender address
+        to: email, // list of receivers
+        subject: "[Important] Registration Link for Beaconfire", // Subject line
+        text: "Welcome to Beaconfire Solution", // plain text body
+        html: `<p>Greetings ${firstName} ${lastName}, </p> 
             <p>Please click the button below to register your account.</p> 
             <a style="padding: 10px 20px;" href="http://localhost:4200/auth/signup?email=${email}&token=${token}">Registration</a>`, // html body
-        });
-        const date = new Date()
-        const expiration = date.setHours(date.getHours() + 3);
-        const registration = await RegistrationEmail.create({ firstName, middleName, lastName, email, token, expiration: expiration, status: "sent"})
+      });
+      const date = new Date()
+      const expiration = date.setHours(date.getHours() + 3);
+      const registration = await RegistrationEmail.create({ firstName, middleName, lastName, email, token, expiration: expiration, status: "sent" })
 
-        console.log("Message sent: %s", info.messageId);
-        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+      console.log("Message sent: %s", info.messageId);
+      // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
-        // Preview only available when sending through an Ethereal account
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-        return registration
+      // Preview only available when sending through an Ethereal account
+      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+      return registration
     } catch (err) {
       console.error(err);
       throw error;
@@ -46,112 +47,112 @@ class HRService {
   static async resendRegistrationEmail(registrationEmailId) {
 
     try {
-        console.log(registrationEmailId)
-        let registrationEmail = await RegistrationEmail.findById(registrationEmailId)
-        console.log(registrationEmail)
-        const { firstName, middleName, lastName, preferredName, email, token } = registrationEmail
-        // create reusable transporter object using the default SMTP transport
-        let transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'teamnull2023@gmail.com',
-                pass: 'walmiaczzpxlcdvn',
-            },
-        });
+      console.log(registrationEmailId)
+      let registrationEmail = await RegistrationEmail.findById(registrationEmailId)
+      console.log(registrationEmail)
+      const { firstName, middleName, lastName, preferredName, email, token } = registrationEmail
+      // create reusable transporter object using the default SMTP transport
+      let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'teamnull2023@gmail.com',
+          pass: 'walmiaczzpxlcdvn',
+        },
+      });
 
-        // send mail with defined transport object
-        let info = await transporter.sendMail({
-            from: 'Beaconfire Solution <teamnull2023@gmail.com>', // sender address
-            to: email, // list of receivers
-            subject: "[Important] Registration Link for Beaconfire", // Subject line
-            text: "Welcome to Beaconfire Solution", // plain text body
-            html: `<p>Greetings ${firstName}(${preferredName}) ${lastName}, </p> 
+      // send mail with defined transport object
+      let info = await transporter.sendMail({
+        from: 'Beaconfire Solution <teamnull2023@gmail.com>', // sender address
+        to: email, // list of receivers
+        subject: "[Important] Registration Link for Beaconfire", // Subject line
+        text: "Welcome to Beaconfire Solution", // plain text body
+        html: `<p>Greetings ${firstName}(${preferredName}) ${lastName}, </p> 
             <p>Please click the button below to register your account.</p> 
             <a style="padding: 10px 20px;" href="http://localhost:4200/auth/signup?email=${email}&token=${token}">Registration</a>`, // html body
-        });
+      });
 
-        const date = new Date()
-        const expiration = date.setHours(date.getHours() + 3);
-        const updatedRegistrationEmail = await RegistrationEmail.findByIdAndUpdate(
-          registrationEmailId,
-          { 
-            $set: { expiration: expiration, status: "sent" }
-          },
-          { new: true }
-        )
+      const date = new Date()
+      const expiration = date.setHours(date.getHours() + 3);
+      const updatedRegistrationEmail = await RegistrationEmail.findByIdAndUpdate(
+        registrationEmailId,
+        {
+          $set: { expiration: expiration, status: "sent" }
+        },
+        { new: true }
+      )
 
-        console.log("From HR Service: ", updatedRegistrationEmail)
+      console.log("From HR Service: ", updatedRegistrationEmail)
 
-         console.log("Message sent: %s", info.messageId);
-        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+      console.log("Message sent: %s", info.messageId);
+      // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
-        // Preview only available when sending through an Ethereal account
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+      // Preview only available when sending through an Ethereal account
+      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 
-        return updatedRegistrationEmail
-      } catch (err) {
-        console.error(err);
-        throw error;
-      }
+      return updatedRegistrationEmail
+    } catch (err) {
+      console.error(err);
+      throw error;
+    }
 
   }
 
   static async getRegistrationEmails() {
-    try{
-        const registrationEmails = await RegistrationEmail.find()
-        return registrationEmails
+    try {
+      const registrationEmails = await RegistrationEmail.find()
+      return registrationEmails
     } catch (err) {
-        console.error(err);
-        throw error;
+      console.error(err);
+      throw error;
     }
   }
 
-   static async findRegistrationEmail(emailToken) {
-        try {
-            const registrationEmail = await RegistrationEmail.findOne({emailToken})
-            return registrationEmail
-        } catch (err) {
-            console.error(err)
-            throw err
-        }
+  static async findRegistrationEmail(emailToken) {
+    try {
+      const registrationEmail = await RegistrationEmail.findOne({ emailToken })
+      return registrationEmail
+    } catch (err) {
+      console.error(err)
+      throw err
     }
+  }
 
   static async updateRegistrationEmail(registrationId, registration) {
     try {
       const updateRegistrationEmail = await RegistrationEmail.findByIdAndUpdate(
-          registrationId,
-          {
-              $set: registration,
-          },
-          { new: true }
+        registrationId,
+        {
+          $set: registration,
+        },
+        { new: true }
       )
       return updateRegistrationEmail
     } catch (err) {
-        console.error(err);
-        throw error;
+      console.error(err);
+      throw error;
     }
   }
 
   static async getProfiles(searchInput) {
     try {
-        let employees = []
-        if(searchInput) {
-          employees = await Employee.aggregate([
-            {
-              $match: {
-                $or: [
-                  { firstName: { $regex: `.*${searchInput}.*`, $options: 'i'} },
-                  { lastName: { $regex: `.*${searchInput}.*` , $options: 'i'} },
-                  { preferredName: { $regex: `.*${searchInput}.*`, $options: 'i'} },
-                ],
-              },
+      let employees = []
+      if (searchInput) {
+        employees = await Employee.aggregate([
+          {
+            $match: {
+              $or: [
+                { firstName: { $regex: `.*${searchInput}.*`, $options: 'i' } },
+                { lastName: { $regex: `.*${searchInput}.*`, $options: 'i' } },
+                { preferredName: { $regex: `.*${searchInput}.*`, $options: 'i' } },
+              ],
             },
-          ])
-        } else {
-            employees = await Employee.find()
-        }
-        return employees
+          },
+        ])
+      } else {
+        employees = await Employee.find()
+      }
+      return employees
     } catch (err) {
       console.error(err);
       throw error;
@@ -170,8 +171,8 @@ class HRService {
     for (let i = employeeIds.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [employeeIds[i], employeeIds[j]] = [employeeIds[j], employeeIds[i]];
-    }
-    
+      }
+
       // Assign the first n employees from the shuffled array to the new house,
       // where n is the number of roommates needed for the house
       const numRoommatesNeeded = houseData.roommates.roommates;
@@ -276,26 +277,33 @@ class HRService {
     }
   }
 
-  static async workAuthorizationStatus() {
+  static async getWorkAuthorizationRecord(employeeId) {
     try {
-      const employeesStatus = await EmployeeWorkAuthorizationStatus.find();
-      if (!employeesStatus) {
+      const record = await EmployeeWorkAuthorizationStatus.findOne({ employeeId }).exec();
+      if (!record) {
         throw new Error("Employee Work Authorization Status not found");
       }
-
-      return employeesStatus;
+      return record;
     } catch (err) {
       console.error(err);
       throw err;
     }
   }
 
-  static async workAuthorizationStep() {
+  static async getAllCurrentWorkAuthorizationStatusRecords() {
     try {
       // filter employees with upflow status "Not Uploaded"
-      const employeesStep = await EmployeeWorkAuthorizationStatus.aggregate([
+      const currentStatusRecords = await EmployeeWorkAuthorizationStatus.aggregate([
         {
-          $match: { "uploadFlow.status": "Not Uploaded" }
+          $match: {
+            "uploadFlow.status": {
+              $in: [
+                DocumentStatusEnum.NOT_UPLOADED,
+                DocumentStatusEnum.PENDING_FOR_REVIEW,
+                DocumentStatusEnum.REJECTED,
+              ]
+            }
+          }
         },
         {
           $lookup: {
@@ -315,7 +323,16 @@ class HRService {
               $filter: {
                 input: "$uploadFlow",
                 as: "flow",
-                cond: { $eq: [ "$$flow.status", "Not Uploaded" ] }
+                cond: {
+                  $in: [
+                    "$$flow.status",
+                    [
+                      DocumentStatusEnum.NOT_UPLOADED,
+                      DocumentStatusEnum.PENDING_FOR_REVIEW,
+                      DocumentStatusEnum.REJECTED
+                    ]
+                  ]
+                }
               }
             },
             firstName: { $arrayElemAt: ["$employee.firstName", 0] },
@@ -329,97 +346,117 @@ class HRService {
             uploadFlow: { $slice: ["$uploadFlow", 1] }
           }
         }
-      ]);
+      ]).exec();
 
-      const formattedEmployees = employeesStep.map((employee) => {
+      const formattedRecords = currentStatusRecords.map((record) => {
+        const action = {
+          name: '',
+        };
+        if (record.uploadFlow[0].status === DocumentStatusEnum.NOT_UPLOADED
+          || record.uploadFlow[0].status === DocumentStatusEnum.REJECTED) {
+          action.name = 'Send Notification';
+        }
+        else if (record.uploadFlow[0].status === DocumentStatusEnum.PENDING_FOR_REVIEW) {
+          action.name = 'Review';
+        }
         return {
-          employeeId: employee.employeeId,
-          firstName: employee.firstName,
-          lastName: employee.lastName,
-          middleName: employee.middleName,
-          preferredName: employee.preferredName,
-          workAuthorization: employee.workAuthorizationType,
+          employeeId: record.employeeId,
+          firstName: record.firstName,
+          lastName: record.lastName,
+          middleName: record.middleName,
+          preferredName: record.preferredName,
+          workAuthorization: record.workAuthorizationType,
           workAuthorizationStatus: {
-            started: employee.started,
-            completed: employee.completed,
-            documentType: employee.uploadFlow[0].documentType,
-            documentStatus: employee.uploadFlow[0].status,
-            feedback: employee.uploadFlow[0].feedback,
-            action: {
-              name: "Send Notification"
-            }
+            started: record.started,
+            completed: record.completed,
+            documentType: record.uploadFlow[0].documentType,
+            documentStatus: record.uploadFlow[0].status,
+            feedback: record.uploadFlow[0].feedback,
+            action: action,
           }
         };
       });
 
-      if (!employeesStep) {
+      if (!currentStatusRecords) {
         throw new Error("Employee Work Authorization Step not found");
       }
 
-      return formattedEmployees;
+      return formattedRecords;
     } catch (err) {
       console.error(err);
       throw err;
     }
   }
-   
-  static async updateDocumentStatus(employeeId, documentStatus, action) {
+
+  static async updateDocumentStatus(employeeId, action, feedback) {
     try {
-      const workAuthorizationStatus = await EmployeeWorkAuthorizationStatus.findOne({ employeeId: employeeId }).exec();
-  
-      if (!workAuthorizationStatus) {
+      const currentRecord = await EmployeeWorkAuthorizationStatus.findOne({ employeeId: employeeId }).exec();
+      if (!currentRecord) {
         throw new Error("Employee work authorization status not found");
       }
-  
-      const uploadFlow = workAuthorizationStatus.uploadFlow;
-      let index;
-      for (let i = 0; i < uploadFlow.length; i++) {
-        if (uploadFlow[i].status === "Pending for Review") {
-          index = i;
+
+      const flow = currentRecord.uploadFlow;
+      let currentIndex = -1;
+      for (let i = 0; i < flow.length; i++) {
+        if (flow[i].status === DocumentStatusEnum.PENDING_FOR_REVIEW) {
+          currentIndex = i;
           break;
         }
       };
 
-      const lastUploadFlow = uploadFlow[index];
-  
-      if (lastUploadFlow.status !== "Pending for Review") {
-        throw new Error(
-          "Cannot update document status, last upload flow status is not 'Pending for Review'"
-        );
+      if (currentIndex === -1) {
+        throw new Error('Cannot update document status, no document is pending for review');
       }
-  
-      const updatedUploadFlow = {
-        ...lastUploadFlow,
-        status: documentStatus,
-        feedback: action
-      };
-  
-      const updatedUploadFlows = [
-        ...uploadFlow.slice(0, uploadFlow.length - 1),
-        updatedUploadFlow
-      ];
-  
-      const updatedWorkAuthorizationStatus = await EmployeeWorkAuthorizationStatus.findOneAndUpdate(
-        {
-          employeeId: employeeId
-        },
-        {
-          $set: {
-            uploadFlow: updatedUploadFlows
-          }
-        },
-        {
-          new: true
+
+      const currentDocument = flow[currentIndex];
+      if (action === 'approve') {
+        currentDocument.status = DocumentStatusEnum.APPROVED;
+        currentDocument.feedback = '';
+      }
+      else if (action === 'reject') {
+        currentDocument.status = DocumentStatusEnum.REJECTED;
+        currentDocument.feedback = feedback;
+      }
+
+      if (currentIndex === flow.length - 1) {
+        currentRecord.completed = true;
+      }
+
+      let nextCurrentDocument;
+      if (currentIndex < flow.length - 1) {
+        nextCurrentDocument = flow[currentIndex + 1];
+      }
+      else {
+        nextCurrentDocument = flow[currentIndex];
+      }
+
+      let newStatusRecord = {
+        started: currentRecord.started,
+        completed: currentRecord.completed,
+        documentType: nextCurrentDocument.documentType,
+        documentStatus: nextCurrentDocument.status,
+        feedback: nextCurrentDocument.feedback,
+        action: null,
+      }
+
+      if (nextCurrentDocument.status === DocumentStatusEnum.NOT_UPLOADED
+        || nextCurrentDocument.status === DocumentStatusEnum.REJECTED) {
+        newStatusRecord.action = {
+          name: 'Send Notification',
         }
-      ).exec();
-  
-      return updatedWorkAuthorizationStatus;
+      }
+      else if (nextCurrentDocument.status === DocumentStatusEnum.PENDING_FOR_REVIEW) {
+        newStatusRecord.action = {
+          name: 'Review',
+        }
+      }
+      await currentRecord.save();
+      return newStatusRecord;
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
-  
 }
- 
+
 module.exports = HRService;
