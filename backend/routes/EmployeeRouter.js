@@ -17,8 +17,9 @@ router.post('/housing/:id/report',verifyToken, EmployeeController.createReport);
 // view existing reports 
 router.get('/housing/:id/report', verifyToken, EmployeeController.viewReport);
 
-// ddding comments
+// adding comments
 router.post('/housing/:id/report/:reportId', verifyToken, EmployeeController.createComment);
+
 
 // viewing a report's list of comments
 router.get('/housing/:id/report/:reportId', verifyToken, EmployeeController.getComment);
