@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { selectUser } from './store/selectors/user.selector';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'my-app';
+  user$ = this.store.select(selectUser);
+  isHR = this.user$.subscribe(user => user!.isHR);
+  constructor(private store: Store) { }
 }

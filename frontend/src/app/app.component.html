@@ -6,18 +6,33 @@
           <div class="flex-shrink-0">
             <img class="mx-auto h-12 w-auto" src="https://assets.dice.com/techpro/companies/brandMax/Beaconfire/logo.png" alt="Beaconfire Solution">
           </div>
-          <div class="hidden md:block">
+          <div class="hidden md:block" *ngIf="isHR; else employee">
             <div class="ml-10 flex items-baseline space-x-4">
               <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-              <a routerLink="/" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Onboarding Application</a>
+              <a routerLink="/registration-emails" class=" text-gray-300 hover:bg-gray-700 hover:text-white  rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Home</a>
+
+              <a routerLink="/profiles" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Employee Profiles</a>
+
+              <a href="/visa-management-hr" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Visa Status Management</a>
+
+              <a href="/onboarding-application-review" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Hiring Management</a>
+
+              <a href="/houses" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Housing Management</a>
+            </div>
+          </div>
+
+          <ng-template class="hidden md:block" #employee>
+            <div class="ml-10 flex items-baseline space-x-4">
+              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+              <a routerLink="/onboarding" class=" text-gray-300 hover:bg-gray-700 hover:text-white  rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Onboarding Application</a>
 
               <a routerLink="/profile" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Personal Information</a>
 
-              <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Visa Status Management</a>
+              <a href="/work-authorization-management" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Visa Status</a>
 
               <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Housing</a>
             </div>
-          </div>
+          </ng-template>
         </div>
         <div class="hidden md:block">
           <div class="ml-4 flex items-center md:ml-6">

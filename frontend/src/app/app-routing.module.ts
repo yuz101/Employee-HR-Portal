@@ -16,7 +16,7 @@ import { WorkAuthorizationManagementEmployeeComponent } from './components/work-
 
 
 const routes: Routes = [
-  { path: '', component: OnboardingComponent },
+  { path: 'onboarding', component: OnboardingComponent },
   { path: 'auth/signup', component: SignupComponent },
   { path: 'auth/login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent },
