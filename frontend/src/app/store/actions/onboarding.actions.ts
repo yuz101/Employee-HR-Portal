@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Onboarding } from '../models/onboarding.model';
+import { Onboarding } from '../../models/onboarding.model';
 
 export enum OnboardingActionTypes {
     AddOnboarding = '[Onboarding] Add Onboarding',

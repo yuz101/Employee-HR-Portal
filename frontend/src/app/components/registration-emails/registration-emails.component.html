@@ -8,7 +8,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table [value]="registrationEmails" [rows]="10" [paginator]="true" [(selection)]="selectedRegistrationEmails" [tableStyle]="{'min-width': '60rem'}">
+    <p-table [value]="(registrationEmails$ | async)!" [rows]="10" [paginator]="true" [(selection)]="selectedRegistrationEmails" [tableStyle]="{'min-width': '60rem'}">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 Manage Registration Emails

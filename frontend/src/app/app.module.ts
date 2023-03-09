@@ -26,9 +26,14 @@ import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {DataViewModule} from 'primeng/dataview';
+
 // import { employeeReducer } from './store/employee.reducer';
 // import { EmployeeState } from './store/employee.reducer';
-import { employeesReducer } from './store/employee.reducer';
+import { employeesReducer } from './store/reducers/employees.reducer';
+import { profileReducer } from './store/reducers/profile.reducer';
+import { registrationEmailReducer } from './store/reducers/registration-emails.reducer';
+import { employeeWorkAuthorizationStatusRecordsReducer } from './store/reducers/employee-work-authorization-status-records.reducer';
+
 import {ToolbarModule} from 'primeng/toolbar';
 import {DropdownModule} from 'primeng/dropdown';
 import { AppComponent } from './app.component';
@@ -43,8 +48,6 @@ import { FilterPipe } from './pipes/filter.pipe';
 import { DocumentReviewComponent } from './components/visa-management-hr/document-review/document-review.component';
 import { RegistrationEmailsComponent } from './components/registration-emails/registration-emails.component';
 import { OnboardingApplicationReviewComponent } from './components/onboarding-application-review/onboarding-application-review.component';
-
-import { employeeWorkAuthorizationStatusRecordsReducer } from './store/reducers/employee-work-authorization-status-records.reducer';
 
 import { InterceptorService } from './services/intercepter.service';
 
@@ -99,6 +102,8 @@ const appRoutes: Routes = [
     DropdownModule,
     StoreModule.forRoot({
       user: userReducer,
+      profile: profileReducer,
+      registrationEmails: registrationEmailReducer,
       [houseFeatureKey]: userReducer,
       employeeWorkAuthorizationStatusRecords: employeeWorkAuthorizationStatusRecordsReducer,
       employees: employeesReducer

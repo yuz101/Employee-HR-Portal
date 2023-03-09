@@ -5,7 +5,7 @@ const { verifyToken, verifyHR } = require('../middleware/verifyToken');
 // send registration email
 router.post('/registration-email', HRController.sendRegistrationEmail);
 
-router.post('/resend-registration-email', HRController.resendRegistrationEmail);
+router.put('/resend-registration-email', HRController.resendRegistrationEmail);
 
 router.get('/registration-emails', HRController.getRegistrationEmails);
 
