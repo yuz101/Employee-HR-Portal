@@ -9,8 +9,9 @@ import { ProfileActions } from 'src/app/store/actions/profile.action';
 import { selectProfile } from 'src/app/store/selectors/profile.selector';
 import { Observable } from 'rxjs';
 import { EmployeeDocumentService } from 'src/app/services/employee-document.service';
-import { EmployeeDocumentLink } from 'src/app/models/work-authorization-status';
+import { DocumentTypeEnum, EmployeeDocumentLink } from 'src/app/models/work-authorization-status';
 import { WorkAuthorizationDocumentTypeEnum } from 'src/app/models/work-authorization-status';
+import { WorkAuthorizationManagementEmployeeComponent } from '../work-authorization-management-employee/work-authorization-management-employee.component';
 
 @Component({
   selector: 'app-profile',
@@ -93,11 +94,11 @@ export class ProfileComponent {
     this.profileService.save(employee).subscribe({
       next: (profile: Employee) => {
         this.store.dispatch(ProfileActions.retrievedEmployeeProfile({ profile }));
-        this._router.navigateByUrl('/profile');
       }, error: (error) => {
         console.log(error);
       }
     })
+    
     this.uploadedFiles.map((file) => {
       console.log(file);
       this.employeeDocumentService.uploadDocument(file, WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT).subscribe({

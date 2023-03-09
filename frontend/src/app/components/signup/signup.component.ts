@@ -40,8 +40,12 @@ export class SignupComponent {
     this.authService.signup(username, this.email, password).subscribe({
       next: (user: User) => {
         this.authService.storeJwtToken(user.jwt!);
-        this.store.dispatch(UserAction.setCurrentUser({ user }));
-        this._router.navigateByUrl('/onboarding');
+        this.authService.storeIsHR(user.isHR!);
+        if (user.isHR) {
+          this._router.navigateByUrl('/registration-emails');
+        } else {
+          this._router.navigateByUrl('/onboarding');
+        }
       }, error: (error) => {
         console.log(error);
       }

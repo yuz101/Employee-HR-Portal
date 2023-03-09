@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
-import { EmployeeDocumentLink, WorkAuthorizationDocumentTypeEnum } from '../models/work-authorization-status';
+import { DocumentTypeEnum, EmployeeDocumentLink, WorkAuthorizationDocumentTypeEnum } from '../models/work-authorization-status';
 
 @Injectable({
   providedIn: 'root'
@@ -23,12 +23,10 @@ export class EmployeeDocumentService {
     return of(allDocumentsMock);
   }
   
-  uploadDocument(file: File, documentType: WorkAuthorizationDocumentTypeEnum): Observable<EmployeeDocumentLink> {
+  uploadDocument(file: File, documentType: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum): Observable<EmployeeDocumentLink> {
     const formData = new FormData();
-    console.log(file)
     formData.append('document', file);
     formData.append('documentType', documentType);
-    console.log(formData)
     return this.http.post<EmployeeDocumentLink>(`${this.baseUrl}/documents`, formData);
   }
 

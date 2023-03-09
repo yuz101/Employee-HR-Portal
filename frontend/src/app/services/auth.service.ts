@@ -12,6 +12,14 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  storeIsHR(isHR: boolean) {
+    localStorage.setItem('isHR', isHR.toString());
+  }
+
+  getIsHR(): boolean {
+    return localStorage.getItem('isHR') === 'true';
+  }
+
   getJwtToken(): string|null {
     return localStorage.getItem(this.JWT_TOKEN);
   }
