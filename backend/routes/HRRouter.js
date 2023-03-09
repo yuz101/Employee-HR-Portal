@@ -38,4 +38,7 @@ router.get('/workAuthorizationStatus', verifyToken, verifyHR, HRController.workA
 // view all employees work authorization step
 router.get('/workAuthorizationStep', verifyToken, verifyHR, HRController.workAuthorizationStep);
 
+// view all approved employees 
+router.patch('/updateDocumentStatus', HRController.updateDocumentStatus);
+
 module.exports = router
