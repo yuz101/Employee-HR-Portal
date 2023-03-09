@@ -35,6 +35,9 @@ export class HouseAddComponent {
         tables: [0, Validators.required],
         chairs: [0, Validators.required],
       }),
+      roommates: this.fb.group({
+        roommates: [0, Validators.required],
+      }),
     });
   }
 
