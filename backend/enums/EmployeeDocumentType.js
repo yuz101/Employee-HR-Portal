@@ -1,7 +1,7 @@
 const EmployeeDocumentType = {
     CPT: 'cpt',
     OPT: 'opt',
-    OPT_RECEIPT: 'opt-receipt',
+    OPT_RECEIPT: 'OPT Receipt',
 }
 
 Object.freeze(EmployeeDocumentType);

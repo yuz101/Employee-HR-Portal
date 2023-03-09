@@ -52,6 +52,7 @@ import { OnboardingApplicationReviewComponent } from './components/onboarding-ap
 
 import { InterceptorService } from './services/intercepter.service';
 import { WorkAuthorizationManagementEmployeeComponent } from './components/work-authorization-management-employee/work-authorization-management-employee.component';
+import { AuthGuardService } from './services/auth-guard.service';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/houses', pathMatch: 'full' },
@@ -119,6 +120,7 @@ const appRoutes: Routes = [
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+    AuthGuardService,
     HouseService
   ],
   bootstrap: [AppComponent],

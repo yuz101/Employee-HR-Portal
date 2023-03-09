@@ -4,14 +4,14 @@ const fs = require('fs');
 const documentService = new DocumentService();
 
 exports.uploadSingleDocument = async (req, res) => {
-    let { documentType, employeeId } = req.body;
-    if (!employeeId) {
+    let documentType = req.body.documentType;
+    if (!req.token.userId) {
         employeeId = '123';
     }
 
     try {
         await documentService.uploadEmployeeDocument({
-            employeeId: employeeId,
+            employeeId: req.token.userId,
             filePath: req.file.path,
             documentType: documentType,
         });

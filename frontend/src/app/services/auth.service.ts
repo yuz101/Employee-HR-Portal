@@ -20,6 +20,10 @@ export class AuthService {
     localStorage.setItem(this.JWT_TOKEN, jwt);
   }
 
+  isAuthenticated(): boolean {
+    return this.getJwtToken() ? true : false;
+  }
+
   signup(username: string|null, email: string|null, password: string|null): Observable<User>{
     const url = `${this.baseUrl}/signup`
     const body = { username, email, password };

@@ -9,7 +9,9 @@ import { selectUser } from './store/selectors/user.selector';
 })
 export class AppComponent {
   title = 'my-app';
-  user$ = this.store.select(selectUser);
-  isHR = this.user$.subscribe(user => user!.isHR);
-  constructor(private store: Store) { }
+  isHR: boolean;
+  user$ = this.store.select(selectUser).subscribe((user) => {
+    this.isHR = user.isHR!;
+  });
+  constructor(private store: Store) {}
 }
