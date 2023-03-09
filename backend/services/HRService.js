@@ -304,6 +304,14 @@ class HRService {
           $match: { "uploadFlow.status": "Not Uploaded" }
         },
         {
+          $lookup: {
+            from: "employees",
+            localField: "employeeId",
+            foreignField: "_id",
+            as: "employee"
+          }
+        },
+        {
           $project: {
             employeeId: 1,
             workAuthorizationType: 1,
@@ -315,7 +323,11 @@ class HRService {
                 as: "flow",
                 cond: { $eq: [ "$$flow.status", "Not Uploaded" ] }
               }
-            }
+            },
+            firstName: { $arrayElemAt: ["$employee.firstName", 0] },
+            lastName: { $arrayElemAt: ["$employee.lastName", 0] },
+            middleName: { $arrayElemAt: ["$employee.middleName", 0] },
+            preferredName: { $arrayElemAt: ["$employee.preferredName", 0] },
           }
         },
         {
@@ -325,11 +337,32 @@ class HRService {
         }
       ]);
 
+      const formattedEmployees = employeesStep.map((employee) => {
+        return {
+          employeeId: employee.employeeId,
+          firstName: employee.firstName,
+          lastName: employee.lastName,
+          middleName: employee.middleName,
+          preferredName: employee.preferredName,
+          workAuthorization: employee.workAuthorizationType,
+          workAuthorizationStatus: {
+            started: employee.started,
+            completed: employee.completed,
+            documentType: employee.uploadFlow[0].documentType,
+            documentStatus: employee.uploadFlow[0].status,
+            feedback: employee.uploadFlow[0].feedback,
+            action: {
+              name: "Send Notification"
+            }
+          }
+        };
+      });
+
       if (!employeesStep) {
         throw new Error("Employee Work Authorization Step not found");
       }
 
-      return employeesStep;
+      return formattedEmployees;
     } catch (err) {
       console.error(err);
       throw err;
