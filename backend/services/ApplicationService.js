@@ -16,7 +16,7 @@ class ApplicationService {
               workAuthorizationType: 'OPT',
               started: true,
               completed: false,
-              uploadFlow: [{ status: DocumentStatusEnum.PENDING_FOR_REVIEW, documentType: EmployeeDocumentTypeEnum.OPT_EAD },
+              uploadFlow: [{ status: DocumentStatusEnum.PENDING_FOR_REVIEW, documentType: EmployeeDocumentTypeEnum.OPT_RECEIPT },
               { status: DocumentStatusEnum.NOT_UPLOADED, documentType: EmployeeDocumentTypeEnum.OPT_EAD },
               { status: DocumentStatusEnum.NOT_UPLOADED, documentType: EmployeeDocumentTypeEnum.I_983 },
               { status: DocumentStatusEnum.NOT_UPLOADED, documentType: EmployeeDocumentTypeEnum.I_20 },
@@ -42,6 +42,7 @@ class ApplicationService {
   static async getApplicationById(userID) {
     try {
       const retrievedApplication = await Application.findOne({ "userID": userID })
+      console.log(userID);
       if (!retrievedApplication) {
         // throw { error: "Can not find the application" }
         throw new Error("Can not find the application");
