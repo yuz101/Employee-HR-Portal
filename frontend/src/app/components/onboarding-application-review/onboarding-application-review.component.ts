@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router'
 import { ConfirmationService } from 'primeng/api';
 import { Onboarding } from 'src/app/models/onboarding.model';
 import { OnboardingApplicationReviewService } from 'src/app/services/onboarding-application-review.service';
@@ -38,7 +39,9 @@ export class OnboardingApplicationReviewComponent {
     private onboardingApplicationReviewService : OnboardingApplicationReviewService, 
     private onboardingApplicationService: OnboardingApplicationService,
     private messageService: MessageService, 
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService, 
+    private router: Router,
+
   ) {
      this.onboardingForm = this.fb.group({
       userID: [''],
@@ -137,6 +140,7 @@ export class OnboardingApplicationReviewComponent {
       next: (application: Onboarding) => {
         this.messageService.add({severity:'success', summary: 'Success', detail: 'Application Approved'});
         this.loading = false;
+        window.location.reload();
       }, error: (error) => {
         console.log(error);
       }
@@ -151,6 +155,7 @@ export class OnboardingApplicationReviewComponent {
       next: (application: Onboarding) => {
         this.messageService.add({severity:'success', summary: 'Success', detail: 'Application Rejected'});
         this.loading = false;
+        window.location.reload();
       }, error: (error) => {
         console.log(error);
       }
