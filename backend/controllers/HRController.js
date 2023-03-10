@@ -164,4 +164,14 @@ exports.updateDocumentStatus = async (req, res) => {
     }
 };
 
+exports.sendWorkAuthorizationStatusEmail = async (req, res) => {
+    const { employeeId } = req.body;
+    try {
+        const messageId = await HRService.sendWorkAuthorizationStatusEmail(employeeId);
+        res.status(200).json({ messageId });
+    } catch (err) {
+        res.status(404).json({ err: err.message });
+    }
+}
+
 

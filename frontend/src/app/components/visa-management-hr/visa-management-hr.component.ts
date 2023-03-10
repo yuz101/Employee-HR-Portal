@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DocumentReviewComponent } from './document-review/document-review.component';
 import { EmployeeWorkAuthorizationStatusService } from '../../services/employee-work-authorization-status.service';
-import { EmployeeCurrentWorkAuthorizationStatusRecord, EmployeeDocumentLink, WorkAuthorizationStatusEnum } from 'src/app/models/work-authorization-status';
+import { EmployeeCurrentWorkAuthorizationStatusRecord, EmployeeDocumentLink, WorkAuthorizationDocumentTypeEnum, WorkAuthorizationStatusEnum } from 'src/app/models/work-authorization-status';
 import { selectEmployeeWorkAuthorizationStatusRecords } from 'src/app/store/selectors/employee-work-authorization-status-records.selectors';
 import { EmployeeWorkAuthorizationStatusRecordsActions } from 'src/app/store/actions/employee-work-authorization-status-records.action';
 import { Observable } from 'rxjs';
@@ -50,7 +50,7 @@ export class VisaManagementHrComponent implements OnInit {
     table.clear();
   }
 
-  showDocumentReviewDialog(employeeId: string, documentType: string) {
+  showDocumentReviewDialog(employeeId: string, documentType: WorkAuthorizationDocumentTypeEnum) {
     const ref = this.dialogService.open(DocumentReviewComponent, {
       data: {
         employeeId: employeeId,
@@ -78,6 +78,18 @@ export class VisaManagementHrComponent implements OnInit {
       .subscribe((documents) => {
         this.uploadedDocuments = documents['downloadLinks'];
         this.isLoadingAllDocumentLinks = false;
+      });
+  }
+
+  sendWorkAuthorizationReminderEmail(employeeId: string) {
+    this.workAuthorizationStatusService
+      .sendWorkAuthorizationReminderEmailToEmployee(employeeId)
+      .subscribe({
+        next: (response) => {
+          alert('Email sent successfully');
+        }, error: (error) => {
+          console.log(error);
+        }
       });
   }
 }

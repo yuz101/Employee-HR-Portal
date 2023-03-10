@@ -98,7 +98,7 @@
                             || record.workAuthorizationStatus.documentStatus === allWorkAuthorizationStatus.REJECTED)">
                         <button pButton pRipple type="button" class="p-button-raised" [icon]="record.workAuthorizationStatus.action.name === 'Send Notification'
                             ? 'pi pi-bell'
-                            : ''" label={{record.workAuthorizationStatus.action.name}}></button>
+                            : ''" label={{record.workAuthorizationStatus.action.name}} (click)="sendWorkAuthorizationReminderEmail(record.employeeId)"></button>
                     </ng-container>
                 </td>
             </tr>

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Observable, map, catchError } from 'rxjs';
-import { EmployeeCurrentWorkAuthorizationStatusRecord, CurrentWorkAuthorizationStatus, WorkAuthorizationStatusEnum, EmployeeWorkAuthorizationStatus } from '../models/work-authorization-status';
+import { EmployeeCurrentWorkAuthorizationStatusRecord, CurrentWorkAuthorizationStatus, WorkAuthorizationStatusEnum, EmployeeWorkAuthorizationStatus, WorkAuthorizationDocumentTypeEnum } from '../models/work-authorization-status';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +52,10 @@ export class EmployeeWorkAuthorizationStatusService {
     );
   }
 
+  sendWorkAuthorizationReminderEmailToEmployee(employeeId: string) {
+    return this.http.post(`${this.baseUrl}/hr/work-authorization-reminder`, { employeeId })
+  }
+
   constructor(private http: HttpClient) { }
 }
 
@@ -84,83 +88,83 @@ export class EmployeeWorkAuthorizationStatusService {
 //   ],
 // }
 
-const approveReturnStatusMock: CurrentWorkAuthorizationStatus = {
-  started: true,
-  completed: false,
-  documentType: 'The Next Document',
-  documentStatus: WorkAuthorizationStatusEnum.NOT_UPLOADED,
-  feedback: '',
-  action: {
-    name: 'Send Notification',
-  },
-}
+// const approveReturnStatusMock: CurrentWorkAuthorizationStatus = {
+//   started: true,
+//   completed: false,
+//   documentType: 'The Next Document',
+//   documentStatus: WorkAuthorizationStatusEnum.NOT_UPLOADED,
+//   feedback: '',
+//   action: {
+//     name: 'Send Notification',
+//   },
+// }
 
-const rejectReturnStatusMock: CurrentWorkAuthorizationStatus = {
-  started: true,
-  completed: false,
-  documentType: 'Still Current Document',
-  documentStatus: WorkAuthorizationStatusEnum.REJECTED,
-  feedback: 'This is not the correct document.',
-  action: {
-    name: 'Send Notification',
-  },
-}
+// const rejectReturnStatusMock: CurrentWorkAuthorizationStatus = {
+//   started: true,
+//   completed: false,
+//   documentType: 'Still Current Document',
+//   documentStatus: WorkAuthorizationStatusEnum.REJECTED,
+//   feedback: 'This is not the correct document.',
+//   action: {
+//     name: 'Send Notification',
+//   },
+// }
 
-const currentRecordsMock: EmployeeCurrentWorkAuthorizationStatusRecord[] = [
-  {
-    employeeId: '1',
-    firstName: 'Yuru', lastName: 'Zhou', middleName: '', preferredName: 'Amy', workAuthorization: 'OPT',
-    workAuthorizationStatus: {
-      started: true,
-      completed: false,
-      documentType: 'OPT Receipt',
-      documentStatus: 'Not Uploaded',
-      feedback: '',
-      action: {
-        name: 'Send Notification',
-      },
-    },
-  },
-  {
-    employeeId: '2',
-    firstName: 'Qingyuan', lastName: 'Liu', middleName: '', preferredName: '', workAuthorization: 'H1-B',
-    workAuthorizationStatus: {
-      started: false,
-      completed: false,
-      documentType: '',
-      documentStatus: '',
-      feedback: '',
-      action: {
-        name: 'Send Notification',
-      },
-    },
-  },
-  {
-    employeeId: '3',
-    firstName: 'Paul', lastName: 'Zhou', middleName: '', preferredName: '', workAuthorization: 'OPT',
-    workAuthorizationStatus: {
-      started: true,
-      completed: false,
-      documentType: 'I-983',
-      documentStatus: 'Pending for Review',
-      feedback: '',
-      action: {
-        name: 'Review',
-      },
-    },
-  },
-  {
-    employeeId: '4',
-    firstName: 'Dafei', lastName: 'Du', middleName: '', preferredName: '', workAuthorization: 'OPT',
-    workAuthorizationStatus: {
-      started: true,
-      completed: true,
-      documentType: 'I-983',
-      documentStatus: 'Approved',
-      feedback: '',
-      action: {
-        name: 'View',
-      },
-    },
-  },
-]
+// const currentRecordsMock: EmployeeCurrentWorkAuthorizationStatusRecord[] = [
+//   {
+//     employeeId: '1',
+//     firstName: 'Yuru', lastName: 'Zhou', middleName: '', preferredName: 'Amy', workAuthorization: 'OPT',
+//     workAuthorizationStatus: {
+//       started: true,
+//       completed: false,
+//       documentType: 'OPT Receipt',
+//       documentStatus: 'Not Uploaded',
+//       feedback: '',
+//       action: {
+//         name: 'Send Notification',
+//       },
+//     },
+//   },
+//   {
+//     employeeId: '2',
+//     firstName: 'Qingyuan', lastName: 'Liu', middleName: '', preferredName: '', workAuthorization: 'H1-B',
+//     workAuthorizationStatus: {
+//       started: false,
+//       completed: false,
+//       documentType: '',
+//       documentStatus: '',
+//       feedback: '',
+//       action: {
+//         name: 'Send Notification',
+//       },
+//     },
+//   },
+//   {
+//     employeeId: '3',
+//     firstName: 'Paul', lastName: 'Zhou', middleName: '', preferredName: '', workAuthorization: 'OPT',
+//     workAuthorizationStatus: {
+//       started: true,
+//       completed: false,
+//       documentType: 'I-983',
+//       documentStatus: 'Pending for Review',
+//       feedback: '',
+//       action: {
+//         name: 'Review',
+//       },
+//     },
+//   },
+//   {
+//     employeeId: '4',
+//     firstName: 'Dafei', lastName: 'Du', middleName: '', preferredName: '', workAuthorization: 'OPT',
+//     workAuthorizationStatus: {
+//       started: true,
+//       completed: true,
+//       documentType: 'I-983',
+//       documentStatus: 'Approved',
+//       feedback: '',
+//       action: {
+//         name: 'View',
+//       },
+//     },
+//   },
+// ]
