@@ -29,6 +29,13 @@ exports.uploadSingleDocument = async (req, res) => {
 exports.getDownloadLinkForOneEmployeeDocument = async (req, res) => {
     const { employeeId, documentType } = req.query;
     try {
+        if (!documentType) {
+            const downloadLinks = await documentService.getAllDocumentDownloadLinksForEmployee({
+                employeeId: employeeId,
+            });
+            return res.status(200).json({ downloadLinks });
+        }
+        
         const downloadLink = await documentService.getDocumentDownloadLinkForEmployee({
             employeeId: employeeId,
             documentType: documentType,
