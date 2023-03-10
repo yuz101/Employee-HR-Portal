@@ -39,6 +39,8 @@ router.get('/work-authorization-record', verifyToken, verifyHR, HRController.get
 router.get('/current-work-authorization-status-records', verifyToken, verifyHR, HRController.getAllCurrentWorkAuthorizationStatusRecords);
 
 // view all approved employees 
-router.patch('/document-status', HRController.updateDocumentStatus);
+router.patch('/document-status', verifyToken, verifyHR, HRController.updateDocumentStatus);
+
+router.post('/work-authorization-reminder', verifyToken, verifyHR, HRController.sendWorkAuthorizationStatusEmail);
 
 module.exports = router

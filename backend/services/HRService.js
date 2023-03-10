@@ -459,6 +459,41 @@ class HRService {
       throw error;
     }
   }
+
+  static async sendWorkAuthorizationStatusEmail(employeeId) {
+    try {
+      const employee = await Employee.findOne({ _id: employeeId }).exec();
+       // create reusable transporter object using the default SMTP transport
+      let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'teamnull2023@gmail.com',
+          pass: 'walmiaczzpxlcdvn',
+        },
+      });
+
+      // send mail with defined transport object
+      let info = await transporter.sendMail({
+        from: 'Beaconfire Solution <teamnull2023@gmail.com>', // sender address
+        to: employee.email, // list of receivers
+        subject: "[Important] Please Upload Your Work Authorization Document", // Subject line
+        text: "This is a reminder that you should upload required work authorization document to the portal", // plain text body
+        html: `<p>This is a reminder that you should upload required work authorization document to the portal.</p> 
+            <a style="padding: 10px 20px;" href="http://localhost:4200/work-authorization-management">Click Here to Access Portal</a>`, // html body
+      });
+      console.log("Message sent: %s", info.messageId);
+      // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+      // Preview only available when sending through an Ethereal account
+      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+      return info.messageId
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
 }
 
 module.exports = HRService;

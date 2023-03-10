@@ -30,7 +30,7 @@ export interface EmployeeCurrentWorkAuthorizationStatusRecord {
 export interface CurrentWorkAuthorizationStatus {
     started: boolean;
     completed: boolean;
-    documentType: string;
+    documentType: WorkAuthorizationDocumentTypeEnum;
     documentStatus: string;
     feedback: string;
     action: {
