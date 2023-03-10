@@ -1,383 +1,403 @@
 <app-navbar></app-navbar>
-<div class="flex min-h-full items-center justify-center px-4 sm:px-6 lg:px-8">
-    <form class="space-y-4 rounded-lg p-4 sm:p-6 lg:p-8" [formGroup]="onboardingForm">
-        <h2 class="mt-4 text-center text-3xl font-bold tracking-tight text-gray-900">Onboarding Form</h2>
-        <div class="form-group">
-            <label for="status">Status:</label>
-            <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="status"
-                formControlName="status" readonly>
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" pInputText class="relative block w-full p-inputtext-sm" id="email"
-                formControlName="email" readonly>
-        </div>
-        <div class='grid grid-cols-6 gap-6'>
-            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                <label for="firstName">First Name:</label>
-                <input type="text" pInputText required class="block text-sm font-medium leading-6 text-gray-900"
-                    id="firstName" formControlName="firstName">
+<ng-container *ngIf="isSubmitting">
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+        <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    </div>
+</ng-container>
+<ng-container *ngIf="!isSubmitting">
+    <div class="flex min-h-full items-center justify-center px-4 sm:px-6 lg:px-8">
+        <form class="space-y-4 rounded-lg p-4 sm:p-6 lg:p-8" [formGroup]="onboardingForm">
+            <h2 class="mt-4 text-center text-3xl font-bold tracking-tight text-gray-900">Onboarding Form</h2>
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="status"
+                    formControlName="status" readonly>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" pInputText class="relative block w-full p-inputtext-sm" id="email"
+                    formControlName="email" readonly>
+            </div>
+            <div class='grid grid-cols-6 gap-6'>
+                <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" pInputText required class="block text-sm font-medium leading-6 text-gray-900"
+                        id="firstName" formControlName="firstName">
+
+                    <div
+                        *ngIf="onboardingForm.controls['firstName'].invalid && onboardingForm.controls['firstName'].touched">
+                        <p>First name is required and must enter valid name</p>
+                    </div>
+
+
+                </div>
+
+                <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" pInputText required class="block text-sm font-medium leading-6 text-gray-900"
+                        id="lastName" formControlName="lastName">
+
+                    <div
+                        *ngIf="onboardingForm.controls['lastName'].invalid && onboardingForm.controls['lastName'].touched">
+                        <p>Last name is required and must enter valid name</p>
+                    </div>
+                </div>
+                <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                    <label for="middleName">Middle Name:</label>
+                    <input type="text" pInputText class="block text-sm font-medium leading-6 text-gray-900"
+                        id="middleName" formControlName="middleName">
+                </div>
+            </div>
+            <div class="col-span-12 sm:col-span-6">
+                <label class="block text-sm font-medium leading-6 text-gray-900">Profile Picture</label>
+                <div class="flex items-center gap-5">
+                    <div *ngIf="profilePreview">
+                        <img [src]="profilePreview.downloadLink" alt="profile" class="w-20 h-20 rounded-full">
+                    </div>
+                    <div class="mt-2 flex items-center">
+                        <p-fileUpload [auto]="true" name="file[]" [disabled]="disableButton" [customUpload]="true"
+                            (uploadHandler)="customUpload($event, DocumentTypeEnum.PROFILE)" [multiple]="false"
+                            accept="image/*"></p-fileUpload>
+                    </div>
+                </div>
+            </div>
+            <div formGroupName="address">
+                <h3>Address: </h3>
+                <div class="form-group">
+                    <label for="streetName">Street Name:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="streetName"
+                        formControlName="streetName">
+
+                    <p
+                        *ngIf="onboardingForm.get('address.streetName')?.hasError('pattern')|| onboardingForm.get('address.streetName')?.hasError('required') && onboardingForm.get('address.streetName')?.touched">
+                        Street name is required and must enter valid name
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="buildingNumber">Building Number:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="buildingNumber"
+                        formControlName="buildingNumber">
+                    <p
+                        *ngIf="onboardingForm.get('address.buildingNumber')?.hasError('pattern')|| onboardingForm.get('address.buildingNumber')?.hasError('required') && onboardingForm.get('address.buildingNumber')?.touched">
+                        Building number is required and must enter number
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">City:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="city"
+                        formControlName="city">
+
+                    <p
+                        *ngIf="onboardingForm.get('address.city')?.hasError('pattern')|| onboardingForm.get('address.city')?.hasError('required') && onboardingForm.get('address.city')?.touched">
+                        City name is required and please enter valid city name
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="state">State:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="state"
+                        formControlName="state">
+
+                    <p
+                        *ngIf="onboardingForm.get('address.state')?.hasError('pattern')|| onboardingForm.get('address.state')?.hasError('required') && onboardingForm.get('address.state')?.touched">
+                        State name is required and please enter valid state name
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="zip">Zip:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="zip"
+                        formControlName="zip">
+
+                    <p
+                        *ngIf="onboardingForm.get('address.zip')?.hasError('pattern')|| onboardingForm.get('address.zip')?.hasError('required') && onboardingForm.get('address.zip')?.touched">
+                        Zip number is required and please enter valid zip number
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="phoneNumber"
+                    formControlName="phoneNumber">
 
                 <div
-                    *ngIf="onboardingForm.controls['firstName'].invalid && onboardingForm.controls['firstName'].touched">
-                    <p>First name is required and must enter valid name</p>
-                </div>
-
-
-            </div>
-
-            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                <label for="lastName">Last Name:</label>
-                <input type="text" pInputText required class="block text-sm font-medium leading-6 text-gray-900"
-                    id="lastName" formControlName="lastName">
-
-                <div *ngIf="onboardingForm.controls['lastName'].invalid && onboardingForm.controls['lastName'].touched">
-                    <p>Last name is required and must enter valid name</p>
+                    *ngIf="onboardingForm.controls['phoneNumber'].invalid && onboardingForm.controls['phoneNumber'].touched">
+                    <p>Phone number is required and must enter valid number</p>
                 </div>
             </div>
-            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                <label for="middleName">Middle Name:</label>
-                <input type="text" pInputText class="block text-sm font-medium leading-6 text-gray-900" id="middleName"
-                    formControlName="middleName">
+            <div class="form-group">
+                <label for="workPhoneNumber">Work Phone Number:</label>
+                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="workPhoneNumber"
+                    formControlName="workPhoneNumber">
             </div>
-        </div>
-        <div class="col-span-12 sm:col-span-6">
-            <label class="block text-sm font-medium leading-6 text-gray-900">Profile Picture</label>
-            <div class="flex items-center gap-5">
-                <div *ngIf="profilePreview">
-                    <img [src]="profilePreview.downloadLink" alt="profile" class="w-20 h-20 rounded-full">
-                </div>
-                <div class="mt-2 flex items-center">
-                    <p-fileUpload [auto]="true" name="file[]" [disabled]="disableButton" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.PROFILE)" [multiple]="false" accept="image/*"></p-fileUpload>
+            <div class="form-group">
+                <label for="SSN">SSN:</label>
+                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="SSN"
+                    formControlName="SSN">
+                <div *ngIf="onboardingForm.controls['SSN'].invalid && onboardingForm.controls['SSN'].touched">
+                    <p>SSN is required and must enter valid SSN</p>
                 </div>
             </div>
-        </div>
-        <div formGroupName="address">
-            <h3>Address: </h3>
             <div class="form-group">
-                <label for="streetName">Street Name:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="streetName"
-                    formControlName="streetName">
-
-                <p
-                    *ngIf="onboardingForm.get('address.streetName')?.hasError('pattern')|| onboardingForm.get('address.streetName')?.hasError('required') && onboardingForm.get('address.streetName')?.touched">
-                    Street name is required and must enter valid name
-                </p>
+                <label for="birthday">Birthday:</label>
+                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="birthday"
+                    formControlName="birthday">
+                <div *ngIf="onboardingForm.controls['birthday'].invalid && onboardingForm.controls['birthday'].touched">
+                    <p>Birthday is required and must enter with form yyyy-mm-dd</p>
+                </div>
             </div>
             <div class="form-group">
-                <label for="buildingNumber">Building Number:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="buildingNumber"
-                    formControlName="buildingNumber">
-                <p
-                    *ngIf="onboardingForm.get('address.buildingNumber')?.hasError('pattern')|| onboardingForm.get('address.buildingNumber')?.hasError('required') && onboardingForm.get('address.buildingNumber')?.touched">
-                    Building number is required and must enter number
-                </p>
-            </div>
-
-            <div class="form-group">
-                <label for="city">City:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="city"
-                    formControlName="city">
-
-                <p
-                    *ngIf="onboardingForm.get('address.city')?.hasError('pattern')|| onboardingForm.get('address.city')?.hasError('required') && onboardingForm.get('address.city')?.touched">
-                    City name is required and please enter valid city name
-                </p>
-            </div>
-            <div class="form-group">
-                <label for="state">State:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="state"
-                    formControlName="state">
-
-                <p
-                    *ngIf="onboardingForm.get('address.state')?.hasError('pattern')|| onboardingForm.get('address.state')?.hasError('required') && onboardingForm.get('address.state')?.touched">
-                    State name is required and please enter valid state name
-                </p>
-            </div>
-            <div class="form-group">
-                <label for="zip">Zip:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="zip"
-                    formControlName="zip">
-
-                <p
-                    *ngIf="onboardingForm.get('address.zip')?.hasError('pattern')|| onboardingForm.get('address.zip')?.hasError('required') && onboardingForm.get('address.zip')?.touched">
-                    Zip number is required and please enter valid zip number
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="phoneNumber">Phone Number:</label>
-            <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="phoneNumber"
-                formControlName="phoneNumber">
-
-            <div
-                *ngIf="onboardingForm.controls['phoneNumber'].invalid && onboardingForm.controls['phoneNumber'].touched">
-                <p>Phone number is required and must enter valid number</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="workPhoneNumber">Work Phone Number:</label>
-            <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="workPhoneNumber"
-                formControlName="workPhoneNumber">
-        </div>
-        <div class="form-group">
-            <label for="SSN">SSN:</label>
-            <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="SSN" formControlName="SSN">
-            <div *ngIf="onboardingForm.controls['SSN'].invalid && onboardingForm.controls['SSN'].touched">
-                <p>SSN is required and must enter valid SSN</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="birthday">Birthday:</label>
-            <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="birthday"
-                formControlName="birthday">
-            <div *ngIf="onboardingForm.controls['birthday'].invalid && onboardingForm.controls['birthday'].touched">
-                <p>Birthday is required and must enter with form yyyy-mm-dd</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="gender">Gender:</label>
-            <select pInputText class="relative block w-full p-inputtext-sm" id="gender" formControlName="gender"
-                [disabled]="disableButton">
-                <option value="">Please select</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="I do not wish to answer">I do not wish to answer</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="carInformation">Do you have a car?</label>
-            <select
-                class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                id="carInformation" (change)="onCarInformationChange($event)" [disabled]="disableButton">
-                <option value="">--Select--</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
-        </div>
-        <div *ngIf="showCarInformation" formGroupName='carInformation'>
-            <h3>Car Information</h3>
-            <div class="form-group">
-                <label for="carMake">Make:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="carMake"
-                    formControlName="make">
-            </div>
-            <div class="form-group">
-                <label for="carModel">Model:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="carModel"
-                    formControlName="model">
-            </div>
-            <div class="form-group">
-                <label for="carColor">Color:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="carColor"
-                    formControlName="color">
-            </div>
-        </div>
-
-        <div formGroupName="identifyType">
-            <h3>Identify Type</h3>
-            <div class="form-group">
-                <label for="visaTitle">Visa Title:</label>
-                <select
-                    class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    id="visaTitle" formControlName="visaTitle" (change)="onVisaFileChange($event)"
+                <label for="gender">Gender:</label>
+                <select pInputText class="relative block w-full p-inputtext-sm" id="gender" formControlName="gender"
                     [disabled]="disableButton">
-                    <option value="">--Select--</option>
-                    <option value="H1b">H1b</option>
-                    <option value="L2">L2</option>
-                    <option value="F1">F1</option>
-                    <option value="H4">H4</option>
-                    <option value="Other">Other</option>
+                    <option value="">Please select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="I do not wish to answer">I do not wish to answer</option>
                 </select>
             </div>
-            <div>
-                <label for="visaFile">Visa File:</label>
-                <div *ngIf="optReceiptPreview" class="my-5">
-                    <button type="button" (click)="showDocumentDialog(WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)"
-                            pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{optReceiptPreview.fileName}}"></button>
-                    <p-dialog [(visible)]="optReceiptDialog">
-                        <pdf-viewer [src]="optReceiptPreview.downloadLink" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
-                    style="height: 800px; width: 600px;"></pdf-viewer>
-                    </p-dialog>
-                </div>
-                <p-fileUpload [disabled]="disableButton" [auto]="true" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)" [multiple]="false" accept="application/pdf"></p-fileUpload>
-            </div>
             <div class="form-group">
-                <label for="startDate">Start Date:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="startDate"
-                    formControlName="startDate">
-                <p
-                    *ngIf="onboardingForm.get('identifyType.startDate')?.hasError('pattern')|| onboardingForm.get('identifyType.startDate')?.hasError('required') && onboardingForm.get('identifyType.startDate')?.touched">
-                    The start date is required and please enter the date with form yyyy-mm-dd
-                </p>
-
-            </div>
-            <div class="form-group">
-                <label for="endDate">End Date:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="endDate"
-                    formControlName="endDate">
-                <p
-                    *ngIf="onboardingForm.get('identifyType.endDate')?.hasError('pattern')|| onboardingForm.get('identifyType.endDate')?.hasError('required') && onboardingForm.get('identifyType.endDate')?.touched">
-                    The End date is required and please enter the date with form yyyy-mm-dd
-                </p>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="driversLicense">Do you have a driver's license?</label>
-            <select
-                class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                id="driversLicense" (change)="onDriversLicenseChange($event)" [disabled]="disableButton">
-                <option value="">--Select--</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
-        </div>
-        <div *ngIf="showDriversLicense" formGroupName='driversLicense'>
-            <h3>Driver's License Information</h3>
-            <div class="form-group">
-                <label for="licenseNumber">License Number:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="licenseNumber"
-                    formControlName="licenseNumber">
-                <p
-                    *ngIf="onboardingForm.get('driversLicense.licenseNumber')?.hasError('pattern') && onboardingForm.get('driversLicense.licenseNumber')?.touched">
-                    Driver's License number is required and must enter valid number
-                </p>
-            </div>
-            <div class="form-group">
-                <label for="expirationDate">Expiration Date:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="expirationDate"
-                    formControlName="expirationDate">
-                <p
-                    *ngIf="onboardingForm.get('driversLicense.expirationDate')?.hasError('pattern') && onboardingForm.get('driversLicense.expirationDate')?.touched">
-                    Driver's License expiration date is required and must enter valid date with form yyyy-mm-dd
-                </p>
-            </div>
-            <div class="form-group"  >
-                <label for="driverLicenseFile">Driver's License File:</label>
-                <div *ngIf="driverLicensePreview" class="my-5">
-                    <button type="button" (click)="showDocumentDialog(DocumentTypeEnum.DRIVER_LICENSE)"
-                        pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{driverLicensePreview.fileName}}"></button>
-                    <p-dialog [(visible)]="driverLicenseDialog">
-                        <pdf-viewer [src]="driverLicensePreview.downloadLink" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
-                    style="height: 800px; width: 600px;"></pdf-viewer>
-                    </p-dialog>
-                </div>
-                <p-fileUpload [auto]="true" [disabled]="disableButton" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.DRIVER_LICENSE)" [multiple]="false" accept="application/pdf"></p-fileUpload>
-            </div>
-        </div>
-
-        <div formGroupName='reference'>
-            <h3>Reference</h3>
-            <div class="form-group">
-                <label for="referenceFirstName">First Name:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="referenceFirstName"
-                    formControlName="firstName">
-                <p
-                    *ngIf="onboardingForm.get('reference.firstName')?.hasError('pattern')|| onboardingForm.get('reference.firstName')?.hasError('required') && onboardingForm.get('reference.firstName')?.touched">
-                    First name is required and must enter valid name
-                </p>
-            </div>
-            <div class="form-group">
-                <label for="referenceLastName">Last Name:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="reference
-            LastName" formControlName="lastName">
-                <p
-                    *ngIf="onboardingForm.get('reference.lastName')?.hasError('pattern')|| onboardingForm.get('reference.lastName')?.hasError('required') && onboardingForm.get('reference.lastName')?.touched">
-                    Last name is required and must enter valid name
-                </p>
-            </div>
-            <div class="form-group">
-                <label for="referenceMiddleName">Middle Name:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="referenceMiddleName"
-                    formControlName="middleName">
-            </div>
-            <div class="form-group">
-                <label for="referencePhoneNumber">Phone Number:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="referencePhoneNumber"
-                    formControlName="phoneNumber">
-                <p
-                    *ngIf="onboardingForm.get('reference.phoneNumber')?.hasError('pattern')|| onboardingForm.get('reference.phoneNumber')?.hasError('required') && onboardingForm.get('reference.phoneNumber')?.touched">
-                    Phone number is required and must enter valid number
-                </p>
-            </div>
-            <div class="form-group">
-                <label for="referenceEmail">Email:</label>
-                <input type="email" pInputText class="relative block w-full p-inputtext-sm" id="referenceEmail"
-                    formControlName="email">
-                <p
-                    *ngIf="onboardingForm.get('reference.email')?.hasError('pattern')|| onboardingForm.get('reference.email')?.hasError('required') && onboardingForm.get('reference.email')?.touched">
-                    Email is required and must enter valid Email
-                </p>
-            </div>
-            <div class="form-group">
-                <label for="referenceRelationship">Relationship:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="referenceRelationship"
-                    formControlName="relationship">
-                <p
-                    *ngIf="onboardingForm.get('reference.relationship')?.hasError('pattern')|| onboardingForm.get('reference.relationship')?.hasError('required') && onboardingForm.get('reference.relationship')?.touched">
-                    relationship is required and must enter valid relationship
-                </p>
-            </div>
-        </div>
-
-        <div formGroupName='emergencyContacts'>
-            <h3>Emergency Contacts</h3>
-            <div class="form-group">
-                <label for="emergencyContactsFirstName">First Name:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm"
-                    id="emergencyContactsFirstName" formControlName="firstName">
-                <p
-                    *ngIf="onboardingForm.get('emergencyContacts.firstName')?.hasError('pattern')|| onboardingForm.get('emergencyContacts.firstName')?.hasError('required') && onboardingForm.get('emergencyContacts.firstName')?.touched">
-                    First name is required and must enter valid name
-                </p>
-            </div>
-            <div class="form-group">
-                <label for="emergencyContactsLastName">Last Name:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm"
-                    id="emergencyContactsLastName" formControlName="lastName">
-                <p
-                    *ngIf="onboardingForm.get('emergencyContacts.lastName')?.hasError('pattern')|| onboardingForm.get('emergencyContacts.lastName')?.hasError('required') && onboardingForm.get('emergencyContacts.lastName')?.touched">
-                    Last name is required and must enter valid name
-                </p>
-            </div>
-            <div class="form-group">
-                <label for="emergencyContactsMiddleName">Middle Name:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm"
-                    id="emergencyContactsMiddleName" formControlName="middleName">
-            </div>
-            <div class="form-group">
-                <label for="emergencyContactsPhoneNumber">Phone Number:</label>
-                <input type="text" pInputText class="relative block w-full p-inputtext-sm"
-                    id="emergencyContactsPhoneNumber" formControlName="phoneNumber">
-                <p
-                    *ngIf="onboardingForm.get('emergencyContacts.phoneNumber')?.hasError('pattern')|| onboardingForm.get('emergencyContacts.phoneNumber')?.hasError('required') && onboardingForm.get('emergencyContacts.phoneNumber')?.touched">
-                    Phone number is required and must enter valid number
-                </p>
-            </div>
-            <div class="form-group">
-                <label for="emergencyContactsEmail">Email:</label>
-                <input type="email" pInputText class="relative block w-full p-inputtext-sm" id="emergencyContactsEmail"
-                    formControlName="email">
-                <p
-                    *ngIf="onboardingForm.get('emergencyContacts.email')?.hasError('pattern')|| onboardingForm.get('emergencyContacts.email')?.hasError('required') && onboardingForm.get('emergencyContacts.email')?.touched">
-                    Email is required and must enter valid Email
-                </p>
-            </div>
-            <div class="form-group">
-                <label for="relationship">Relationship:</label>
+                <label for="carInformation">Do you have a car?</label>
                 <select
                     class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    id="relationship" name="relationship" formControlName="relationship">
-                    <option value="parent">Parent</option>
-                    <option value="spouse">Spouse</option>
-                    <option value="adult-child">Adult Child</option>
-                    <option value="trusted-friend">Trusted Friend</option>
+                    id="carInformation" (change)="onCarInformationChange($event)" [disabled]="disableButton">
+                    <option value="">--Select--</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
                 </select>
-
             </div>
-        </div>
-        <button type="submit" pButton (click)="submitForm()" [disabled]="disableButton">Submit</button>
+            <div *ngIf="showCarInformation" formGroupName='carInformation'>
+                <h3>Car Information</h3>
+                <div class="form-group">
+                    <label for="carMake">Make:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="carMake"
+                        formControlName="make">
+                </div>
+                <div class="form-group">
+                    <label for="carModel">Model:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="carModel"
+                        formControlName="model">
+                </div>
+                <div class="form-group">
+                    <label for="carColor">Color:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="carColor"
+                        formControlName="color">
+                </div>
+            </div>
 
-    </form>
-</div>
+            <div formGroupName="identifyType">
+                <h3>Identify Type</h3>
+                <div class="form-group">
+                    <label for="visaTitle">Visa Title:</label>
+                    <select
+                        class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        id="visaTitle" formControlName="visaTitle" (change)="onVisaFileChange($event)"
+                        [disabled]="disableButton">
+                        <option value="">--Select--</option>
+                        <option value="H1b">H1b</option>
+                        <option value="L2">L2</option>
+                        <option value="F1">F1</option>
+                        <option value="H4">H4</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="visaFile">Visa File:</label>
+                    <div *ngIf="optReceiptPreview" class="my-5">
+                        <button type="button"
+                            (click)="showDocumentDialog(WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)" pButton pRipple
+                            class="p-button-raised p-button-sm" icon="pi pi-info-circle"
+                            label="{{optReceiptPreview.fileName}}"></button>
+                        <p-dialog [(visible)]="optReceiptDialog">
+                            <pdf-viewer [src]="optReceiptPreview.downloadLink" [render-text]="true"
+                                [original-size]="false" [zoom-scale]="'page-width'"
+                                style="height: 800px; width: 600px;"></pdf-viewer>
+                        </p-dialog>
+                    </div>
+                    <p-fileUpload [disabled]="disableButton" [auto]="true" name="file[]" [customUpload]="true"
+                        (uploadHandler)="customUpload($event, WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)"
+                        [multiple]="false" accept="application/pdf"></p-fileUpload>
+                </div>
+                <div class="form-group">
+                    <label for="startDate">Start Date:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="startDate"
+                        formControlName="startDate">
+                    <p
+                        *ngIf="onboardingForm.get('identifyType.startDate')?.hasError('pattern')|| onboardingForm.get('identifyType.startDate')?.hasError('required') && onboardingForm.get('identifyType.startDate')?.touched">
+                        The start date is required and please enter the date with form yyyy-mm-dd
+                    </p>
+
+                </div>
+                <div class="form-group">
+                    <label for="endDate">End Date:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="endDate"
+                        formControlName="endDate">
+                    <p
+                        *ngIf="onboardingForm.get('identifyType.endDate')?.hasError('pattern')|| onboardingForm.get('identifyType.endDate')?.hasError('required') && onboardingForm.get('identifyType.endDate')?.touched">
+                        The End date is required and please enter the date with form yyyy-mm-dd
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="driversLicense">Do you have a driver's license?</label>
+                <select
+                    class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    id="driversLicense" (change)="onDriversLicenseChange($event)" [disabled]="disableButton">
+                    <option value="">--Select--</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div *ngIf="showDriversLicense" formGroupName='driversLicense'>
+                <h3>Driver's License Information</h3>
+                <div class="form-group">
+                    <label for="licenseNumber">License Number:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="licenseNumber"
+                        formControlName="licenseNumber">
+                    <p
+                        *ngIf="onboardingForm.get('driversLicense.licenseNumber')?.hasError('pattern') && onboardingForm.get('driversLicense.licenseNumber')?.touched">
+                        Driver's License number is required and must enter valid number
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="expirationDate">Expiration Date:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="expirationDate"
+                        formControlName="expirationDate">
+                    <p
+                        *ngIf="onboardingForm.get('driversLicense.expirationDate')?.hasError('pattern') && onboardingForm.get('driversLicense.expirationDate')?.touched">
+                        Driver's License expiration date is required and must enter valid date with form yyyy-mm-dd
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="driverLicenseFile">Driver's License File:</label>
+                    <div *ngIf="driverLicensePreview" class="my-5">
+                        <button type="button" (click)="showDocumentDialog(DocumentTypeEnum.DRIVER_LICENSE)" pButton
+                            pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle"
+                            label="{{driverLicensePreview.fileName}}"></button>
+                        <p-dialog [(visible)]="driverLicenseDialog">
+                            <pdf-viewer [src]="driverLicensePreview.downloadLink" [render-text]="true"
+                                [original-size]="false" [zoom-scale]="'page-width'"
+                                style="height: 800px; width: 600px;"></pdf-viewer>
+                        </p-dialog>
+                    </div>
+                    <p-fileUpload [auto]="true" [disabled]="disableButton" name="file[]" [customUpload]="true"
+                        (uploadHandler)="customUpload($event, DocumentTypeEnum.DRIVER_LICENSE)" [multiple]="false"
+                        accept="application/pdf"></p-fileUpload>
+                </div>
+            </div>
+
+            <div formGroupName='reference'>
+                <h3>Reference</h3>
+                <div class="form-group">
+                    <label for="referenceFirstName">First Name:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="referenceFirstName"
+                        formControlName="firstName">
+                    <p
+                        *ngIf="onboardingForm.get('reference.firstName')?.hasError('pattern')|| onboardingForm.get('reference.firstName')?.hasError('required') && onboardingForm.get('reference.firstName')?.touched">
+                        First name is required and must enter valid name
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="referenceLastName">Last Name:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="reference
+            LastName" formControlName="lastName">
+                    <p
+                        *ngIf="onboardingForm.get('reference.lastName')?.hasError('pattern')|| onboardingForm.get('reference.lastName')?.hasError('required') && onboardingForm.get('reference.lastName')?.touched">
+                        Last name is required and must enter valid name
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="referenceMiddleName">Middle Name:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="referenceMiddleName"
+                        formControlName="middleName">
+                </div>
+                <div class="form-group">
+                    <label for="referencePhoneNumber">Phone Number:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="referencePhoneNumber"
+                        formControlName="phoneNumber">
+                    <p
+                        *ngIf="onboardingForm.get('reference.phoneNumber')?.hasError('pattern')|| onboardingForm.get('reference.phoneNumber')?.hasError('required') && onboardingForm.get('reference.phoneNumber')?.touched">
+                        Phone number is required and must enter valid number
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="referenceEmail">Email:</label>
+                    <input type="email" pInputText class="relative block w-full p-inputtext-sm" id="referenceEmail"
+                        formControlName="email">
+                    <p
+                        *ngIf="onboardingForm.get('reference.email')?.hasError('pattern')|| onboardingForm.get('reference.email')?.hasError('required') && onboardingForm.get('reference.email')?.touched">
+                        Email is required and must enter valid Email
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="referenceRelationship">Relationship:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                        id="referenceRelationship" formControlName="relationship">
+                    <p
+                        *ngIf="onboardingForm.get('reference.relationship')?.hasError('pattern')|| onboardingForm.get('reference.relationship')?.hasError('required') && onboardingForm.get('reference.relationship')?.touched">
+                        relationship is required and must enter valid relationship
+                    </p>
+                </div>
+            </div>
+
+            <div formGroupName='emergencyContacts'>
+                <h3>Emergency Contacts</h3>
+                <div class="form-group">
+                    <label for="emergencyContactsFirstName">First Name:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                        id="emergencyContactsFirstName" formControlName="firstName">
+                    <p
+                        *ngIf="onboardingForm.get('emergencyContacts.firstName')?.hasError('pattern')|| onboardingForm.get('emergencyContacts.firstName')?.hasError('required') && onboardingForm.get('emergencyContacts.firstName')?.touched">
+                        First name is required and must enter valid name
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="emergencyContactsLastName">Last Name:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                        id="emergencyContactsLastName" formControlName="lastName">
+                    <p
+                        *ngIf="onboardingForm.get('emergencyContacts.lastName')?.hasError('pattern')|| onboardingForm.get('emergencyContacts.lastName')?.hasError('required') && onboardingForm.get('emergencyContacts.lastName')?.touched">
+                        Last name is required and must enter valid name
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="emergencyContactsMiddleName">Middle Name:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                        id="emergencyContactsMiddleName" formControlName="middleName">
+                </div>
+                <div class="form-group">
+                    <label for="emergencyContactsPhoneNumber">Phone Number:</label>
+                    <input type="text" pInputText class="relative block w-full p-inputtext-sm"
+                        id="emergencyContactsPhoneNumber" formControlName="phoneNumber">
+                    <p
+                        *ngIf="onboardingForm.get('emergencyContacts.phoneNumber')?.hasError('pattern')|| onboardingForm.get('emergencyContacts.phoneNumber')?.hasError('required') && onboardingForm.get('emergencyContacts.phoneNumber')?.touched">
+                        Phone number is required and must enter valid number
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="emergencyContactsEmail">Email:</label>
+                    <input type="email" pInputText class="relative block w-full p-inputtext-sm"
+                        id="emergencyContactsEmail" formControlName="email">
+                    <p
+                        *ngIf="onboardingForm.get('emergencyContacts.email')?.hasError('pattern')|| onboardingForm.get('emergencyContacts.email')?.hasError('required') && onboardingForm.get('emergencyContacts.email')?.touched">
+                        Email is required and must enter valid Email
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="relationship">Relationship:</label>
+                    <select
+                        class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        id="relationship" name="relationship" formControlName="relationship">
+                        <option value="parent">Parent</option>
+                        <option value="spouse">Spouse</option>
+                        <option value="adult-child">Adult Child</option>
+                        <option value="trusted-friend">Trusted Friend</option>
+                    </select>
+
+                </div>
+            </div>
+            <button type="submit" pButton (click)="submitForm()" [disabled]="disableButton">Submit</button>
+
+        </form>
+    </div>
+</ng-container>
