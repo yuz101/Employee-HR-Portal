@@ -40,7 +40,7 @@ export interface CurrentWorkAuthorizationStatus {
 
 export interface EmployeeDocumentLink {
     fileName: string;
-    downloadUrl: string;
+    downloadLink: string;
 }
 
 export interface EmployeeWorkAuthorizationStatus {

@@ -13,26 +13,26 @@ export const employeeWorkAuthorizationStatusRecordsReducer = createReducer(
     ),
     on(
         EmployeeWorkAuthorizationStatusRecordsActions.rejectDocument,
-        (state, { employeeId, newStatus }) => state.map(employee => {
-            if (employee.employeeId === employeeId) {
+        (state, { employeeId, newStatus }) => state.map(record => {
+            if (record.employeeId === employeeId) {
                 return {
-                    ...employee,
+                    ...record,
                     workAuthorizationStatus: newStatus,
                 };
             }
-            return employee;
+            return record;
         }),
     ),
     on(
         EmployeeWorkAuthorizationStatusRecordsActions.approveDocument,
-        (state, { employeeId, newStatus }) => state.map(employee => {
-            if (employee.employeeId === employeeId) {
+        (state, { employeeId, newStatus }) => state.map(record => {
+            if (record.employeeId === employeeId) {
                 return {
-                    ...employee,
+                    ...record,
                     workAuthorizationStatus: newStatus
                 };
             }
-            return employee;
+            return record;
         }),
     ),
 );

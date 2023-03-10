@@ -20,7 +20,8 @@ export class VisaManagementHrComponent implements OnInit {
   workAuthorizationStatusRecords$: Observable<EmployeeCurrentWorkAuthorizationStatusRecord[]>
     = this.store.select(selectEmployeeWorkAuthorizationStatusRecords);
 
-  isLoading: boolean;
+  isLoadingTable: boolean;
+  isLoadingAllDocumentLinks: boolean;
   displayWorkAuthorization: boolean;
   allWorkAuthorizationStatus = WorkAuthorizationStatusEnum;
   uploadedDocuments: EmployeeDocumentLink[] = [];
@@ -33,7 +34,7 @@ export class VisaManagementHrComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.isLoading = true;
+    this.isLoadingTable = true;
     this.workAuthorizationStatusService
       .getEmployeeWorkAuthorizationStatusRecords()
       .subscribe((records) => {
@@ -41,7 +42,7 @@ export class VisaManagementHrComponent implements OnInit {
         this.store.dispatch(
           EmployeeWorkAuthorizationStatusRecordsActions.retrieveRecordList({ statusRecords: records })
         );
-        this.isLoading = false;
+        this.isLoadingTable = false;
       });
   }
 
@@ -71,10 +72,12 @@ export class VisaManagementHrComponent implements OnInit {
   }
 
   showWorkAuthorizationDialog(employeeId: string) {
+    this.isLoadingAllDocumentLinks = true;
     this.displayWorkAuthorization = true;
     this.employeeDocumentService.getAllDocuments(employeeId)
       .subscribe((documents) => {
-        this.uploadedDocuments = documents;
+        this.uploadedDocuments = documents['downloadLinks'];
+        this.isLoadingAllDocumentLinks = false;
       });
   }
 }
