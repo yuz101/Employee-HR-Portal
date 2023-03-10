@@ -39,8 +39,13 @@ export class EmployeeWorkAuthorizationStatusService {
     );
   }
 
-  getEmployeeWorkAuthorizationStatus(employeeId: string): Observable<EmployeeWorkAuthorizationStatus> {
-    const url = `${this.baseUrl}/hr/work-authorization-record?employeeId=${employeeId}`;
+  getEmployeeWorkAuthorizationStatus(employeeId?: string): Observable<EmployeeWorkAuthorizationStatus> {
+    let url = '';
+    if (!employeeId) {
+      url = `${this.baseUrl}/hr/work-authorization-record`;
+    } else{
+      url = `${this.baseUrl}/hr/work-authorization-record?employeeId=${employeeId}`;
+    }
     // return of(statusMock);
     return this.http.get<EmployeeWorkAuthorizationStatus>(url).pipe(
       map((response: any) => response.workAuthorizationRecord),
@@ -50,34 +55,34 @@ export class EmployeeWorkAuthorizationStatusService {
   constructor(private http: HttpClient) { }
 }
 
-const statusMock: EmployeeWorkAuthorizationStatus = {
-  employeeId: '1',
-  workAuthorizationType: 'OPT',
-  started: true,
-  completed: false,
-  uploadFlow: [
-    {
-      status: WorkAuthorizationStatusEnum.APPROVED,
-      documentType: 'OPT Receipt',
-      feedback: '',
-    },
-    {
-      status: WorkAuthorizationStatusEnum.APPROVED,
-      documentType: 'OPT EAD',
-      feedback: '',
-    },
-    {
-      status: WorkAuthorizationStatusEnum.NOT_UPLOADED,
-      documentType: 'I-983',
-      feedback: '',
-    },
-    {
-      status: WorkAuthorizationStatusEnum.NOT_UPLOADED,
-      documentType: 'I-20',
-      feedback: '',
-    },
-  ],
-}
+// const statusMock: EmployeeWorkAuthorizationStatus = {
+//   employeeId: '1',
+//   workAuthorizationType: 'OPT',
+//   started: true,
+//   completed: false,
+//   uploadFlow: [
+//     {
+//       status: WorkAuthorizationStatusEnum.APPROVED,
+//       documentType: 'OPT Receipt',
+//       feedback: '',
+//     },
+//     {
+//       status: WorkAuthorizationStatusEnum.APPROVED,
+//       documentType: 'OPT EAD',
+//       feedback: '',
+//     },
+//     {
+//       status: WorkAuthorizationStatusEnum.NOT_UPLOADED,
+//       documentType: 'I-983',
+//       feedback: '',
+//     },
+//     {
+//       status: WorkAuthorizationStatusEnum.NOT_UPLOADED,
+//       documentType: 'I-20',
+//       feedback: '',
+//     },
+//   ],
+// }
 
 const approveReturnStatusMock: CurrentWorkAuthorizationStatus = {
   started: true,

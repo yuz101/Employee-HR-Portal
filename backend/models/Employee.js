@@ -26,7 +26,7 @@ const EmployeeSchema = new Schema(
         emergencyContacts: [{type: refType, ref: "EmergencyContact"}],
         documents: [{
             fileName: {type: String},
-            downloadUrl: {type: String},
+            downloadLink: {type: String},
         }],
         visa: {type: refType, ref: "Visa"},
         employeeType: {type: String},

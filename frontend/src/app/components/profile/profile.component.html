@@ -43,7 +43,7 @@
                 <label class="block text-sm font-medium leading-6 text-gray-900">Profile Picture</label>
                 <div class="flex items-center gap-5">
                     <div *ngIf="profilePreview">
-                        <img [src]="profilePreview.downloadUrl" alt="profile" class="w-20 h-20 rounded-full">
+                        <img [src]="profilePreview.downloadLink" alt="profile" class="w-20 h-20 rounded-full">
                     </div>
                     <div class="mt-2 flex items-center">
                         <p-fileUpload [auto]="true" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.PROFILE)" [multiple]="false" accept="image/*"></p-fileUpload>
@@ -245,7 +245,7 @@
                   <button type="button" (click)="showDocumentDialog(DocumentTypeEnum.DRIVER_LICENSE)"
                         pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{driverLicensePreview.fileName}}"></button>
                   <p-dialog [(visible)]="driverLicenseDialog">
-                      <pdf-viewer [src]="driverLicensePreview.downloadUrl" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+                      <pdf-viewer [src]="driverLicensePreview.downloadLink" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
                   style="height: 800px; width: 600px;"></pdf-viewer>
                   </p-dialog>
               </div>
@@ -264,7 +264,7 @@
                   <button type="button" (click)="showDocumentDialog(WorkAuthorizationDocumentTypeEnum.I_20)"
                         pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{i_20Preview.fileName}}"></button>
                   <p-dialog [(visible)]="i_20Dialog">
-                      <pdf-viewer [src]="i_20Preview.downloadUrl" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+                      <pdf-viewer [src]="i_20Preview.downloadLink" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
                   style="height: 800px; width: 600px;"></pdf-viewer>
                   </p-dialog>
             </div>
@@ -273,7 +273,7 @@
                   <button type="button" (click)="showDocumentDialog(WorkAuthorizationDocumentTypeEnum.I_983)"
                         pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{i_983Preview.fileName}}"></button>
                   <p-dialog [(visible)]="i_983Dialog">
-                      <pdf-viewer [src]="i_983Preview.downloadUrl" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+                      <pdf-viewer [src]="i_983Preview.downloadLink" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
                   style="height: 800px; width: 600px;"></pdf-viewer>
                   </p-dialog>
             </div>
@@ -283,7 +283,7 @@
                   <button type="button" (click)="showDocumentDialog(WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)"
                         pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{optReceiptPreview.fileName}}"></button>
                   <p-dialog [(visible)]="optReceiptDialog">
-                      <pdf-viewer [src]="optReceiptPreview.downloadUrl" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+                      <pdf-viewer [src]="optReceiptPreview.downloadLink" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
                   style="height: 800px; width: 600px;"></pdf-viewer>
                   </p-dialog>
             </div>
@@ -292,7 +292,7 @@
                   <button type="button" (click)="showDocumentDialog(WorkAuthorizationDocumentTypeEnum.OPT_EAD)"
                         pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{optEadPreview.fileName}}"></button>
                   <p-dialog [(visible)]="optEadDialog">
-                      <pdf-viewer [src]="optEadPreview.downloadUrl" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+                      <pdf-viewer [src]="optEadPreview.downloadLink" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
                   style="height: 800px; width: 600px;"></pdf-viewer>
                   </p-dialog>
             </div>

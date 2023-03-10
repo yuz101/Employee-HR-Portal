@@ -134,6 +134,7 @@ exports.getWorkAuthorizationRecord = async (req, res) => {
     let { employeeId } = req.query;
     if (!employeeId || employeeId === '') {
         employeeId = req.token.userId;
+        console.log("employeeId", employeeId);
     }
     try {
         const workAuthorizationRecord = await HRService.getWorkAuthorizationRecord(employeeId);

@@ -99,7 +99,7 @@
                     <label class="block text-sm font-medium leading-6 text-gray-900">Profile Picture</label>
                     <div class="mt-2 flex items-center">
                         <div *ngIf="profilePreview">
-                            <img [src]="profilePreview.downloadUrl" alt="profile" class="w-20 h-20 rounded-full">
+                            <img [src]="profilePreview.downloadLink" alt="profile" class="w-20 h-20 rounded-full">
                         </div>
                     </div>
                 </div>
@@ -193,7 +193,7 @@
                             <button type="button" (click)="showDocumentDialog(WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)"
                                     pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{optReceiptPreview.fileName}}"></button>
                             <p-dialog [(visible)]="optReceiptDialog">
-                                <pdf-viewer [src]="optReceiptPreview.downloadUrl" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+                                <pdf-viewer [src]="optReceiptPreview.downloadLink" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
                             style="height: 800px; width: 600px;"></pdf-viewer>
                             </p-dialog>
                         </div>
@@ -237,7 +237,7 @@
                         <button type="button" (click)="showDocumentDialog(DocumentTypeEnum.DRIVER_LICENSE)"
                             pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{driverLicensePreview.fileName}}"></button>
                         <p-dialog [(visible)]="driverLicenseDialog">
-                            <pdf-viewer [src]="driverLicensePreview.downloadUrl" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+                            <pdf-viewer [src]="driverLicensePreview.downloadLink" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
                         style="height: 800px; width: 600px;"></pdf-viewer>
                         </p-dialog>
                     </div>

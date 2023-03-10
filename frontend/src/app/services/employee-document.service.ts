@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of, Observable } from 'rxjs';
+import { of, Observable, map } from 'rxjs';
 import { DocumentTypeEnum, EmployeeDocumentLink, WorkAuthorizationDocumentTypeEnum } from '../models/work-authorization-status';
 
 @Injectable({
@@ -16,7 +16,10 @@ export class EmployeeDocumentService {
     employeeId: string,
     documentType: WorkAuthorizationDocumentTypeEnum
   ): Observable<EmployeeDocumentLink> {
-    return of(oneDocumentMock);
+    const url = `${this.baseUrl}/documents?employeeId=${employeeId}&documentType=${documentType}`;
+    return this.http.get<EmployeeDocumentLink>(url).pipe(
+      map((response: any) => response.downloadLink),
+    );
   }
 
   getAllDocuments(employeeId?: string): Observable<EmployeeDocumentLink[]> {
@@ -40,20 +43,20 @@ export class EmployeeDocumentService {
 
 const oneDocumentMock: EmployeeDocumentLink = {
   fileName: 'opt-receipt',
-  downloadUrl: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+  downloadLink: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
 }
 
 const allDocumentsMock: EmployeeDocumentLink[] = [
   {
     fileName: 'opt-receipt.pdf',
-    downloadUrl: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+    downloadLink: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
   },
   {
     fileName: 'opt-ead.pdf',
-    downloadUrl: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+    downloadLink: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
   },
   {
     fileName: 'i-20.pdf',
-    downloadUrl: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+    downloadLink: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
   },
 ];
