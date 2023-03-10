@@ -99,7 +99,7 @@ const validateApplication = [
 
 router.post('/application', validateApplication, verifyToken, ApplicationController.createNewApplication)
 router.get('/applicationID/:id', verifyToken, verifyHR, ApplicationController.searchByID)
-router.get('/applicationPID/', verifyToken, verifyHR, ApplicationController.searchByPID)
+router.get('/applicationPID', verifyToken, ApplicationController.searchByPID)
 router.get('/allapplication', verifyToken, verifyHR, ApplicationController.getAllInfo)
 router.post('/approve/:id', verifyToken, verifyHR, ApplicationController.updateStatusApprove)
 router.post('/reject/:id', verifyToken, verifyHR, ApplicationController.updateStatusReject)

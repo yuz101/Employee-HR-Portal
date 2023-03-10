@@ -32,9 +32,9 @@ export class AuthService {
     return this.getJwtToken() ? true : false;
   }
 
-  signup(username: string|null, email: string|null, password: string|null): Observable<User>{
+  signup(username: string|null, email: string|null, password: string|null, token: string|null): Observable<User>{
     const url = `${this.baseUrl}/signup`
-    const body = { username, email, password };
+    const body = { username, email, password, token };
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<User>(url, body, { headers })
   }
