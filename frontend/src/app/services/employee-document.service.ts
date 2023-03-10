@@ -17,19 +17,20 @@ export class EmployeeDocumentService {
     documentType: WorkAuthorizationDocumentTypeEnum
   ): Observable<EmployeeDocumentLink> {
     const url = `${this.baseUrl}/documents?employeeId=${employeeId}&documentType=${documentType}`;
+    // return of(oneDocumentMock);
     return this.http.get<EmployeeDocumentLink>(url).pipe(
       map((response: any) => response.downloadLink),
     );
   }
 
   getAllDocuments(employeeId?: string): Observable<EmployeeDocumentLink[]> {
-    if(employeeId) {
+    if (employeeId) {
       return this.http.get<EmployeeDocumentLink[]>(`${this.baseUrl}/documents?employeeId=${employeeId}`);
     } else {
       return this.http.get<EmployeeDocumentLink[]>(`${this.baseUrl}/documents`);
     }
   }
-  
+
   uploadDocument(file: File, documentType: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum): Observable<EmployeeDocumentLink> {
     const formData = new FormData();
     console.log('file: ', file);

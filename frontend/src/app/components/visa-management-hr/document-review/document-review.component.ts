@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { catchError, of } from 'rxjs';
+import { WorkAuthorizationDocumentTypeEnum } from 'src/app/models/work-authorization-status';
 import { EmployeeDocumentService } from 'src/app/services/employee-document.service';
 import { EmployeeWorkAuthorizationStatusService } from 'src/app/services/employee-work-authorization-status.service';
 import { EmployeeWorkAuthorizationStatusRecordsActions } from 'src/app/store/actions/employee-work-authorization-status-records.action';
@@ -13,7 +15,9 @@ import { EmployeeWorkAuthorizationStatusRecordsActions } from 'src/app/store/act
 export class DocumentReviewComponent implements OnInit {
   pdfSrc: string;
   employeeId: string;
-  documentType: string;
+  documentType: WorkAuthorizationDocumentTypeEnum;
+  feedback: string;
+  failedToLoadPdf: boolean = false;
 
   constructor(
     private store: Store,
@@ -24,9 +28,20 @@ export class DocumentReviewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.pdfSrc = 'https://employee-management-employee-info.s3.us-east-2.amazonaws.com/documents/123/opt-receipt.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQN2M4K6TMINX4DSB%2F20230306%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20230306T204210Z&X-Amz-Expires=3600&X-Amz-Signature=131ae5b7056804bf106c423081b86a409be09fcd936ab344843acbdcdb792f56&X-Amz-SignedHeaders=host';
-    this.pdfSrc = 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf';
     this.employeeId = this.config.data.employeeId;
+    this.documentType = this.config.data.documentType;
+    this.employeeDocumentService.getOneDocument(this.employeeId, this.documentType)
+      .pipe(
+        catchError((error) => {
+          console.log(error);
+          this.failedToLoadPdf = true;
+          return of(null);
+        }),
+      )
+      .subscribe((linkInfo: any) => {
+        this.pdfSrc = linkInfo.downloadLink;
+    });
+    // this.pdfSrc = 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf';
   }
 
   onApprove(employeeId: string): void {

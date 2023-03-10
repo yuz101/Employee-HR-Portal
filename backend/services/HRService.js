@@ -398,7 +398,7 @@ class HRService {
       const flow = currentRecord.uploadFlow;
       let currentIndex = -1;
       for (let i = 0; i < flow.length; i++) {
-        if (flow[i].status === DocumentStatusEnum.PENDING_FOR_REVIEW || DocumentStatusEnum.REJECTED) {
+        if (flow[i].status === DocumentStatusEnum.PENDING_FOR_REVIEW || flow[i].status === DocumentStatusEnum.REJECTED) {
           currentIndex = i;
           break;
         }
@@ -436,7 +436,9 @@ class HRService {
         documentType: nextCurrentDocument.documentType,
         documentStatus: nextCurrentDocument.status,
         feedback: nextCurrentDocument.feedback,
-        action: null,
+        action: {
+          name: '',
+        },
       }
 
       if (nextCurrentDocument.status === DocumentStatusEnum.NOT_UPLOADED

@@ -51,13 +51,3 @@ exports.getDownloadLinkForOneEmployeeDocument = async (req, res) => {
         return res.status(404).json({ error: 'Document not found' });
     }
 }
-
-exports.getEmployeeWorkAuthorizationStatus = async (req, res) => {
-    const { employeeId } = req.body;
-    try {
-        
-    } catch (error) {
-        console.error(error);
-        return res.sendStatus(404);
-    }
-}
