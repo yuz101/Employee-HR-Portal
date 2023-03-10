@@ -24,13 +24,13 @@ export class EmployeeDocumentService {
   }
 
   getAllDocuments(employeeId?: string): Observable<EmployeeDocumentLink[]> {
-    if(employeeId) {
+    if (employeeId) {
       return this.http.get<EmployeeDocumentLink[]>(`${this.baseUrl}/documents?employeeId=${employeeId}`);
     } else {
       return this.http.get<EmployeeDocumentLink[]>(`${this.baseUrl}/documents`);
     }
   }
-  
+
   uploadDocument(file: File, documentType: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum): Observable<EmployeeDocumentLink> {
     const formData = new FormData();
     console.log('file: ', file);

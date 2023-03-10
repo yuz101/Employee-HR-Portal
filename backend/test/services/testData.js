@@ -1,5 +1,6 @@
 const EmployeeWorkAuthorizationStatus = require('../../models/EmployeeWorkAuthorizationStatus');
 const { DocumentStatusEnum } = require('../../enums/DocumentStatusEnum');
+const EmployeeDocumentTypeEnum = require('../../enums/EmployeeDocumentType');
 
 
 const { exec } = require('child_process');
@@ -29,22 +30,22 @@ module.exports = async function quickData() {
             uploadFlow: [
                 {
                     status: DocumentStatusEnum.NOT_UPLOADED,
-                    documentType: 'OPT receipt',
+                    documentType: EmployeeDocumentTypeEnum.OPT_RECEIPT,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.NOT_UPLOADED,
-                    documentType: 'OPT EAD',
+                    documentType: EmployeeDocumentTypeEnum.OPT_EAD,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.NOT_UPLOADED,
-                    documentType: 'I-983',
+                    documentType: EmployeeDocumentTypeEnum.I_983,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.NOT_UPLOADED,
-                    documentType: 'I-20',
+                    documentType: EmployeeDocumentTypeEnum.I_20,
                     feedback: '',
                 },
             ],
@@ -58,22 +59,22 @@ module.exports = async function quickData() {
             uploadFlow: [
                 {
                     status: DocumentStatusEnum.APPROVED,
-                    documentType: 'OPT receipt',
+                    documentType: EmployeeDocumentTypeEnum.OPT_RECEIPT,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.APPROVED,
-                    documentType: 'OPT EAD',
+                    documentType: EmployeeDocumentTypeEnum.OPT_EAD,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.APPROVED,
-                    documentType: 'I-983',
+                    documentType: EmployeeDocumentTypeEnum.I_983,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.APPROVED,
-                    documentType: 'I-20',
+                    documentType: EmployeeDocumentTypeEnum.I_20,
                     feedback: '',
                 },
             ],
@@ -87,22 +88,22 @@ module.exports = async function quickData() {
             uploadFlow: [
                 {
                     status: DocumentStatusEnum.APPROVED,
-                    documentType: 'OPT receipt',
+                    documentType: EmployeeDocumentTypeEnum.OPT_RECEIPT,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.APPROVED,
-                    documentType: 'OPT EAD',
+                    documentType: EmployeeDocumentTypeEnum.OPT_EAD,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.APPROVED,
-                    documentType: 'I-983',
+                    documentType: EmployeeDocumentTypeEnum.I_983,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.REJECTED,
-                    documentType: 'I-20',
+                    documentType: EmployeeDocumentTypeEnum.I_20,
                     feedback: '',
                 },
             ],
@@ -116,22 +117,22 @@ module.exports = async function quickData() {
             uploadFlow: [
                 {
                     status: DocumentStatusEnum.APPROVED,
-                    documentType: 'OPT receipt',
+                    documentType: EmployeeDocumentTypeEnum.OPT_RECEIPT,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.APPROVED,
-                    documentType: 'OPT EAD',
+                    documentType: EmployeeDocumentTypeEnum.OPT_EAD,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.APPROVED,
-                    documentType: 'I-983',
+                    documentType: EmployeeDocumentTypeEnum.I_983,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.REJECTED,
-                    documentType: 'I-20',
+                    documentType: EmployeeDocumentTypeEnum.I_20,
                     feedback: 'AMD YES',
                 },
             ],
@@ -145,22 +146,22 @@ module.exports = async function quickData() {
             uploadFlow: [
                 {
                     status: DocumentStatusEnum.APPROVED,
-                    documentType: 'OPT receipt',
+                    documentType: EmployeeDocumentTypeEnum.OPT_RECEIPT,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.APPROVED,
-                    documentType: 'OPT EAD',
+                    documentType: EmployeeDocumentTypeEnum.OPT_EAD,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.PENDING_FOR_REVIEW,
-                    documentType: 'I-983',
+                    documentType: EmployeeDocumentTypeEnum.I_983,
                     feedback: '',
                 },
                 {
                     status: DocumentStatusEnum.NOT_UPLOADED,
-                    documentType: 'I-20',
+                    documentType: EmployeeDocumentTypeEnum.I_20,
                     feedback: '',
                 },
             ],

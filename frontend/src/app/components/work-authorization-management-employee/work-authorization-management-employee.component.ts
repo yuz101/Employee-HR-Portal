@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { map } from 'rxjs';
-import { EmployeeWorkAuthorizationStatus, RequiredWorkAuthorizationDocument, WorkAuthorizationStatusEnum } from 'src/app/models/work-authorization-status';
+import { DocumentTypeEnum, EmployeeDocumentLink, EmployeeWorkAuthorizationStatus, RequiredWorkAuthorizationDocument, WorkAuthorizationDocumentTypeEnum, WorkAuthorizationStatusEnum } from 'src/app/models/work-authorization-status';
+import { EmployeeDocumentService } from 'src/app/services/employee-document.service';
 import { EmployeeWorkAuthorizationStatusService } from 'src/app/services/employee-work-authorization-status.service';
 
 @Component({
@@ -16,19 +17,35 @@ export class WorkAuthorizationManagementEmployeeComponent implements OnInit {
   currentStep: RequiredWorkAuthorizationDocument;
   employeeId: string = '';
   activeIndex: number;
-  uploadedFile;
+  uploadedFile: [File, DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum];
+  uploadedFilePreview: EmployeeDocumentLink;
+  uploadedFilePreviewDialog: boolean = false;
 
-  onUpload(event) {
+  customUpload(event, type: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum) {
+     for(let file of event.files) {
+        this.uploadedFile = [file, type];
+    }
+    console.log(this.uploadedFile)
+    this.employeeDocumentService.uploadDocument(this.uploadedFile[0], this.uploadedFile[1])
+      .subscribe({
+        next: (documentLink: EmployeeDocumentLink) => {
+          console.log(documentLink);
+          window.location.reload();
+        }, error: (error) => {
+          console.log(error);
+        }
+      })
 
   }
 
   ngOnInit(): void {
     this.employeeWorkAuthorizationStatusService
-      .getEmployeeWorkAuthorizationStatus(this.employeeId)
+      .getEmployeeWorkAuthorizationStatus()
       .subscribe((status: EmployeeWorkAuthorizationStatus) => {
         this.status = status;
         this.employeeId = status.employeeId;
         let indexNotSet = true;
+        console.log(this.employeeId)
         this.status.uploadFlow.forEach((document: RequiredWorkAuthorizationDocument, i: number) => {
           console.log(document);
           if (indexNotSet
@@ -39,6 +56,17 @@ export class WorkAuthorizationManagementEmployeeComponent implements OnInit {
             this.currentStep = document;
             this.activeIndex = i;
             indexNotSet = false;
+
+            this.employeeDocumentService.getOneDocument(this.employeeId, this.currentStep.documentType)
+              .subscribe({
+                next: (documentLink: EmployeeDocumentLink) => {
+                  console.log(documentLink);
+                  this.uploadedFilePreview = documentLink;
+                }, error: (error) => {
+                  console.log(error);
+                }
+              }
+            )
           }
           this.uploadSteps.push({ label: document.documentType });
         });
@@ -52,6 +80,7 @@ export class WorkAuthorizationManagementEmployeeComponent implements OnInit {
   }
 
   constructor(
-    private employeeWorkAuthorizationStatusService: EmployeeWorkAuthorizationStatusService
+    private employeeWorkAuthorizationStatusService: EmployeeWorkAuthorizationStatusService,
+    private employeeDocumentService: EmployeeDocumentService,
   ) { }
 }

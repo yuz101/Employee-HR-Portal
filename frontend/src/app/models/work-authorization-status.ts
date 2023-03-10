@@ -53,6 +53,6 @@ export interface EmployeeWorkAuthorizationStatus {
 
 export interface RequiredWorkAuthorizationDocument {
     status: WorkAuthorizationStatusEnum;
-    documentType: string;
+    documentType: WorkAuthorizationDocumentTypeEnum;
     feedback: string;
 }

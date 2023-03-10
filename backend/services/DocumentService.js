@@ -16,6 +16,8 @@ AWS.config.getCredentials(function (err) {
     }
 });
 const EmployeeDocumentTypeEnum = require('../enums/EmployeeDocumentType');
+const EmployeeWorkAuthorizationStatus = require('../models/EmployeeWorkAuthorizationStatus');
+const { DocumentStatusEnum } = require('../enums/DocumentStatusEnum');
 
 class DocumentService {
     #s3;
@@ -47,6 +49,13 @@ class DocumentService {
         try {
             const data = await this.#s3.putObject(uploadParams).promise();
             console.log(`File uploaded successfully to S3: ${JSON.stringify(data)}`);
+            const workAuthorizationStatus = await EmployeeWorkAuthorizationStatus.findOne({ employeeId })
+            workAuthorizationStatus.uploadFlow.map((item) => {
+                if (item.documentType === documentType) {
+                    item.status = DocumentStatusEnum.PENDING_FOR_REVIEW
+                }
+            })
+            await workAuthorizationStatus.save()
             return data;
         } catch (error) {
             console.error(error);
@@ -70,7 +79,7 @@ class DocumentService {
                     Key: file.Key,
                     Expires: 3600,
                 });
-                return { fileName: path.basename(file.Key), downloadUrl: url };
+                return { fileName: path.basename(file.Key), downloadLink: url };
             }));
             return presignedUrls;
         } catch (error) {
@@ -101,6 +110,7 @@ class DocumentService {
     }
 
     getStandardizedFileName(documentType) {
+        console.log('documentType=', documentType);
         switch (documentType) {
             case EmployeeDocumentTypeEnum.CPT:
                 return 'cpt.pdf';

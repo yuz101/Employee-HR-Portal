@@ -1,24 +1,4 @@
-<<<<<<< Updated upstream
 <app-navbar></app-navbar>
-<div *ngIf="house">
-  <h3 class="text-base font-semibold leading-6 text-gray-900">Address:</h3>
-    <p>
-      {{ house.address.streetName }} {{ house.address.buildingNumber }},
-      {{ house.address.city }}, {{ house.address.state }}, {{ house.address.zip }}
-    </p>
-  
-    <h3 class="text-base font-semibold leading-6 text-gray-900">Landlord:</h3>
-    <p>
-      {{ house.landlord.fullName }}, {{ house.landlord.phoneNumber }},
-      {{ house.landlord.email }}
-    </p>
-    <h3 class="text-base font-semibold leading-6 text-gray-900">Facility:</h3>
-    <p>
-      Beds: {{ house.facility.beds }}, Mattresses:
-      {{ house.facility.mattresses }}, Tables: {{ house.facility.tables }},
-      Chairs: {{ house.facility.chairs }}
-    </p>
-=======
 <div class="flex min-h-full items-center justify-center px-4 sm:px-6 lg:px-8">
         <p-table [value]="[house]" >
           <ng-template pTemplate="header">
@@ -57,7 +37,6 @@
             </tr>
           </ng-template>
         </p-table>
->>>>>>> Stashed changes
 
       <ng-container *ngIf="!house">
         <p>No house selected</p>
