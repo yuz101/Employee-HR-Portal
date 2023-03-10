@@ -38,6 +38,7 @@ exports.getRegistrationEmails = async (req, res) => {
 
 exports.updateRegistrationEmail = async (req, res) => {
     try {
+        console.log(req.body)
         const { registrationId, ...registration } = req.body
         const updatedRegistrationEmail = await HRService.updateRegistrationEmail(registrationId, registration)
         res.status(200).json({ message: "Updated registration email successfully", updatedRegistrationEmail })

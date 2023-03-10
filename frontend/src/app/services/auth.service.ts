@@ -32,6 +32,11 @@ export class AuthService {
     return this.getJwtToken() ? true : false;
   }
 
+  logout() {
+    localStorage.removeItem(this.JWT_TOKEN);
+    localStorage.removeItem('isHR');
+  }
+
   signup(username: string|null, email: string|null, password: string|null, token: string|null): Observable<User>{
     const url = `${this.baseUrl}/signup`
     const body = { username, email, password, token };
