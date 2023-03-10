@@ -1,10 +1,6 @@
  <app-navbar></app-navbar>
  <div class="p-4">
     <input pInputText [(ngModel)]="searchTerm" (input)="search()" placeholder="Search employees" class="p-inputtext-sm p-mr-2"/>
-    <div *ngIf="(loading$ | async)" class="text-center">Loading...</div>
-    <div *ngIf="(error$ | async) as error" class="text-red-600">{{ error }}</div>
-  
-    <div *ngIf="!(loading$ | async) && !(error$ | async)">
       <h3 class="text-base font-semibold leading-6 text-gray-900">Employees Infomation</h3>
       <!-- <h3 class="text-base font-semibold leading-6 text-gray-900">Number of employees: {{ employees.length }}</h3> -->
   
@@ -14,9 +10,5 @@
             <a (click)="toggleDetailView(employee)" target="_blank" class="p-link">{{ employee.firstName }} {{ employee.lastName }}</a>
             <p>Email: {{ employee.email }}</p>
             </div>
-        </div>
-      </div>
-    </div>
   </div>
-  
-
+</div>

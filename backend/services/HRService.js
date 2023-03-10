@@ -200,7 +200,7 @@ class HRService {
         return null;
       }
 
-      // Save the new house to the database
+      // // Save the new house to the database
       await newHouse.save();
 
       // Populate the `roommates` field with the full data of the assigned employees
@@ -223,7 +223,7 @@ class HRService {
       throw err;
     }
   }
-
+  
 
   static async view_house() {
     console.log("service: view houses");
