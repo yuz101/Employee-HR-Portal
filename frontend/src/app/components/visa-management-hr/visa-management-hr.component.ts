@@ -35,8 +35,9 @@ export class VisaManagementHrComponent implements OnInit {
   ngOnInit() {
     this.isLoading = true;
     this.workAuthorizationStatusService
-      .getEmployees()
+      .getEmployeeWorkAuthorizationStatusRecords()
       .subscribe((records) => {
+        console.log(records);
         return this.store.dispatch(
           EmployeeWorkAuthorizationStatusRecordsActions.retrieveRecordList({ statusRecords: records })
         );

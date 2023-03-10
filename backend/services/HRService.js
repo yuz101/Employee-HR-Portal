@@ -363,7 +363,7 @@ class HRService {
           employeeId: record.employeeId,
           firstName: record.firstName,
           lastName: record.lastName,
-          middleName: record.middleName,
+          middleName: record.middleName ?? '',
           preferredName: record.preferredName,
           workAuthorization: record.workAuthorizationType,
           workAuthorizationStatus: {

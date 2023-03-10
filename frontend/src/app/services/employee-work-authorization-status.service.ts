@@ -1,17 +1,28 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of, Observable } from 'rxjs';
+import { of, Observable, map, catchError } from 'rxjs';
 import { EmployeeCurrentWorkAuthorizationStatusRecord, CurrentWorkAuthorizationStatus, WorkAuthorizationStatusEnum, EmployeeWorkAuthorizationStatus } from '../models/work-authorization-status';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeWorkAuthorizationStatusService {
+  private baseUrl = 'http://localhost:3000';
 
-  getEmployees(): Observable<Array<EmployeeCurrentWorkAuthorizationStatusRecord>> {
-    return of(currentRecordsMock);
+  getEmployeeWorkAuthorizationStatusRecords(): Observable<Array<EmployeeCurrentWorkAuthorizationStatusRecord>> {
+    const url = `${this.baseUrl}/hr/current-work-authorization-status-records`;
+    // return of(currentRecordsMock);
+    return this.http.get<EmployeeCurrentWorkAuthorizationStatusRecord[]>(url).pipe(
+      map((response: any) => response.currentRecords),
+      catchError((error: any) => {
+        console.error(error);
+        return of([]);
+      })
+    );
   }
 
   approveDocument(employeeId: string): Observable<CurrentWorkAuthorizationStatus> {
+    const url = `${this.baseUrl}/hr/document-status`;
     return of(approveReturnStatusMock);
   }
 
@@ -23,7 +34,7 @@ export class EmployeeWorkAuthorizationStatusService {
     return of(statusMock);
   }
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 }
 
 const statusMock: EmployeeWorkAuthorizationStatus = {
