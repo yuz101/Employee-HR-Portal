@@ -12,7 +12,7 @@ class ApplicationService {
           const newEmployeeWorkAuth = new EmployeeWorkAuthorizationStatus(
             {
               employeeId: inputObject.userID,
-              workAuthorizationType: inputObject.identifyType.visaTitle,
+              workAuthorizationType: 'OPT',
               started: true,
               uploadFlow: [{ status: DocumentStatusEnum.PENDING_FOR_REVIEW, documentType: 'OPT receipt' },
               { status: DocumentStatusEnum.NOT_UPLOADED, documentType: 'OPT EAD' },
