@@ -45,8 +45,6 @@ export class OnboardingComponent implements OnInit {
 
   driverLicenseDialog: boolean = false;
 
-  selectedWorkAuthorizationType: {name: string, type: WorkAuthorizationDocumentTypeEnum}
-
   optReceipt: File;
 
   optReceiptPreview: EmployeeDocumentLink;
@@ -125,6 +123,7 @@ export class OnboardingComponent implements OnInit {
         if (response.status && response.status === 'Pending') {
           this.showCarInformation = true;
           this.showDriversLicense = true;
+          this.showVisaFileUpload = false;
           this.disableButton = true;
 
           this.onboardingForm.patchValue(response);
@@ -134,7 +133,8 @@ export class OnboardingComponent implements OnInit {
         else if (response.status && response.status === 'Rejected') {
           this.showCarInformation = true;
           this.showDriversLicense = true;
-          this.disableButton = true;
+          this.showVisaFileUpload = true;
+          this.disableButton = false;
 
           this.onboardingForm.patchValue(response);
         }
@@ -184,6 +184,18 @@ export class OnboardingComponent implements OnInit {
     this.showDriversLicense = event.target.value === 'yes';
   }
 
+
+  showDocumentDialog(type: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum) {
+    switch (type) {
+      case DocumentTypeEnum.DRIVER_LICENSE:
+        this.driverLicenseDialog = true;
+        break;
+      case WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT:
+        this.optReceiptDialog = true;
+        break;
+    }
+  }
+
   customUpload(event, type: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum) {
     console.log(type)
      for(let file of event.files) {
@@ -204,6 +216,7 @@ export class OnboardingComponent implements OnInit {
             break;
         }
     }
+    console.log(this.uploadedFiles)
   }
 
   onVisaFileChange(event) {

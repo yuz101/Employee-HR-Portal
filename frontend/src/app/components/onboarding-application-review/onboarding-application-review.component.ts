@@ -6,6 +6,9 @@ import { ConfirmationService } from 'primeng/api';
 import { Onboarding } from 'src/app/models/onboarding.model';
 import { OnboardingApplicationReviewService } from 'src/app/services/onboarding-application-review.service';
 import { OnboardingApplicationService } from 'src/app/services/onboarding-application.service';
+import { EmployeeDocumentService } from 'src/app/services/employee-document.service';
+import { DocumentTypeEnum, EmployeeDocumentLink } from 'src/app/models/work-authorization-status';
+import { WorkAuthorizationDocumentTypeEnum } from 'src/app/models/work-authorization-status';
 
 @Component({
   selector: 'app-onboarding-application-review',
@@ -34,12 +37,25 @@ export class OnboardingApplicationReviewComponent {
   showVisaFileUpload = true;
   disableButton = true;
 
+  DocumentTypeEnum = DocumentTypeEnum;
+
+  WorkAuthorizationDocumentTypeEnum = WorkAuthorizationDocumentTypeEnum;
+
+  profilePreview: EmployeeDocumentLink;
+
+  driverLicensePreview: EmployeeDocumentLink;
+  driverLicenseDialog: boolean = false;
+
+  optReceiptPreview: EmployeeDocumentLink;
+  optReceiptDialog: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private onboardingApplicationReviewService : OnboardingApplicationReviewService, 
     private onboardingApplicationService: OnboardingApplicationService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, 
+    private employeeDocumentService: EmployeeDocumentService,
     private router: Router,
 
   ) {
@@ -113,7 +129,19 @@ export class OnboardingApplicationReviewComponent {
     })
   }
 
+  showDocumentDialog(type: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum) {
+    switch (type) {
+      case DocumentTypeEnum.DRIVER_LICENSE:
+        this.driverLicenseDialog = true;
+        break;
+      case WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT:
+        this.optReceiptDialog = true;
+        break;
+    }
+  }
+
   viewApplication(userID: string) {
+    console.log(userID)
     this.applicationDialog = true;
     this.onboardingApplicationService.getOnboardingApplicationByID(userID).subscribe({
       next: (application: Onboarding) => {
@@ -126,6 +154,27 @@ export class OnboardingApplicationReviewComponent {
         }
         else{
           this.hideButton = false
+        }
+      }, error: (error) => {
+        console.log(error);
+      }
+    })
+
+    this.employeeDocumentService.getAllDocuments(userID).subscribe({
+      next: (documents: EmployeeDocumentLink[]) => {
+        console.log(documents)
+        let downloadLinks = documents['downloadLinks']
+        console.log(downloadLinks);
+        for (let i = 0; i < downloadLinks.length; i++) {
+          if(downloadLinks[i].fileName === 'profile.jpg') {
+            this.profilePreview = downloadLinks[i];
+          } else if(downloadLinks[i].fileName === 'driver-license.pdf') {
+            this.driverLicensePreview = downloadLinks[i];
+          } else if(downloadLinks[i].fileName === 'opt-receipt.pdf') {
+            this.optReceiptPreview = downloadLinks[i];
+          } else {
+            console.log('No file found');
+          }
         }
       }, error: (error) => {
         console.log(error);

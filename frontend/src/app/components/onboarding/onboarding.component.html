@@ -189,9 +189,17 @@
                     <option value="Other">Other</option>
                 </select>
             </div>
-            <div *ngIf="showVisaFileUpload">
+            <div>
                 <label for="visaFile">Visa File:</label>
-                 <p-fileUpload [auto]="true" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)" [multiple]="false" accept="application/pdf"></p-fileUpload>
+                <div *ngIf="optReceiptPreview" class="my-5">
+                    <button type="button" (click)="showDocumentDialog(WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)"
+                            pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{optReceiptPreview.fileName}}"></button>
+                    <p-dialog [(visible)]="optReceiptDialog">
+                        <pdf-viewer [src]="optReceiptPreview.downloadUrl" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+                    style="height: 800px; width: 600px;"></pdf-viewer>
+                    </p-dialog>
+                </div>
+                <p-fileUpload *ngIf="showVisaFileUpload" [auto]="true" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)" [multiple]="false" accept="application/pdf"></p-fileUpload>
             </div>
             <div class="form-group">
                 <label for="startDate">Start Date:</label>
@@ -246,6 +254,14 @@
             </div>
             <div class="form-group">
                 <label for="driverLicenseFile">Driver's License File:</label>
+                <div *ngIf="driverLicensePreview" class="my-5">
+                    <button type="button" (click)="showDocumentDialog(DocumentTypeEnum.DRIVER_LICENSE)"
+                        pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{driverLicensePreview.fileName}}"></button>
+                    <p-dialog [(visible)]="driverLicenseDialog">
+                        <pdf-viewer [src]="driverLicensePreview.downloadUrl" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+                    style="height: 800px; width: 600px;"></pdf-viewer>
+                    </p-dialog>
+                </div>
                 <p-fileUpload [auto]="true" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.DRIVER_LICENSE)" [multiple]="false" accept="application/pdf"></p-fileUpload>
             </div>
         </div>
