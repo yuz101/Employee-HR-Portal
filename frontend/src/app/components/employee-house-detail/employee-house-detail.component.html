@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <app-navbar></app-navbar>
 <div *ngIf="house">
     <h4>Address:</h4>
@@ -16,6 +17,39 @@
     </ul>
   </div>
   <div *ngIf="!house">
+=======
+  <div class="flex min-h-full items-center justify-center px-4 sm:px-6 lg:px-8">
+    <p-table [value]="[house]" >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Address</th>
+          <th>Roommates Name</th>
+          <th>Roommates Phone Number</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-house>
+        <tr>
+          <td>{{ house.address.streetName }} {{ house.address.buildingNumber }}, {{ house.address.city }} {{ house.address.state }} {{ house.address.zip }}</td>
+          <td>
+            <ul>
+              <li *ngFor="let roommate of house.roommates">
+                <p>{{ roommate.firstName }}, {{ roommate.lastName }}</p>
+              </li>
+            </ul> 
+          </td>
+          <td>
+            <ul>
+              <li *ngFor="let roommate of house.roommates">
+                <p>{{ roommate.phoneNumber }}</p>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+  <ng-container *ngIf="!house">
+>>>>>>> Stashed changes
     <p>Error: Unable to retrieve house information.</p>
-  </div>
-  
+  </ng-container>
+</div>

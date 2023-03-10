@@ -17,4 +17,4 @@ import { RouterModule, Routes } from '@angular/router';
   imports: [CommonModule, FormsModule, HouseRoutingModule, ReactiveFormsModule],
   exports: [HouseListComponent],
 })
-export class HouseModule {}
+export class HouseModule {} 
