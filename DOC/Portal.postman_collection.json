@@ -1,0 +1,765 @@
+{
+	"info": {
+		"_postman_id": "fca39c64-bf1d-46df-aaf2-0b3ea86ddfc9",
+		"name": "Portal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26054541"
+	},
+	"item": [
+		{
+			"name": "Employee",
+			"item": [
+				{
+					"name": "Employee Docs",
+					"item": [
+						{
+							"name": "Upload Documents",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "document",
+											"type": "file",
+											"src": "/C:/Users/excit/OneDrive/Pictures/Saved Pictures/PngItem_248366.jpg"
+										},
+										{
+											"key": "documentType",
+											"value": "profile",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/documents",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"documents"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Documents",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/documents",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"documents"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Employee Profile",
+					"item": [
+						{
+							"name": "Get Profile",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\": \"63fd1a2e84e93b2b00f51947\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/employee/profile",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"employee",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Profile",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\": \"63fd1a2e84e93b2b00f51947\",\n    \"username\": \"test1\",\n    \"email\": \"test1@gmail.com\",\n    \"password\": \"1234\",\n    \"firstName\": \"Hello\",\n    \"lastName\": \"World\",\n    \"middleName\": \"N/A\",\n    \"preferredName\": \"HW\",\n    \"address\": {\n        \"streetName\": \"2222\",\n        \"buildingNumber\": \"222\",\n        \"city\": \"New Jersey\",\n        \"state\": \"NJ\",\n        \"zip\": \"22222\"\n    },\n    \"phoneNumber\": \"1111111111\",\n    \"dateOfBirth\": \"1/2/2001\",\n    \"gender\": \"Male\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/profile",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"test6\",\n    \"email\": \"test6@gmail.com\",\n    \"password\": \"test6\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/signup",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"testest\",\r\n    \"email\": \"yuruzhou7@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/auth/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Employee Authorization Status",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": \"6404f120ed0b5879af968f52\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/employee/work-authorization-status",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employee",
+								"work-authorization-status"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Application",
+			"item": [
+				{
+					"name": "Submit Application",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/applications",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"applications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one application",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/application/applicationID/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"application",
+								"applicationID",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "640aa0d64361ed28027729b5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HR",
+			"item": [
+				{
+					"name": "Get All Applications",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/hr/applications",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"hr",
+								"applications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Registration Email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Qingyuan\",\n    \"middleName\": \"N/A\",\n    \"lastName\": \"Liu\",\n    \"email\": \"cs554finalnull@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/hr/registration-email",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"hr",
+								"registration-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Profiles",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDA5MGYwOWI3MzliMmJlZjM2Njc0YTQiLCJ1c2VybmFtZSI6InRlc3R0ZXN0IiwiaWF0IjoxNjc4MzE1NTA4LCJleHAiOjE2Nzg1NzQ3MDh9.2loPvP21AAGMvy4uUHAZw9UewWYhfnlHTnpMQyEt9Uc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/hr/profiles",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"hr",
+								"profiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Document From An Employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/documents?employeeId=640aa0d64361ed28027729b5&documentType=i-20",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"documents"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "640aa0d64361ed28027729b5"
+								},
+								{
+									"key": "documentType",
+									"value": "i-20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Registration Emails",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/hr/registration-emails",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"hr",
+								"registration-emails"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one employee's work authorization record",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDA5YTJlZGU3OTllNWE4ZTA2NmJkZjQiLCJ1c2VybmFtZSI6InRlc3R0ZXN0IiwiaWF0IjoxNjc4MzkwNjEyLCJleHAiOjE2Nzg2NDk4MTJ9.jk6bJeq68UcU8Im7WM-k4NgoifNXNSPxJZ2Qc5ssWtA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/hr/work-authorization-record",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"hr",
+								"work-authorization-record"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "6406b39212a13adcde71afb6",
+									"disabled": true
+								},
+								{
+									"key": "employeeId",
+									"value": "6406b7d8d0dd20a9c3902ff4",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all employee's current work authorization status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDA5YTJlZGU3OTllNWE4ZTA2NmJkZjQiLCJ1c2VybmFtZSI6InRlc3R0ZXN0IiwiaWF0IjoxNjc4MzkwNjEyLCJleHAiOjE2Nzg2NDk4MTJ9.jk6bJeq68UcU8Im7WM-k4NgoifNXNSPxJZ2Qc5ssWtA ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/hr/current-work-authorization-status-records",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"hr",
+								"current-work-authorization-status-records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve or reject an employee's work authorization document",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"employeeId\": \"6406b7d8d0dd20a9c3902ff4\",\n    \"action\": \"reject\",\n    \"feedback\": \"I don't like it\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/hr/document-status",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"hr",
+								"document-status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all documents for one employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/documents?employeeId=6406a1ebe4b8843c1c90cecd",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"documents"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "6406a1ebe4b8843c1c90cecd"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Housing",
+			"item": [
+				{
+					"name": "Get All Houses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/housing",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"housing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a house's details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/housing/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"housing",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a new house",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/housing",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"housing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a house",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/housing",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"housing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Facility Report",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/housing/report",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"housing",
+								"report"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "employees view house details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/employee/housing/6406b7d8d0dd20a9c3902ff4",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employee",
+								"housing",
+								"6406b7d8d0dd20a9c3902ff4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users submit a facility report",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"report2\", \n    \"description\": \"this is my second facility report\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/housing/63fd1a2e84e93b2b00f51947/report",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"housing",
+								"63fd1a2e84e93b2b00f51947",
+								"report"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users view facility reports they've submitted",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "users add a comment",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "view a report's list of comments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/housing/63fd1a2e84e93b2b00f51947/report/640223cae4cde9db007ee804",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"housing",
+								"63fd1a2e84e93b2b00f51947",
+								"report",
+								"640223cae4cde9db007ee804"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Documents",
+			"item": []
+		},
+		{
+			"name": "Test",
+			"item": [
+				{
+					"name": "Test data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/application/test",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"application",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test new EmployeeWorkAuthorizationStatus",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/test",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"test"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDBhYTBkNjQzNjFlZDI4MDI3NzI5YjUiLCJ1c2VybmFtZSI6InRlc3R0ZXN0IiwiaWF0IjoxNjc4NDE4Njc0LCJleHAiOjE2Nzg2Nzc4NzR9.BUbmtp-kqhFWj7RH8Xh6B9YNhZTMJIwksCcO-nFhuCc",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
