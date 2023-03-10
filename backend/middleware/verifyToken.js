@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const EmployeeService = require('../services/EmployeeService');
 
 exports.verifyToken = async (req, res, next) => {
-    console.log("Request headers are: ", req.headers);
+    // console.log("Request headers are: ", req.headers);
     const bearerHeader = req.headers['authorization'];
     if (!bearerHeader) {
         console.log('Auth header does not exist.')

@@ -398,7 +398,7 @@ class HRService {
       const flow = currentRecord.uploadFlow;
       let currentIndex = -1;
       for (let i = 0; i < flow.length; i++) {
-        if (flow[i].status === DocumentStatusEnum.PENDING_FOR_REVIEW) {
+        if (flow[i].status === DocumentStatusEnum.PENDING_FOR_REVIEW || DocumentStatusEnum.REJECTED) {
           currentIndex = i;
           break;
         }
@@ -418,12 +418,12 @@ class HRService {
         currentDocument.feedback = feedback;
       }
 
-      if (currentIndex === flow.length - 1) {
+      if (currentIndex === flow.length - 1 && currentDocument.status === DocumentStatusEnum.APPROVED) {
         currentRecord.completed = true;
       }
 
       let nextCurrentDocument;
-      if (currentIndex < flow.length - 1) {
+      if (currentIndex < flow.length - 1 && currentDocument.status === DocumentStatusEnum.APPROVED) {
         nextCurrentDocument = flow[currentIndex + 1];
       }
       else {

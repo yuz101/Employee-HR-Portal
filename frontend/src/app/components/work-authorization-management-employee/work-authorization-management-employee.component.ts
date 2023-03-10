@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { map } from 'rxjs';
 import { EmployeeWorkAuthorizationStatus, RequiredWorkAuthorizationDocument, WorkAuthorizationStatusEnum } from 'src/app/models/work-authorization-status';
 import { EmployeeWorkAuthorizationStatusService } from 'src/app/services/employee-work-authorization-status.service';
 
@@ -9,10 +10,11 @@ import { EmployeeWorkAuthorizationStatusService } from 'src/app/services/employe
   styleUrls: ['./work-authorization-management-employee.component.css']
 })
 export class WorkAuthorizationManagementEmployeeComponent implements OnInit {
-  uploadSteps: MenuItem[] = [];
+  loaded: boolean = false;
   status: EmployeeWorkAuthorizationStatus;
+  uploadSteps: MenuItem[] = [];
   currentStep: RequiredWorkAuthorizationDocument;
-  employeeId: string;
+  employeeId: string = '';
   activeIndex: number;
   uploadedFile;
 
@@ -25,25 +27,28 @@ export class WorkAuthorizationManagementEmployeeComponent implements OnInit {
       .getEmployeeWorkAuthorizationStatus(this.employeeId)
       .subscribe((status: EmployeeWorkAuthorizationStatus) => {
         this.status = status;
+        this.employeeId = status.employeeId;
+        let indexNotSet = true;
+        this.status.uploadFlow.forEach((document: RequiredWorkAuthorizationDocument, i: number) => {
+          console.log(document);
+          if (indexNotSet
+            && (document.status === WorkAuthorizationStatusEnum.NOT_UPLOADED
+              || document.status === WorkAuthorizationStatusEnum.REJECTED
+              || document.status === WorkAuthorizationStatusEnum.PENDING_FOR_REVIEW)
+          ) {
+            this.currentStep = document;
+            this.activeIndex = i;
+            indexNotSet = false;
+          }
+          this.uploadSteps.push({ label: document.documentType });
+        });
+        this.uploadSteps.push({ label: 'Fully Approved' });
+        if (indexNotSet) {
+          this.activeIndex = this.uploadSteps.length - 1;
+        }
+        console.log(this.currentStep);
+        this.loaded = true;
       });
-
-    let indexNotSet = true;
-    this.status.uploadFlow.forEach((document: RequiredWorkAuthorizationDocument, i: number) => {
-      if (indexNotSet
-        && document.status === (WorkAuthorizationStatusEnum.NOT_UPLOADED
-          || WorkAuthorizationStatusEnum.REJECTED
-          || WorkAuthorizationStatusEnum.PENDING_FOR_REVIEW)
-      ) {
-        this.currentStep = document;
-        this.activeIndex = i;
-        indexNotSet = false;
-      }
-      this.uploadSteps.push({ label: document.documentType });
-    });
-    this.uploadSteps.push({ label: 'Fully Approved' });
-    if (indexNotSet) {
-      this.activeIndex = this.uploadSteps.length - 1;
-    }
   }
 
   constructor(

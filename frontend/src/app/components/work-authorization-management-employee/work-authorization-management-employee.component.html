@@ -1,48 +1,55 @@
+
 <app-navbar></app-navbar>
-<div class="mx-auto w-5/6">
-    <div class="card mt-10">
-        <p-steps [model]="uploadSteps" [readonly]="true" [activeIndex]="activeIndex"></p-steps>
+<ng-container *ngIf="!loaded">
+    <div class="flex flex-col items-center content-center">
+        <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
     </div>
+</ng-container>
+<ng-container *ngIf="loaded">
+    <div class="mx-auto w-5/6">
+        <div class="card mt-10">
+            <p-steps [model]="uploadSteps" [readonly]="true" [activeIndex]="activeIndex"></p-steps>
+        </div>
 
-    <div class="flex flex-col items-center mt-[5rem]">
-        <ng-container>
-            <div class="text-3xl mb-3">
-                Please upload your {{currentStep.documentType}}
-            </div>
-            <div>
-                <p-fileUpload name="demo[]" url="./upload.php" (onUpload)="onUpload($event)" accept="application/pdf"
-                    [maxFileSize]="1000000">
-                    <ng-template pTemplate="content">
-                        <ul *ngIf="uploadedFile">
-                            <li>{{uploadedFile.name}} - {{uploadedFile.size}} bytes</li>
-                        </ul>
-                    </ng-template>
-                </p-fileUpload>
-            </div>
-            <div class="flex flex-col">
-                <span>Document: {{currentStep.documentType}}</span>
-                <span>Status: {{currentStep.status}}</span>
-                <span *ngIf="currentStep.feedback !== ''">HR Feedback: {{currentStep.feedback}}</span>
-            </div>
-        </ng-container>
-        <ng-container>
-            <div class="flex flex-row items-center mt-[15rem]">
-                <i class="pi pi-check-square text-green-500" style="font-size: 2rem"></i>
-                <span class="ml-3 text-2xl">Your Work Authorization Has Been Fully Approved</span>
-            </div>
-        </ng-container>
-        <ng-container>
-            <div class="flex flex-row items-center mt-[15rem]">
-                <i class="pi pi-clock text-yellow-500" style="font-size: 2rem"></i>
-                <span class="ml-3 text-2xl">Your Document Is Under Review</span>
-            </div>
-        </ng-container>
-        <ng-container>
-            <div class="flex flex-row items-center mt-[15rem]">
-                <i class="pi pi-question-circle text-yellow-500" style="font-size: 2rem"></i>
-                <span class="ml-3 text-2xl">Please Submit Your Application First</span>
-            </div>
-        </ng-container>
+        <div class="flex flex-col items-center mt-[5rem]">
+            <ng-container>
+                <div class="text-3xl mb-3">
+                    Please upload your {{currentStep.documentType}}
+                </div>
+                <div>
+                    <p-fileUpload name="demo[]" url="./upload.php" (onUpload)="onUpload($event)"
+                        accept="application/pdf" [maxFileSize]="1000000">
+                        <ng-template pTemplate="content">
+                            <ul *ngIf="uploadedFile">
+                                <li>{{uploadedFile.name}} - {{uploadedFile.size}} bytes</li>
+                            </ul>
+                        </ng-template>
+                    </p-fileUpload>
+                </div>
+                <div class="flex flex-col">
+                    <span>Document: {{currentStep.documentType}}</span>
+                    <span>Status: {{currentStep.status}}</span>
+                    <span *ngIf="currentStep.feedback !== ''">HR Feedback: {{currentStep.feedback}}</span>
+                </div>
+            </ng-container>
+            <ng-container>
+                <div class="flex flex-row items-center mt-[15rem]">
+                    <i class="pi pi-check-square text-green-500" style="font-size: 2rem"></i>
+                    <span class="ml-3 text-2xl">Your Work Authorization Has Been Fully Approved</span>
+                </div>
+            </ng-container>
+            <ng-container>
+                <div class="flex flex-row items-center mt-[15rem]">
+                    <i class="pi pi-clock text-yellow-500" style="font-size: 2rem"></i>
+                    <span class="ml-3 text-2xl">Your Document Is Under Review</span>
+                </div>
+            </ng-container>
+            <ng-container>
+                <div class="flex flex-row items-center mt-[15rem]">
+                    <i class="pi pi-question-circle text-yellow-500" style="font-size: 2rem"></i>
+                    <span class="ml-3 text-2xl">Please Submit Your Application First</span>
+                </div>
+            </ng-container>
+        </div>
     </div>
-
-</div>
+</ng-container>

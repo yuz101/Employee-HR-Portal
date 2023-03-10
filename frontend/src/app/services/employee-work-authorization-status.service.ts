@@ -23,15 +23,28 @@ export class EmployeeWorkAuthorizationStatusService {
 
   approveDocument(employeeId: string): Observable<CurrentWorkAuthorizationStatus> {
     const url = `${this.baseUrl}/hr/document-status`;
-    return of(approveReturnStatusMock);
+    const requestBody = { employeeId, action: 'approve', feedback: '' };
+    // return of(approveReturnStatusMock);
+    return this.http.patch<CurrentWorkAuthorizationStatus>(url, requestBody).pipe(
+      map((response: any) => response.newStatusRecord),
+    );
   }
 
   rejectDocument(employeeId: string, feedback: string): Observable<CurrentWorkAuthorizationStatus> {
-    return of(rejectReturnStatusMock);
+    const url = `${this.baseUrl}/hr/document-status`;
+    const requestBody = { employeeId, action: 'reject', feedback };
+    // return of(rejectReturnStatusMock);
+    return this.http.patch<CurrentWorkAuthorizationStatus>(url, requestBody).pipe(
+      map((response: any) => response.newStatusRecord),
+    );
   }
 
   getEmployeeWorkAuthorizationStatus(employeeId: string): Observable<EmployeeWorkAuthorizationStatus> {
-    return of(statusMock);
+    const url = `${this.baseUrl}/hr/work-authorization-record?employeeId=${employeeId}`;
+    // return of(statusMock);
+    return this.http.get<EmployeeWorkAuthorizationStatus>(url).pipe(
+      map((response: any) => response.workAuthorizationRecord),
+    );
   }
 
   constructor(private http: HttpClient) { }

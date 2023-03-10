@@ -131,7 +131,10 @@ exports.delete_house = async (req, res) => {
 exports.getWorkAuthorizationRecord = async (req, res) => {
     console.log("controller: workAuthorizationStatus");
 
-    const { employeeId } = req.query;
+    let { employeeId } = req.query;
+    if (!employeeId || employeeId === '') {
+        employeeId = req.token.userId;
+    }
     try {
         const workAuthorizationRecord = await HRService.getWorkAuthorizationRecord(employeeId);
         res.status(200).json({ workAuthorizationRecord });

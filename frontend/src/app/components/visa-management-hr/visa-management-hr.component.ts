@@ -38,11 +38,11 @@ export class VisaManagementHrComponent implements OnInit {
       .getEmployeeWorkAuthorizationStatusRecords()
       .subscribe((records) => {
         console.log(records);
-        return this.store.dispatch(
+        this.store.dispatch(
           EmployeeWorkAuthorizationStatusRecordsActions.retrieveRecordList({ statusRecords: records })
         );
+        this.isLoading = false;
       });
-    this.isLoading = false;
   }
 
   clear(table: Table) {
