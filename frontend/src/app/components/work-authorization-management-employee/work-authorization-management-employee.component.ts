@@ -22,26 +22,29 @@ export class WorkAuthorizationManagementEmployeeComponent implements OnInit {
   uploadedFilePreviewDialog: boolean = false;
 
   customUpload(event, type: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum) {
-     for(let file of event.files) {
-        this.uploadedFile = [file, type];
+    for (let file of event.files) {
+      this.uploadedFile = [file, type];
     }
     console.log(this.uploadedFile)
     this.employeeDocumentService.uploadDocument(this.uploadedFile[0], this.uploadedFile[1])
       .subscribe({
-        next: (documentLink: EmployeeDocumentLink) => {
-          console.log(documentLink);
+        next: () => {
+          console.log('Upload completed.');
           window.location.reload();
         }, error: (error) => {
-          console.log(error);
-        }
-      })
-
+          // it is not correctly triggered because the response does not have a body
+          console.error(error);
+          window.location.reload();
+        }, complete: () => {
+          // window.location.reload();
+        },
+      });
   }
 
   ngOnInit(): void {
     this.employeeWorkAuthorizationStatusService
       .getEmployeeWorkAuthorizationStatus()
-      .subscribe((status: EmployeeWorkAuthorizationStatus) => {
+      .subscribe((status) => {
         this.status = status;
         this.employeeId = status.employeeId;
         let indexNotSet = true;
@@ -66,7 +69,7 @@ export class WorkAuthorizationManagementEmployeeComponent implements OnInit {
                   console.log(error);
                 }
               }
-            )
+              )
           }
           this.uploadSteps.push({ label: document.documentType });
         });
