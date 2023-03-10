@@ -31,19 +31,39 @@ export class ProfileComponent {
 
   profile: File;
 
+  profilePreview: EmployeeDocumentLink;
+
   driverLicense: File;
+
+  driverLicensePreview: EmployeeDocumentLink;
+
+  driverLicenseDialog: boolean = false;
 
   selectedWorkAuthorizationType: {name: string, type: WorkAuthorizationDocumentTypeEnum}
   
   i_20: File;
 
+  i_20Preview: EmployeeDocumentLink;
+
+  i_20Dialog: boolean = false;
+
   i_983: File;
+
+  i_983Preview: EmployeeDocumentLink;
+
+  i_983Dialog: boolean = false;
 
   optReceipt: File;
 
+  optReceiptPreview: EmployeeDocumentLink;
+
+  optReceiptDialog: boolean = false;
+
   optEad: File;
 
-  currentFiles: EmployeeDocumentLink[] = [];
+  optEadPreview: EmployeeDocumentLink;
+
+  optEadDialog: boolean = false;
 
   workAuthorizationType : {name: string, type: WorkAuthorizationDocumentTypeEnum}[] = [
       {name: 'I-20', type: WorkAuthorizationDocumentTypeEnum.I_20},
@@ -108,15 +128,58 @@ export class ProfileComponent {
         console.log(error);
       }
     })
-    // this.employeeDocumentService.getAllDocuments().subscribe({
-    //   next: (documents: EmployeeDocumentLink[]) => {
-    //     this.currentFiles = documents;
-    //   }
-    // })
+
+    this.employeeDocumentService.getAllDocuments().subscribe({
+      next: (documents: EmployeeDocumentLink[]) => {
+        let downloadLinks = documents['downloadLinks']
+        console.log(downloadLinks);
+        for (let i = 0; i < downloadLinks.length; i++) {
+          if(downloadLinks[i].fileName === 'profile.jpg') {
+            this.profilePreview = downloadLinks[i];
+          } else if(downloadLinks[i].fileName === 'driver-license.pdf') {
+            this.driverLicensePreview = downloadLinks[i];
+          } else if(downloadLinks[i].fileName === 'i-20.pdf') {
+            this.i_20Preview = downloadLinks[i];
+          } else if(downloadLinks[i].fileName === 'i-983.pdf') {
+            this.i_983Preview = downloadLinks[i];
+          } else if(downloadLinks[i].fileName === 'opt-receipt.pdf') {
+            this.optReceiptPreview = downloadLinks[i];
+          } else if(downloadLinks[i].fileName === 'opt-ead.pdf') {
+            this.optEadPreview = downloadLinks[i];
+          } else {
+            console.log('No file found');
+          }
+        }
+      }, error: (error) => {
+        console.log(error);
+      }
+    })
 
   }
 
+  showDocumentDialog(type: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum) {
+    switch (type) {
+      case DocumentTypeEnum.DRIVER_LICENSE:
+        this.driverLicenseDialog = true;
+        break;
+      case WorkAuthorizationDocumentTypeEnum.I_20:
+        this.i_20Dialog = true;
+        break;
+      case WorkAuthorizationDocumentTypeEnum.I_983:
+        this.i_983Dialog = true;
+        break;
+      case WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT:
+        this.optReceiptDialog = true;
+        break;
+      case WorkAuthorizationDocumentTypeEnum.OPT_EAD:
+        this.optEadDialog = true;
+        break;
+    }
+  }
+
+
   customUpload(event, type: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum) {
+    console.log(type)
      for(let file of event.files) {
          switch (type) {
           case DocumentTypeEnum.PROFILE:
@@ -130,6 +193,10 @@ export class ProfileComponent {
           case WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT:
             this.optReceipt = file;
             this.uploadedFiles.push([this.optReceipt, type]);
+            break;
+          case WorkAuthorizationDocumentTypeEnum.OPT_EAD:
+            this.optEad = file;
+            this.uploadedFiles.push([this.optEad, type]);
             break;
           case WorkAuthorizationDocumentTypeEnum.I_20:
             this.i_20 = file;
@@ -164,7 +231,7 @@ export class ProfileComponent {
         }
       })
     })
-
+    window.location.reload()
   }
   
 }

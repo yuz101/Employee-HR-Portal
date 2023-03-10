@@ -19,8 +19,12 @@ export class EmployeeDocumentService {
     return of(oneDocumentMock);
   }
 
-  getAllDocuments(employeeId: string): Observable<Array<EmployeeDocumentLink>> {
-    return of(allDocumentsMock);
+  getAllDocuments(employeeId?: string): Observable<EmployeeDocumentLink[]> {
+    if(employeeId) {
+      return this.http.get<EmployeeDocumentLink[]>(`${this.baseUrl}/documents/employeeId=${employeeId}`);
+    } else {
+      return this.http.get<EmployeeDocumentLink[]>(`${this.baseUrl}/documents`);
+    }
   }
   
   uploadDocument(file: File, documentType: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum): Observable<EmployeeDocumentLink> {

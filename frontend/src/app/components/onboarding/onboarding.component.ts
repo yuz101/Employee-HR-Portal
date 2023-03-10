@@ -6,6 +6,7 @@ import { Onboarding } from 'src/app/models/onboarding.model';
 import { AppState } from '../../store/onboarding.state';
 import { HttpClient } from '@angular/common/http';
 import * as OnboardingActions from '../../store/actions/onboarding.actions';
+import { DocumentTypeEnum, WorkAuthorizationDocumentTypeEnum, EmployeeDocumentLink } from 'src/app/models/work-authorization-status';
 
 @Component({
   selector: 'app-onboarding',
@@ -18,6 +19,49 @@ export class OnboardingComponent implements OnInit {
   showDriversLicense = false;
   showVisaFileUpload = false;
   disableButton = false;
+
+  DocumentTypeEnum = DocumentTypeEnum;
+
+  WorkAuthorizationDocumentTypeEnum = WorkAuthorizationDocumentTypeEnum;
+
+  uploadedFiles: [File, DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum][] = [];
+
+  profile: File;
+
+  profilePreview: EmployeeDocumentLink;
+
+  driverLicense: File;
+
+  driverLicensePreview: EmployeeDocumentLink;
+
+  driverLicenseDialog: boolean = false;
+
+  selectedWorkAuthorizationType: {name: string, type: WorkAuthorizationDocumentTypeEnum}
+  
+  i_20: File;
+
+  i_20Preview: EmployeeDocumentLink;
+
+  i_20Dialog: boolean = false;
+
+  i_983: File;
+
+  i_983Preview: EmployeeDocumentLink;
+
+  i_983Dialog: boolean = false;
+
+  optReceipt: File;
+
+  optReceiptPreview: EmployeeDocumentLink;
+
+  optReceiptDialog: boolean = false;
+
+  optEad: File;
+
+  optEadPreview: EmployeeDocumentLink;
+
+  optEadDialog: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
@@ -120,11 +164,38 @@ export class OnboardingComponent implements OnInit {
     this.showDriversLicense = event.target.value === 'yes';
   }
 
-  onUpload(event) {
-    // for(let file of event.files) {
-    //     this.uploadedFiles.push(file);
-    // }
-    // this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
+  customUpload(event, type: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum) {
+    console.log(type)
+     for(let file of event.files) {
+         switch (type) {
+          case DocumentTypeEnum.PROFILE:
+            this.profile = file;
+            this.uploadedFiles.push([this.profile, type]);
+            break;
+          case DocumentTypeEnum.DRIVER_LICENSE:
+            this.driverLicense = file;
+            this.uploadedFiles.push([this.driverLicense, type]);
+            break;
+          case WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT:
+            this.optReceipt = file;
+            this.uploadedFiles.push([this.optReceipt, type]);
+            break;
+          case WorkAuthorizationDocumentTypeEnum.OPT_EAD:
+            this.optEad = file;
+            this.uploadedFiles.push([this.optEad, type]);
+            break;
+          case WorkAuthorizationDocumentTypeEnum.I_20:
+            this.i_20 = file;
+            this.uploadedFiles.push([this.i_20, type]);
+            break;
+          case WorkAuthorizationDocumentTypeEnum.I_983:
+            this.i_983 = file;
+            this.uploadedFiles.push([this.i_983, type]);
+            break;
+          default:
+            break;
+        }
+    }
   }
 
 

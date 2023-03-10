@@ -70,7 +70,7 @@ class DocumentService {
                     Key: file.Key,
                     Expires: 3600,
                 });
-                return { fileName: path.basename(file.Key), downloadLink: url };
+                return { fileName: path.basename(file.Key), downloadUrl: url };
             }));
             console.log(presignedUrls);
             return presignedUrls;
@@ -109,6 +109,8 @@ class DocumentService {
                 return 'opt.pdf';
             case EmployeeDocumentTypeEnum.OPT_RECEIPT:
                 return 'opt-receipt.pdf';
+            case EmployeeDocumentTypeEnum.OPT_EAD:
+                return 'opt-ead.pdf';
             case EmployeeDocumentTypeEnum.I_20:
                 return 'i-20.pdf';
             case EmployeeDocumentTypeEnum.I_983:
