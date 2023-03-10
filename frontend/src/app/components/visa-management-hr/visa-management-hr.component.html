@@ -39,7 +39,7 @@
                     </div>
                     <div class="flex flex-col">
                         <div *ngFor="let document of uploadedDocuments" class="flex flex-row items-center mb-5">
-                            <a pButton icon="pi pi-cloud-download" href="{{document.downloadUrl}}" target="_blank"></a>
+                            <a pButton icon="pi pi-cloud-download" href="{{document.downloadLink}}" target="_blank"></a>
                             <span class="ml-3">{{document.fileName}}</span>
                         </div>
                     </div>

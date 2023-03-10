@@ -2,6 +2,7 @@ const Application = require('../models/Application');
 const { default: mongoose } = require('mongoose');
 const EmployeeWorkAuthorizationStatus = require('../models/EmployeeWorkAuthorizationStatus');
 const { DocumentStatusEnum } = require('../enums/DocumentStatusEnum');
+const EmployeeDocumentTypeEnum = require('../enums/EmployeeDocumentType');
 
 class ApplicationService {
   static async createFile(inputObject) {
@@ -14,10 +15,11 @@ class ApplicationService {
               employeeId: inputObject.userID,
               workAuthorizationType: 'OPT',
               started: true,
-              uploadFlow: [{ status: DocumentStatusEnum.PENDING_FOR_REVIEW, documentType: 'OPT receipt' },
-              { status: DocumentStatusEnum.NOT_UPLOADED, documentType: 'OPT EAD' },
-              { status: DocumentStatusEnum.NOT_UPLOADED, documentType: 'I-983' },
-              { status: DocumentStatusEnum.NOT_UPLOADED, documentType: 'I-20' }
+              completed: false,
+              uploadFlow: [{ status: DocumentStatusEnum.PENDING_FOR_REVIEW, documentType: EmployeeDocumentTypeEnum.OPT_EAD },
+              { status: DocumentStatusEnum.NOT_UPLOADED, documentType: EmployeeDocumentTypeEnum.OPT_EAD },
+              { status: DocumentStatusEnum.NOT_UPLOADED, documentType: EmployeeDocumentTypeEnum.I_983 },
+              { status: DocumentStatusEnum.NOT_UPLOADED, documentType: EmployeeDocumentTypeEnum.I_20 },
               ]
             })
           await newEmployeeWorkAuth.save()

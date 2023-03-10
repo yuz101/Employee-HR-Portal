@@ -40,7 +40,7 @@ export interface CurrentWorkAuthorizationStatus {
 
 export interface EmployeeDocumentLink {
     fileName: string;
-    downloadUrl: string;
+    downloadLink: string;
 }
 
 export interface EmployeeWorkAuthorizationStatus {
@@ -53,6 +53,6 @@ export interface EmployeeWorkAuthorizationStatus {
 
 export interface RequiredWorkAuthorizationDocument {
     status: WorkAuthorizationStatusEnum;
-    documentType: string;
+    documentType: WorkAuthorizationDocumentTypeEnum;
     feedback: string;
 }
