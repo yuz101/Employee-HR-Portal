@@ -21,17 +21,36 @@ import { WorkAuthorizationManagementEmployeeComponent } from '../work-authorizat
 })
 export class ProfileComponent {
 
+  form: FormGroup;
+
   DocumentTypeEnum = DocumentTypeEnum;
 
   WorkAuthorizationDocumentTypeEnum = WorkAuthorizationDocumentTypeEnum;
-
-  form: FormGroup;
 
   uploadedFiles: [File, DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum][] = [];
 
   profile: File;
 
   driverLicense: File;
+
+  selectedWorkAuthorizationType: {name: string, type: WorkAuthorizationDocumentTypeEnum}
+  
+  i_20: File;
+
+  i_983: File;
+
+  optReceipt: File;
+
+  optEad: File;
+
+  currentFiles: EmployeeDocumentLink[] = [];
+
+  workAuthorizationType : {name: string, type: WorkAuthorizationDocumentTypeEnum}[] = [
+      {name: 'I-20', type: WorkAuthorizationDocumentTypeEnum.I_20},
+      {name: 'I-983', type: WorkAuthorizationDocumentTypeEnum.I_983},
+      {name: 'OPT-Receipt', type: WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT},
+      {name: 'OPT-EAD', type: WorkAuthorizationDocumentTypeEnum.OPT_EAD},
+  ];
 
   profile$: Observable<Employee> = this.store.select(selectProfile);
 
@@ -42,17 +61,7 @@ export class ProfileComponent {
     private store: Store,
     private messageService: MessageService,
     private employeeDocumentService: EmployeeDocumentService,
-  ) {}
-
-  ngOnInit() {
-    this.profileService.get().subscribe({
-      next: (profile: Employee) => {
-        this.form.patchValue(profile)
-      }, error: (error) => {
-        console.log(error);
-      }
-    })
-
+  ) {
     this.form = this.fb.group({
       username:['', Validators.required],
       email: ['', Validators.required],
@@ -81,13 +90,30 @@ export class ProfileComponent {
           eEmail: ['', Validators.required],
           eRelationship: ['', Validators.required],
       }),
-      document: [[], Validators.required],
+      documents: [[], Validators.required],
       employment: this.fb.group({
           startDate:  ['', Validators.required],
           endDate:  ['', Validators.required],
           visaTitle:  ['', Validators.required],
       })
     });
+  }
+
+  ngOnInit() {
+    this.profileService.get().subscribe({
+      next: (profile: Employee) => {
+        this.store.dispatch(ProfileActions.retrievedEmployeeProfile({profile}))
+        this.form.patchValue(profile)
+      }, error: (error) => {
+        console.log(error);
+      }
+    })
+    // this.employeeDocumentService.getAllDocuments().subscribe({
+    //   next: (documents: EmployeeDocumentLink[]) => {
+    //     this.currentFiles = documents;
+    //   }
+    // })
+
   }
 
   customUpload(event, type: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum) {
@@ -102,10 +128,16 @@ export class ProfileComponent {
             this.uploadedFiles.push([this.driverLicense, type]);
             break;
           case WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT:
+            this.optReceipt = file;
+            this.uploadedFiles.push([this.optReceipt, type]);
             break;
           case WorkAuthorizationDocumentTypeEnum.I_20:
+            this.i_20 = file;
+            this.uploadedFiles.push([this.i_20, type]);
             break;
           case WorkAuthorizationDocumentTypeEnum.I_983:
+            this.i_983 = file;
+            this.uploadedFiles.push([this.i_983, type]);
             break;
           default:
             break;
@@ -115,7 +147,7 @@ export class ProfileComponent {
   }
 
   save() {
-    const employee: Employee = { ...this.form.getRawValue() };
+    const employee: Employee = {...this.form.getRawValue() };
     this.profileService.save(employee).subscribe({
       next: (profile: Employee) => {
         this.store.dispatch(ProfileActions.retrievedEmployeeProfile({ profile }));
@@ -123,15 +155,16 @@ export class ProfileComponent {
         console.log(error);
       }
     })
-
     this.uploadedFiles.map((item) => {
-      console.log(item);
       this.employeeDocumentService.uploadDocument(item[0], item[1]).subscribe({
         next: (documentLink: EmployeeDocumentLink) => {
           console.log(documentLink);
+        }, error: (error) => {
+          console.log(error);
         }
       })
     })
+
   }
   
 }

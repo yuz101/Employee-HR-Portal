@@ -1,4 +1,5 @@
 <div class="flex min-h-full items-center justify-center px-4 sm:px-6 lg:px-8">
+  <div>
       <form [formGroup]="form" >
         <div class="overflow-hidden shadow sm:rounded-md my-10">
           <div class="bg-white px-4 py-5 sm:p-6">
@@ -228,23 +229,43 @@
               </div>
           </div>
         </div>
-        
-         <div class="overflow-hidden shadow sm:rounded-md my-10">
-          <div class="bg-white px-4 py-5 sm:p-6">
-              <label class="block text-sm font-medium leading-6 text-gray-900">Driver License</label>
-                <p-fileUpload name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.DRIVER_LICENSE)" [multiple]="false" accept="application/pdf">
-                  <ng-template pTemplate="content">
-                      <ul *ngIf='driverLicense'>
-                          <li>{{driverLicense.name}} - {{driverLicense.size}} bytes</li>
-                      </ul>
-                  </ng-template>
-                </p-fileUpload>
-          </div>
-        </div>
-
-        <div class="flex justify-end gap-2 bg-gray-50 px-4 py-3 text-right sm:px-6">
-            <button pButton pRipple label="Save" class="p-button-sm" (click)="save()"></button>
-            <button pButton pRipple label="Cancel" class="p-button-sm"></button>
-        </div> 
       </form>
+        
+        <div class="overflow-hidden shadow sm:rounded-md my-10">
+        <div class="bg-white px-4 py-5 sm:p-6">
+          <div class="px-4 sm:px-0">
+            <h3 class="text-base font-semibold leading-6 text-gray-900">Documents</h3>
+            <p class="mt-1 text-sm text-gray-600">Upload all the documents</p>
+            <div class="py-5">
+              <div class="border-t border-gray-200"></div>
+            </div>
+          </div>
+            <label class="block text-sm font-medium leading-6 text-gray-900">Driver License</label>
+            <p-fileUpload name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.DRIVER_LICENSE)" [multiple]="false" accept="application/pdf">
+              <ng-template pTemplate="content">
+                  <ul *ngIf='driverLicense'>
+                      <li>{{driverLicense.name}} - {{driverLicense.size}} bytes</li>
+                  </ul>
+              </ng-template>
+            </p-fileUpload>
+
+            <div class="mt-6 mb-2">
+            <label class="block text-sm font-medium leading-6 text-gray-900">Work Authorization</label>
+            <p-dropdown [options]="workAuthorizationType" [(ngModel)]="selectedWorkAuthorizationType" optionLabel="name" class="p-inputtext-sm"></p-dropdown>
+            </div>
+            <p-fileUpload name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, selectedWorkAuthorizationType.type)" [multiple]="false" accept="application/pdf">
+              <ng-template pTemplate="content">
+                  <ul *ngIf='driverLicense'>
+                      <li>{{driverLicense.name}} - {{driverLicense.size}} bytes</li>
+                  </ul>
+              </ng-template>
+            </p-fileUpload>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 bg-gray-50 px-4 py-3 text-right sm:px-6">
+          <button pButton pRipple label="Save" class="p-button-sm" (click)="save()"></button>
+          <button pButton pRipple label="Cancel" class="p-button-sm"></button>
+      </div> 
+    </div>
 </div>

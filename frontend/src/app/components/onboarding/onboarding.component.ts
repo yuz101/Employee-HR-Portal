@@ -59,7 +59,7 @@ export class OnboardingComponent implements OnInit {
     this.onboardingForm = this.formBuilder.group({
       userID: ['63e5ca1801c88ecb8d82f487'],
       status: ['Pending'],
-      email: ['test@gmail.com', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
       firstName: ['', [Validators.required, Validators.pattern("[a-zA-Z]+$")]],
       lastName: ['', [Validators.required, Validators.pattern("[a-zA-Z]+$")]],
       middleName: [''],

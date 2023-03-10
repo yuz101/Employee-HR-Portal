@@ -24,7 +24,10 @@ const EmployeeSchema = new Schema(
         gender: {type: String},
         reference: {type: refType, ref: "Reference"},
         emergencyContacts: [{type: refType, ref: "EmergencyContact"}],
-        documents: [{type: refType, ref: "Document"}],
+        documents: [{
+            fileName: {type: String},
+            downloadUrl: {type: String},
+        }],
         visa: {type: refType, ref: "Visa"},
         employeeType: {type: String},
         application: {type: refType, ref: "Application"},
