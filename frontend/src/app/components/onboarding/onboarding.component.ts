@@ -3,26 +3,46 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router'
 import { Store } from '@ngrx/store';
 import { Onboarding } from 'src/app/models/onboarding.model';
+import { EmployeeDocumentService } from 'src/app/services/employee-document.service';
 import { AppState } from '../../store/onboarding.state';
 import { HttpClient } from '@angular/common/http';
 import * as OnboardingActions from '../../store/actions/onboarding.actions';
+import { MessageService } from 'primeng/api';
+import { ProfileService } from 'src/app/services/profile.service';
+import { Employee } from 'src/app/models/employee';
+import { DocumentTypeEnum, EmployeeDocumentLink } from 'src/app/models/work-authorization-status';
+import { WorkAuthorizationDocumentTypeEnum } from 'src/app/models/work-authorization-status';
+
+
 
 @Component({
   selector: 'app-onboarding',
   templateUrl: './onboarding.component.html',
-  styleUrls: ['./onboarding.component.css']
+  styleUrls: ['./onboarding.component.css'],
+  providers: [MessageService]
 })
 export class OnboardingComponent implements OnInit {
   onboardingForm: FormGroup;
+  form: FormGroup;
+  DocumentTypeEnum = DocumentTypeEnum;
   showCarInformation = false;
   showDriversLicense = false;
   showVisaFileUpload = false;
   disableButton = false;
+  uploadedFiles: [File, DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum][] = [];
+  profile: File;
+  driverLicense: File;
+
+
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
     private http: HttpClient,
-    private router: Router
+    private profileService: ProfileService,
+    private messageService: MessageService,
+    private router: Router,
+    private employeeDocumentService: EmployeeDocumentService,
+
   ) { }
 
   //下面部分的userID需要修改为存在jwt里的userID
@@ -30,8 +50,7 @@ export class OnboardingComponent implements OnInit {
 
   ngOnInit() {
 
-    const userID = '63e5ca1801c88ecb8d82f400'
-    this.http.get<Onboarding>(`http://localhost:3000/application/applicationID/${userID}`)
+    this.http.get<Onboarding>(`http://localhost:3000/application/applicationPID`)
       .subscribe(response => {
         if (response.status && response.status === 'Pending') {
           this.showCarInformation = true;
@@ -52,14 +71,22 @@ export class OnboardingComponent implements OnInit {
         else if (response.status === 'Approved') {
           this.router.navigate(['/']);
         }
-
+        else {
+          this.profileService.get().subscribe({
+            next: (profile: Employee) => {
+              this.onboardingForm.patchValue(profile)
+            }, error: (error) => {
+              console.log(error);
+            }
+          })
+        }
 
       });
 
     this.onboardingForm = this.formBuilder.group({
-      userID: ['63e5ca1801c88ecb8d82f487'],
+      userID: [''],
       status: ['Pending'],
-      email: ['test@gmail.com', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
       firstName: ['', [Validators.required, Validators.pattern("[a-zA-Z]+$")]],
       lastName: ['', [Validators.required, Validators.pattern("[a-zA-Z]+$")]],
       middleName: [''],
@@ -86,7 +113,7 @@ export class OnboardingComponent implements OnInit {
         endDate: ['', [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]]
       }),
       driversLicense: this.formBuilder.group({
-        licenseNumber: ['', [Validators.pattern(/^[0-9]+$/) ]],
+        licenseNumber: ['', [Validators.pattern(/^[0-9]+$/)]],
         expirationDate: ['', [Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]]
       }),
       reference: this.formBuilder.group({
@@ -120,12 +147,31 @@ export class OnboardingComponent implements OnInit {
     this.showDriversLicense = event.target.value === 'yes';
   }
 
-  onUpload(event) {
-    // for(let file of event.files) {
-    //     this.uploadedFiles.push(file);
-    // }
-    // this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
+  customUpload(event, type: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum) {
+    for (let file of event.files) {
+      switch (type) {
+        case DocumentTypeEnum.PROFILE:
+          this.profile = file;
+          this.uploadedFiles.push([this.profile, type]);
+          break;
+        case DocumentTypeEnum.DRIVER_LICENSE:
+          this.driverLicense = file;
+          this.uploadedFiles.push([this.driverLicense, type]);
+          break;
+        case WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT:
+          break;
+        case WorkAuthorizationDocumentTypeEnum.I_20:
+          break;
+        case WorkAuthorizationDocumentTypeEnum.I_983:
+          break;
+        default:
+          break;
+      }
+    }
+    this.messageService.add({ severity: 'info', summary: 'File Uploaded', detail: '' });
+
   }
+
 
 
   onVisaFileChange(event) {
@@ -139,24 +185,32 @@ export class OnboardingComponent implements OnInit {
     // ... handle the file upload
   }
 
-  onDirverFileChange(event) {
-    const file = event.target.files[0];
-    // ... handle the file upload
-  }
+  // onDirverFileChange(event) {
+  //   const file = event.target.files[0];
+  //   // ... handle the file upload
+  // }
 
-  onBasicUpload(event) {
-    //handle file upload
-  }
+  // onBasicUpload(event) {
+  //   //handle file upload
+  // }
 
 
   //修改response之后的动作，跳转回主页面
 
   submitForm() {
     console.log(this.onboardingForm.value)
+    this.uploadedFiles.map((item) => {
+      console.log(item);
+      this.employeeDocumentService.uploadDocument(item[0], item[1]).subscribe({
+        next: (documentLink: EmployeeDocumentLink) => {
+          console.log(documentLink);
+        }
+      })
+    })
     this.http.post('http://localhost:3000/application/application', this.onboardingForm.value)
       .subscribe(response => {
         console.log(response);
-        this.router.navigateByUrl('/');
+        // window.location.reload();
 
       });
   }

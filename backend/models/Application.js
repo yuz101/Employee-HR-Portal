@@ -119,19 +119,6 @@ const applicationSchema = new Schema(
                 message: 'Phone number must contain only numbers'
             }
         },
-        workPhoneNumber: {
-            type: String,
-            trim: true,
-            validate: function (value) {
-                if (value == null || value == undefined || value.length === 0) {
-                    return true;
-                }
-                if (/^\d+$/.test(value)) {
-                    throw new Error('Work Phone number must contain only numbers');
-                }
-                return true;
-            }
-        },
         carInformation: {
             make: { type: String },
             model: { type: String },
@@ -181,16 +168,7 @@ const applicationSchema = new Schema(
                 type: String,
             },
             expirationDate: {
-                type: String,
-                validate: function (value) {
-                    if (value == null || value == undefined || value.length === 0) {
-                        return true;
-                    }
-                    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-                        throw new Error('Drivers License date must be in the format of yyyy-mm-dd');
-                    }
-                    return true;
-                }
+                type: String
             }
         },
         reference: {
@@ -288,7 +266,7 @@ const applicationSchema = new Schema(
             },
             email: { type: String, required: true },
             relationship: { type: String, required: true },
-            feedback: {type: String}
+            feedback: { type: String }
         }
     }
 

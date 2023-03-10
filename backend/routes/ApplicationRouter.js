@@ -6,8 +6,8 @@ const { verifyToken, verifyHR } = require('../middleware/verifyToken');
 
 //以下是error check部分，强烈建议不要使用，mongoose可能是一个更好的选择。
 const validateApplication = [
-    check('userID').exists().withMessage('userID is required.').
-        isMongoId().withMessage('userID must be a valid MongoDB ObjectId.'),
+    // check('userID').exists().withMessage('userID is required.').
+    //     isMongoId().withMessage('userID must be a valid MongoDB ObjectId.'),
     check('status').exists().withMessage('Status is required.').
         isIn(['Pending', 'Approved', 'Rejected']).
         withMessage('Status must be either Pending, Approved, or Rejected.'),
@@ -98,6 +98,7 @@ const validateApplication = [
 
 router.post('/application', validateApplication, verifyToken, ApplicationController.createNewApplication)
 router.get('/applicationID/:id', verifyToken, verifyHR, ApplicationController.searchByID)
+router.get('/applicationPID/', verifyToken, verifyHR, ApplicationController.searchByPID)
 router.get('/allapplication', verifyToken, verifyHR, ApplicationController.getAllInfo)
 router.post('/approve/:id', verifyToken, verifyHR, ApplicationController.updateStatusApprove)
 router.post('/reject/:id', verifyToken, verifyHR, ApplicationController.updateStatusReject)

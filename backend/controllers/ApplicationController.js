@@ -8,8 +8,11 @@ exports.createNewApplication =  async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
     try {
-        await ApplicationService.createFile(req.body);
-        res.status(200).json({ message: 'Create successful.' });
+        const fileInfo = req.body
+        fileInfo.userID = req.token.userId
+        console.log(fileInfo)
+        await ApplicationService.createFile(fileInfo);
+        res.status(200).json({ CreateSuccess: true });
     } catch (e) {
         res.status(404).json({ error: e.message });
     }
@@ -20,6 +23,17 @@ exports.searchByID = async (req, res) => {
     try {
         //下面req.body 需要改成存储于前端的userID（无论是存在cookie里还是哪的）
         const Application = await ApplicationService.getApplicationById(req.params.id)
+        res.status(200).json(Application);
+    } catch (e) {
+        res.status(404).json({ error: e.message });
+    }
+
+}
+
+exports.searchByPID = async (req, res) => {
+    try {
+        //下面req.body 需要改成存储于前端的userID（无论是存在cookie里还是哪的）
+        const Application = await ApplicationService.getApplicationById(req.token.userId)
         res.status(200).json(Application);
     } catch (e) {
         res.status(404).json({ error: e.message });
