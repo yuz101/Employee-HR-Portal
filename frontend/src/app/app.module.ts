@@ -54,6 +54,7 @@ import { InterceptorService } from './services/intercepter.service';
 import { WorkAuthorizationManagementEmployeeComponent } from './components/work-authorization-management-employee/work-authorization-management-employee.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/houses', pathMatch: 'full' },
@@ -80,6 +81,7 @@ const appRoutes: Routes = [
     RegistrationEmailsComponent,
     OnboardingApplicationReviewComponent,
     WorkAuthorizationManagementEmployeeComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
