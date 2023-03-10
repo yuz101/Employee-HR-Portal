@@ -43,11 +43,13 @@ class ApplicationService {
     try {
       const retrievedApplication = await Application.findOne({ "userID": userID })
       if (!retrievedApplication) {
-        return { error: "Can not find the application" }
+        // throw { error: "Can not find the application" }
+        throw new Error("Can not find the application");
       }
       return retrievedApplication
     } catch (e) {
       console.error(e)
+      throw e;
     }
   }
 
