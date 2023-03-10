@@ -39,11 +39,6 @@
                             <div>End Date: {{'tomorrow'}}</div>
                         </div>
                         <div class="flex flex-col">
-                            <div *ngFor="let document of uploadedDocuments" class="flex flex-row items-center mb-5">
-                                <a pButton icon="pi pi-cloud-download" href="{{document.downloadLink}}"
-                                    target="_blank"></a>
-                                <span class="ml-3">{{document.fileName}}</span>
-                            </div>
                             <ng-container *ngIf="isLoadingAllDocumentLinks">
                                 <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
                             </ng-container>
