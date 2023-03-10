@@ -2,6 +2,7 @@ const router = require('express').Router()
 const ApplicationController = require('../controllers/ApplicationController')
 const { check, validationResult } = require('express-validator');
 const { verifyToken, verifyHR } = require('../middleware/verifyToken');
+const quickData = require('../test/services/testData');
 
 
 //以下是error check部分，强烈建议不要使用，mongoose可能是一个更好的选择。
@@ -102,6 +103,15 @@ router.get('/applicationPID/', verifyToken, verifyHR, ApplicationController.sear
 router.get('/allapplication', verifyToken, verifyHR, ApplicationController.getAllInfo)
 router.post('/approve/:id', verifyToken, verifyHR, ApplicationController.updateStatusApprove)
 router.post('/reject/:id', verifyToken, verifyHR, ApplicationController.updateStatusReject)
+
+router.get('/test', async(req, res) =>{
+    try{
+       await quickData();
+       res.status(200).json({message: "OK"})
+    }catch(e){
+        console.log(e)
+    }
+})
 
 
 
