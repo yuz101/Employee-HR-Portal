@@ -48,7 +48,7 @@
                     <img [src]="profilePreview.downloadUrl" alt="profile" class="w-20 h-20 rounded-full">
                 </div>
                 <div class="mt-2 flex items-center">
-                    <p-fileUpload [auto]="true" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.PROFILE)" [multiple]="false" accept="image/*"></p-fileUpload>
+                    <p-fileUpload [auto]="true" name="file[]" [disabled]="disableButton" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.PROFILE)" [multiple]="false" accept="image/*"></p-fileUpload>
                 </div>
             </div>
         </div>
@@ -200,7 +200,7 @@
                     style="height: 800px; width: 600px;"></pdf-viewer>
                     </p-dialog>
                 </div>
-                <p-fileUpload *ngIf="showVisaFileUpload" [auto]="true" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)" [multiple]="false" accept="application/pdf"></p-fileUpload>
+                <p-fileUpload [disabled]="disableButton" [auto]="true" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)" [multiple]="false" accept="application/pdf"></p-fileUpload>
             </div>
             <div class="form-group">
                 <label for="startDate">Start Date:</label>
@@ -253,7 +253,7 @@
                     Driver's License expiration date is required and must enter valid date with form yyyy-mm-dd
                 </p>
             </div>
-            <div class="form-group">
+            <div class="form-group"  >
                 <label for="driverLicenseFile">Driver's License File:</label>
                 <div *ngIf="driverLicensePreview" class="my-5">
                     <button type="button" (click)="showDocumentDialog(DocumentTypeEnum.DRIVER_LICENSE)"
@@ -263,7 +263,7 @@
                     style="height: 800px; width: 600px;"></pdf-viewer>
                     </p-dialog>
                 </div>
-                <p-fileUpload [auto]="true" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.DRIVER_LICENSE)" [multiple]="false" accept="application/pdf"></p-fileUpload>
+                <p-fileUpload [auto]="true" [disabled]="disableButton" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.DRIVER_LICENSE)" [multiple]="false" accept="application/pdf"></p-fileUpload>
             </div>
         </div>
 

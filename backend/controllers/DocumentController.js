@@ -5,10 +5,6 @@ const documentService = new DocumentService();
 
 exports.uploadSingleDocument = async (req, res) => {
     let documentType = req.body.documentType;
-    if (!req.token.userId) {
-        employeeId = '123';
-    }
-
     try {
         await documentService.uploadEmployeeDocument({
             employeeId: req.token.userId,

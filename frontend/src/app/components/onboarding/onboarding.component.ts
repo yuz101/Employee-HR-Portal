@@ -139,7 +139,14 @@ export class OnboardingComponent implements OnInit {
           this.onboardingForm.patchValue(response);
         }
         else if (response.status === 'Approved') {
-          this.router.navigate(['/']);
+          this.router.navigateByUrl('/onboarding')
+          this.showCarInformation = true;
+          this.showDriversLicense = true;
+          this.showVisaFileUpload = false;
+          this.disableButton = true;
+
+          this.onboardingForm.patchValue(response);
+          this.onboardingForm.disable();
         }
         else {
           this.profileService.get().subscribe({
@@ -260,5 +267,7 @@ export class OnboardingComponent implements OnInit {
         }
       })
     })
+    window.location.reload()
   }
+  
 }
