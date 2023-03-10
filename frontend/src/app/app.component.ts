@@ -10,9 +10,4 @@ import { selectUser } from './store/selectors/user.selector';
 })
 export class AppComponent {
   title = 'my-app';
-  isHR: boolean;
-  constructor(private authService: AuthService) {}
-  ngOnInit() {
-      this.isHR = this.authService.getIsHR();
-  }
 }

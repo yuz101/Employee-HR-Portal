@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <p-table #dtWorkAuthorizationStatus [value]="(workAuthorizationStatusRecords$ | async)!" [rowHover]="true" [rows]="10"
     [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="isLoading" [paginator]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} employees"

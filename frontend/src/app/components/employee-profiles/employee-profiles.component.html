@@ -1,3 +1,4 @@
+ <app-navbar></app-navbar>
  <div class="p-4">
     <input pInputText [(ngModel)]="searchTerm" (input)="search()" placeholder="Search employees" class="p-inputtext-sm p-mr-2"/>
     <div *ngIf="(loading$ | async)" class="text-center">Loading...</div>
