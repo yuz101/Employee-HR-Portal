@@ -1,6 +1,7 @@
 const EmployeeService = require('../services/EmployeeService');
 const ObjectAlreadyExistsException = require('../exceptions/ObjectAlreadyExistsException');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { DocumentStatusEnum } = require('../enums/DocumentStatusEnum');
 
 exports.getPofile = async (req, res) => {
     try {
@@ -8,7 +9,7 @@ exports.getPofile = async (req, res) => {
         res.status(200).json(profile)
     } catch (err) {
         console.error(err)
-        res.status(500)
+        res.sendStatus(500)
     }
 }
 
@@ -16,10 +17,10 @@ exports.updateProfile = async (req, res) => {
     try {
         const { userId, ...profile } = req.body
         const updatedProfile = await EmployeeService.updateProfile(userId, profile)
-        res.status(200).json(updatedProfile)
+        res.sendStatus(200).json(updatedProfile)
     } catch (err) {
         console.error(err)
-        res.status(500)
+        res.sendStatus(500)
     }
 }
 
@@ -33,7 +34,7 @@ exports.getHouseInfo = async (req, res) => {
         res.status(200).json(houseData);
     } catch (err) {
         console.error(err);
-        res.status(500);
+        res.sendStatus(500);
     }
 }
 
@@ -106,7 +107,7 @@ exports.getWorkAuthorizationStatus = async (req, res) => {
         }
         const uploadFlow = workAuthStatus.uploadFlow;
         for (const state of uploadFlow) {
-            if (state.status !== 'Approved') {
+            if (state.status !== DocumentStatusEnum.APPROVED) {
                 apiResponse.documentType = state.documentType;
                 apiResponse.documentStatus = state.status;
                 if (state.status === 'Not Uploaded') {
@@ -115,7 +116,7 @@ exports.getWorkAuthorizationStatus = async (req, res) => {
                     }
                     apiResponse.action = action;
                 }
-                else if (state.status === 'Pending for Review') {
+                else if (state.status === DocumentStatusEnum.PENDING_FOR_REVIEW) {
                     const action = {
                         name: 'Review',
                     }
@@ -128,6 +129,6 @@ exports.getWorkAuthorizationStatus = async (req, res) => {
         res.json(apiResponse);
     } catch (error) {
         console.error(error);
-        res.status(500);
+        res.sendStatus(500);
     }
 }

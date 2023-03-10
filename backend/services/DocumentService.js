@@ -15,7 +15,7 @@ AWS.config.getCredentials(function (err) {
         console.log("Access key:", AWS.config.credentials.accessKeyId);
     }
 });
-const EmployeeDocumentType = require('../enums/EmployeeDocumentType');
+const EmployeeDocumentTypeEnum = require('../enums/EmployeeDocumentType');
 
 class DocumentService {
     #s3;
@@ -63,7 +63,7 @@ class DocumentService {
 
         try {
             const s3Objects = await this.#s3.listObjectsV2(params).promise();
-            const pdfFiles = s3Objects.Contents.filter((obj) => obj.Key.endsWith('.pdf'));
+            const pdfFiles = s3Objects.Contents;
             const presignedUrls = await Promise.all(pdfFiles.map(async (file) => {
                 const url = await this.#s3.getSignedUrlPromise('getObject', {
                     Bucket: this.#bucketName,
@@ -84,6 +84,8 @@ class DocumentService {
         const documentName = this.getStandardizedFileName(documentType);
         const key = `documents/${employeeId}/${documentName}`;
         try {
+            await this.#s3.headObject({ Bucket: this.#bucketName, Key: key }).promise();
+
             const url = await this.#s3.getSignedUrlPromise('getObject', {
                 Bucket: this.#bucketName,
                 Key: key,
@@ -92,7 +94,7 @@ class DocumentService {
             return { fileName: documentName, downloadLink: url };
         } catch (error) {
             console.error(error);
-            if (error.code === 'NoSuchKey') {
+            if (error.code === 'NotFound') {
                 throw new Error('Document not found.');
             }
             throw error;
@@ -101,22 +103,27 @@ class DocumentService {
 
     getStandardizedFileName(documentType) {
         switch (documentType) {
-            case EmployeeDocumentType.CPT:
+            case EmployeeDocumentTypeEnum.CPT:
                 return 'cpt.pdf';
-            case EmployeeDocumentType.OPT:
+            case EmployeeDocumentTypeEnum.OPT:
                 return 'opt.pdf';
-            case EmployeeDocumentType.OPT_RECEIPT:
+            case EmployeeDocumentTypeEnum.OPT_RECEIPT:
                 return 'opt-receipt.pdf';
-            case EmployeeDocumentType.I_20:
+            case EmployeeDocumentTypeEnum.I_20:
                 return 'i-20.pdf';
-            case EmployeeDocumentType.I_983:
+            case EmployeeDocumentTypeEnum.I_983:
                 return 'i-983.pdf';
-            case EmployeeDocumentType.DRIVER_LICENSE:
+            case EmployeeDocumentTypeEnum.DRIVER_LICENSE:
                 return 'driver-license.pdf';
-            case EmployeeDocumentType.PROFILE:
+            case EmployeeDocumentTypeEnum.PROFILE:
                 return 'profile.jpg';
             default:
                 throw Error('Unsupported document type.');
+
+            // if (!Object.values(EmployeeDocumentTypeEnum).includes(documentType)) {
+            //     throw Error('Unsupported document type.');
+            // }
+            // return documentType + '.pdf';
         }
     }
 }

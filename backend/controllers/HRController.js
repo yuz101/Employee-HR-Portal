@@ -11,7 +11,7 @@ exports.sendRegistrationEmail = async (req, res) => {
         console.log(req.body)
         const token = crypto.randomUUID()
         const registration = await HRService.sendRegistrationEmail(req.body, token)
-        res.status(200).json({ message: "Send registration email successfully", registration})
+        res.status(200).json({ message: "Send registration email successfully", registration })
     } catch (err) {
         res.status(500).json(err)
     }
@@ -21,7 +21,7 @@ exports.resendRegistrationEmail = async (req, res) => {
     try {
         const registrationEmail = await HRService.resendRegistrationEmail(req.body.registrationEmailId)
         console.log(registrationEmail)
-        res.status(200).json({message: "Resend registration emails successfully", registrationEmail})
+        res.status(200).json({ message: "Resend registration emails successfully", registrationEmail })
     } catch (err) {
         res.status(500).json(err)
     }
@@ -30,7 +30,7 @@ exports.resendRegistrationEmail = async (req, res) => {
 exports.getRegistrationEmails = async (req, res) => {
     try {
         const registrationEmails = await HRService.getRegistrationEmails()
-        res.status(200).json({message: "Retrieved registration emails successfully", registrationEmails})
+        res.status(200).json({ message: "Retrieved registration emails successfully", registrationEmails })
     } catch (err) {
         res.status(404).json(err)
     }
@@ -38,9 +38,9 @@ exports.getRegistrationEmails = async (req, res) => {
 
 exports.updateRegistrationEmail = async (req, res) => {
     try {
-        const {registrationId, ...registration} = req.body
+        const { registrationId, ...registration } = req.body
         const updatedRegistrationEmail = await HRService.updateRegistrationEmail(registrationId, registration)
-        res.status(200).json({message: "Updated registration email successfully", updatedRegistrationEmail})
+        res.status(200).json({ message: "Updated registration email successfully", updatedRegistrationEmail })
     } catch (err) {
         res.status(404).json(err)
     }
@@ -49,26 +49,26 @@ exports.updateRegistrationEmail = async (req, res) => {
 exports.deleteRegistrationEmails = async (req, res) => {
     try {
         const registrationEmails = await HRService.deleteRegistrationEmails(req.body.registrationEmailIds)
-        res.status(200).json({message: "Deleted registration emails successfully", registrationEmails})
+        res.status(200).json({ message: "Deleted registration emails successfully", registrationEmails })
     } catch (err) {
         res.status(404).json(err)
     }
 }
 
-exports.getProfiles = async(req, res) => {
+exports.getProfiles = async (req, res) => {
     const qSearch = req.query.search
     try {
         const employees = await HRService.getProfiles(qSearch)
-        res.status(200).json({message: "Retrieved matching profile successfully", employees})
+        res.status(200).json({ message: "Retrieved matching profile successfully", employees })
     } catch (err) {
         res.status(404).json(err);
     }
 }
 
-exports.getApplications = async(req, res) => {
+exports.getApplications = async (req, res) => {
     try {
         const applications = await ApplicationService.getApplications()
-        res.status(200).json({message: "Retrieved applications successfully", applications})
+        res.status(200).json({ message: "Retrieved applications successfully", applications })
     } catch (err) {
         res.status(404).json(err);
     }
@@ -78,24 +78,24 @@ exports.getVisas = async (req, res) => {
     try {
         const visas = await DocumentService.getAllDocumentsForEmployee(req.body.userId)
         console.log(visas)
-        res.status(200).json({message: "Retrieved visas successfully", visas})
+        res.status(200).json({ message: "Retrieved visas successfully", visas })
     } catch (err) {
         res.status(404).json(err)
     }
 }
 
-exports.add_house = async(req, res) => {
+exports.add_house = async (req, res) => {
     console.log("controller: adding a house");
     console.log("req.body: ", req.body);
     try {
         const newHouse = await HRService.add_house(req.body);
-        res.status(200).json({message: 'House created successfully', newHouse});
+        res.status(200).json({ message: 'House created successfully', newHouse });
     } catch (err) {
         res.status(404).json({ err: err.message });
     }
 }
 
-exports.view_house = async(req, res) => {
+exports.view_house = async (req, res) => {
     console.log("controller: view all houses");
     try {
         const houses = await HRService.view_house();
@@ -105,82 +105,59 @@ exports.view_house = async(req, res) => {
     }
 }
 
-exports.view_house_details = async(req, res) => {
+exports.view_house_details = async (req, res) => {
     console.log("controller: view house details");
     try {
         const houseId = req.params.id;
         console.log("houseId", houseId);
         const house = await HRService.view_house_details(houseId);
-        res.status(200).json({ message: 'all houses',  house});
+        res.status(200).json({ message: 'all houses', house });
     } catch (err) {
         res.status(404).json(err);
     }
 }
 
-exports.delete_house = async(req, res) => {
+exports.delete_house = async (req, res) => {
     console.log("controller: delete a house");
     try {
         const houseId = req.params.id;
         const house = await HRService.delete_house(houseId);
         res.status(200).json({ message: 'House deleted successfully', house });
-    } catch(err) {
+    } catch (err) {
         res.status(404).json({ err: err.message });
     }
 }
 
-exports.workAuthorizationStatus = async(req, res) => {
+exports.getWorkAuthorizationRecord = async (req, res) => {
     console.log("controller: workAuthorizationStatus");
+
+    const { employeeId } = req.query;
     try {
-        const workAuthorizationStatus = await HRService.workAuthorizationStatus();
-        res.status(200).json({ message: 'Work Authorization Status', workAuthorizationStatus });
-    } catch(err) {
+        const workAuthorizationRecord = await HRService.getWorkAuthorizationRecord(employeeId);
+        res.status(200).json({ workAuthorizationRecord });
+    } catch (err) {
         res.status(404).json({ err: err.message });
     }
 }
 
-exports.workAuthorizationStep = async(req, res) => {
+exports.getAllCurrentWorkAuthorizationStatusRecords = async (req, res) => {
     console.log("controller: workAuthorizationStep");
     try {
-        const workAuthorizationStep = await HRService.workAuthorizationStep();
-        res.status(200).json({ message: 'Work Authorization Step', workAuthorizationStep });
-    } catch(err) {
+        const currentRecords = await HRService.getAllCurrentWorkAuthorizationStatusRecords();
+        res.status(200).json({ currentRecords });
+    } catch (err) {
         res.status(404).json({ err: err.message });
     }
 }
 
 exports.updateDocumentStatus = async (req, res) => {
-    const { employeeId, documentStatus, action, completed } = req.body;
+    const { employeeId, action, feedback } = req.body;
     try {
-      const updatedWorkAuthStatus = await HRService.updateDocumentStatus(employeeId, documentStatus, action);
-      const employee = await Employee.findById(employeeId);
-      const workAuthType = updatedWorkAuthStatus.workAuthoriazationType;
-      const workAuthStatus = updatedWorkAuthStatus.uploadFlow.find((flow) => flow.status !== "Approved" && flow.status !== "Rejected");
-      const documentType = workAuthStatus.documentType;
-      const response = {
-        employeeId: employee._id,
-        firstName: employee.firstName,
-        lastName: employee.lastName,
-        middleName: employee.middleName,
-        preferredName: employee.preferredName,
-        workAuthorization: workAuthType,
-        workAuthorizationStatus: {
-          started: updatedWorkAuthStatus.started,
-          completed: completed,
-          documentType: documentType,
-          documentStatus: documentStatus,
-          feedback: "",
-          action: {
-            name: action
-          }
-        }
-      };
-      res.status(200).json({
-        message: "Work Authorization Status updated",
-        workAuthorizationStatus: response
-      });
+        const newStatusRecord = await HRService.updateDocumentStatus(employeeId, action, feedback);
+        res.status(200).json({ newStatusRecord });
     } catch (err) {
-      res.status(404).json({ err: err.message });
+        res.status(404).json({ err: err.message });
     }
-  };
-  
-  
+};
+
+

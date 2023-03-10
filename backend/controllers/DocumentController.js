@@ -15,10 +15,10 @@ exports.uploadSingleDocument = async (req, res) => {
             filePath: req.file.path,
             documentType: documentType,
         });
-        return res.status(200);
+        return res.sendStatus(200);
     } catch (error) {
         console.error(error);
-        return res.status(404);
+        return res.sendStatus(404);
     } finally {
         if (req.file) {
             fs.unlinkSync(req.file.path);
@@ -29,6 +29,13 @@ exports.uploadSingleDocument = async (req, res) => {
 exports.getDownloadLinkForOneEmployeeDocument = async (req, res) => {
     const { employeeId, documentType } = req.query;
     try {
+        if (!documentType) {
+            const downloadLinks = await documentService.getAllDocumentDownloadLinksForEmployee({
+                employeeId: employeeId,
+            });
+            return res.status(200).json({ downloadLinks });
+        }
+        
         const downloadLink = await documentService.getDocumentDownloadLinkForEmployee({
             employeeId: employeeId,
             documentType: documentType,
@@ -36,16 +43,16 @@ exports.getDownloadLinkForOneEmployeeDocument = async (req, res) => {
         return res.status(200).json({ downloadLink });
     } catch (error) {
         console.error(error);
-        return res.status(404);
+        return res.status(404).json({ error: 'Document not found' });
     }
 }
 
 exports.getEmployeeWorkAuthorizationStatus = async (req, res) => {
     const { employeeId } = req.body;
     try {
-
+        
     } catch (error) {
         console.error(error);
-        return res.status(404);
+        return res.sendStatus(404);
     }
 }

@@ -3,7 +3,7 @@ const router = require('express').Router();
 const saveUploadedFile = require('../middleware/multer_middleware');
 const DocumentController = require('../controllers/DocumentController');
 const { checkSchema, validationResult } = require('express-validator');
-const EmployeeDocumentType = require('../enums/EmployeeDocumentType');
+const EmployeeDocumentTypeEnum = require('../enums/EmployeeDocumentType');
 const { verifyToken } = require('../middleware/verifyToken');
 
 const validateDocumentUpload = () => {
@@ -13,7 +13,7 @@ const validateDocumentUpload = () => {
                 in: ['body'],
                 notEmpty: true,
                 isIn: {
-                    options: [Object.values(EmployeeDocumentType)],
+                    options: [Object.values(EmployeeDocumentTypeEnum)],
                     errorMessage: 'Invalid document type.',
                 },
                 errorMessage: 'Missing document type',

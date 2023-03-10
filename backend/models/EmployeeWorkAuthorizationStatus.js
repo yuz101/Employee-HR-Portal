@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { DocumentStatusEnum } = require('../enums/DocumentStatusEnum');
 
 const EmployeeWorkAuthorizationStatusSchema = new mongoose.Schema({
     employeeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee', },
@@ -8,8 +9,13 @@ const EmployeeWorkAuthorizationStatusSchema = new mongoose.Schema({
     uploadFlow: [{
         status: {
             type: String,
-            enum: ['Not Uploaded', 'Pending for Review', 'Approved', 'Rejected'],
-            default: 'Not Uploaded',
+            enum: [
+                DocumentStatusEnum.NOT_UPLOADED,
+                DocumentStatusEnum.PENDING_FOR_REVIEW,
+                DocumentStatusEnum.APPROVED,
+                DocumentStatusEnum.REJECTED
+            ],
+            default: DocumentStatusEnum.NOT_UPLOADED,
             required: true,
         },
         documentType: {
