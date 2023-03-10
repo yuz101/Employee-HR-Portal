@@ -72,7 +72,6 @@ class DocumentService {
                 });
                 return { fileName: path.basename(file.Key), downloadUrl: url };
             }));
-            console.log(presignedUrls);
             return presignedUrls;
         } catch (error) {
             console.error(error);

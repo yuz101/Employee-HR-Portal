@@ -46,30 +46,12 @@ export class OnboardingComponent implements OnInit {
   driverLicenseDialog: boolean = false;
 
   selectedWorkAuthorizationType: {name: string, type: WorkAuthorizationDocumentTypeEnum}
-  
-  i_20: File;
-
-  i_20Preview: EmployeeDocumentLink;
-
-  i_20Dialog: boolean = false;
-
-  i_983: File;
-
-  i_983Preview: EmployeeDocumentLink;
-
-  i_983Dialog: boolean = false;
 
   optReceipt: File;
 
   optReceiptPreview: EmployeeDocumentLink;
 
   optReceiptDialog: boolean = false;
-
-  optEad: File;
-
-  optEadPreview: EmployeeDocumentLink;
-
-  optEadDialog: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -80,46 +62,7 @@ export class OnboardingComponent implements OnInit {
     private router: Router,
     private employeeDocumentService: EmployeeDocumentService,
 
-  ) { }
-
-  //下面部分的userID需要修改为存在jwt里的userID
-
-
-  ngOnInit() {
-
-    this.http.get<Onboarding>(`http://localhost:3000/application/applicationPID`)
-      .subscribe(response => {
-        if (response.status && response.status === 'Pending') {
-          this.showCarInformation = true;
-          this.showDriversLicense = true;
-          this.disableButton = true;
-
-          this.onboardingForm.patchValue(response);
-          this.onboardingForm.disable();
-
-        }
-        else if (response.status && response.status === 'Rejected') {
-          this.showCarInformation = true;
-          this.showDriversLicense = true;
-          this.disableButton = true;
-
-          this.onboardingForm.patchValue(response);
-        }
-        else if (response.status === 'Approved') {
-          this.router.navigate(['/']);
-        }
-        else {
-          this.profileService.get().subscribe({
-            next: (profile: Employee) => {
-              this.onboardingForm.patchValue(profile)
-            }, error: (error) => {
-              console.log(error);
-            }
-          })
-        }
-
-      });
-
+  ) { 
     this.onboardingForm = this.formBuilder.group({
       userID: [''],
       status: ['Pending'],
@@ -170,11 +113,68 @@ export class OnboardingComponent implements OnInit {
         relationship: ['']
       })
     });
-
-
   }
 
+  //下面部分的userID需要修改为存在jwt里的userID
 
+
+  ngOnInit() {
+
+    this.http.get<Onboarding>(`http://localhost:3000/application/applicationPID`)
+      .subscribe(response => {
+        if (response.status && response.status === 'Pending') {
+          this.showCarInformation = true;
+          this.showDriversLicense = true;
+          this.disableButton = true;
+
+          this.onboardingForm.patchValue(response);
+          this.onboardingForm.disable();
+
+        }
+        else if (response.status && response.status === 'Rejected') {
+          this.showCarInformation = true;
+          this.showDriversLicense = true;
+          this.disableButton = true;
+
+          this.onboardingForm.patchValue(response);
+        }
+        else if (response.status === 'Approved') {
+          this.router.navigate(['/']);
+        }
+        else {
+          this.profileService.get().subscribe({
+            next: (profile: Employee) => {
+              this.onboardingForm.patchValue(profile)
+            }, error: (error) => {
+              console.log(error);
+            }
+          })
+        }
+
+      });
+
+    this.employeeDocumentService.getAllDocuments().subscribe({
+      next: (documents: EmployeeDocumentLink[]) => {
+        console.log(documents)
+        let downloadLinks = documents['downloadLinks']
+        console.log(downloadLinks);
+        for (let i = 0; i < downloadLinks.length; i++) {
+          if(downloadLinks[i].fileName === 'profile.jpg') {
+            this.profilePreview = downloadLinks[i];
+          } else if(downloadLinks[i].fileName === 'driver-license.pdf') {
+            this.driverLicensePreview = downloadLinks[i];
+          } else if(downloadLinks[i].fileName === 'opt-receipt.pdf') {
+            this.optReceiptPreview = downloadLinks[i];
+          } else {
+            console.log('No file found');
+          }
+        }
+      }, error: (error) => {
+        console.log(error);
+      }
+    })
+
+  }
 
   onCarInformationChange(event) {
     this.showCarInformation = event.target.value === 'yes';
@@ -200,25 +200,11 @@ export class OnboardingComponent implements OnInit {
             this.optReceipt = file;
             this.uploadedFiles.push([this.optReceipt, type]);
             break;
-          case WorkAuthorizationDocumentTypeEnum.OPT_EAD:
-            this.optEad = file;
-            this.uploadedFiles.push([this.optEad, type]);
-            break;
-          case WorkAuthorizationDocumentTypeEnum.I_20:
-            this.i_20 = file;
-            this.uploadedFiles.push([this.i_20, type]);
-            break;
-          case WorkAuthorizationDocumentTypeEnum.I_983:
-            this.i_983 = file;
-            this.uploadedFiles.push([this.i_983, type]);
-            break;
           default:
             break;
         }
     }
   }
-
-
 
   onVisaFileChange(event) {
     console.log(event.target.value)
@@ -245,19 +231,21 @@ export class OnboardingComponent implements OnInit {
 
   submitForm() {
     console.log(this.onboardingForm.value)
-    this.uploadedFiles.map((item) => {
-      console.log(item);
-      this.employeeDocumentService.uploadDocument(item[0], item[1]).subscribe({
-        next: (documentLink: EmployeeDocumentLink) => {
-          console.log(documentLink);
-        }
-      })
-    })
     this.http.post('http://localhost:3000/application/application', this.onboardingForm.value)
       .subscribe(response => {
         console.log(response);
         // window.location.reload();
 
       });
+
+    this.uploadedFiles.map((item) => {
+      this.employeeDocumentService.uploadDocument(item[0], item[1]).subscribe({
+        next: (documentLink: EmployeeDocumentLink) => {
+          console.log(documentLink);
+        }, error: (error) => {
+          console.log(error);
+        }
+      })
+    })
   }
 }
