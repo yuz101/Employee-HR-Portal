@@ -63,7 +63,7 @@ class DocumentService {
 
         try {
             const s3Objects = await this.#s3.listObjectsV2(params).promise();
-            const pdfFiles = s3Objects.Contents.filter((obj) => obj.Key.endsWith('.pdf'));
+            const pdfFiles = s3Objects.Contents;
             const presignedUrls = await Promise.all(pdfFiles.map(async (file) => {
                 const url = await this.#s3.getSignedUrlPromise('getObject', {
                     Bucket: this.#bucketName,
@@ -103,19 +103,19 @@ class DocumentService {
 
     getStandardizedFileName(documentType) {
         switch (documentType) {
-            case EmployeeDocumentType.CPT:
+            case EmployeeDocumentTypeEnum.CPT:
                 return 'cpt.pdf';
-            case EmployeeDocumentType.OPT:
+            case EmployeeDocumentTypeEnum.OPT:
                 return 'opt.pdf';
-            case EmployeeDocumentType.OPT_RECEIPT:
+            case EmployeeDocumentTypeEnum.OPT_RECEIPT:
                 return 'opt-receipt.pdf';
-            case EmployeeDocumentType.I_20:
+            case EmployeeDocumentTypeEnum.I_20:
                 return 'i-20.pdf';
-            case EmployeeDocumentType.I_983:
+            case EmployeeDocumentTypeEnum.I_983:
                 return 'i-983.pdf';
-            case EmployeeDocumentType.DRIVER_LICENSE:
+            case EmployeeDocumentTypeEnum.DRIVER_LICENSE:
                 return 'driver-license.pdf';
-            case EmployeeDocumentType.PROFILE:
+            case EmployeeDocumentTypeEnum.PROFILE:
                 return 'profile.jpg';
             default:
                 throw Error('Unsupported document type.');
