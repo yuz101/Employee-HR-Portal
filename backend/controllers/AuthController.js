@@ -5,7 +5,7 @@ const HRService = require('../services/HRService');
 
 exports.signup = async (req, res) => {
     try {
-        const emailToken = req.params.token;
+        const emailToken = req.body.token;
         const registrationEmail = await HRService.findRegistrationEmail(emailToken);
         const { username, email, password } = req.body
         const { _id, firstName, middleName, lastName } = registrationEmail

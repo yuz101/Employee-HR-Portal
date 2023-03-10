@@ -110,7 +110,7 @@ class HRService {
 
   static async findRegistrationEmail(emailToken) {
     try {
-      const registrationEmail = await RegistrationEmail.findOne({ emailToken })
+      const registrationEmail = await RegistrationEmail.findOne({ token: emailToken })
       return registrationEmail
     } catch (err) {
       console.error(err)

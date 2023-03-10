@@ -37,7 +37,7 @@ export class SignupComponent {
 
   signup() {
     const {username, password} = { ...this.form.getRawValue() };
-    this.authService.signup(username, this.email, password).subscribe({
+    this.authService.signup(username, this.email, password, this.token).subscribe({
       next: (user: User) => {
         this.authService.storeJwtToken(user.jwt!);
         this.authService.storeIsHR(user.isHR!);
