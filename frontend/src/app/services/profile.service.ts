@@ -17,7 +17,6 @@ export class ProfileService {
   }
 
   save(profile: Employee): Observable<Employee> {
-    const body = {userId: '640798ffdf2c7f706d1a1eb7', ...profile};
-    return this.http.put<Employee>(`${this.baseUrl}`, body);
+    return this.http.put<Employee>(`${this.baseUrl}`, profile);
   }
 }

@@ -15,9 +15,8 @@ exports.getPofile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
     try {
-        const { userId, ...profile } = req.body
-        const updatedProfile = await EmployeeService.updateProfile(userId, profile)
-        res.sendStatus(200).json(updatedProfile)
+        const updatedProfile = await EmployeeService.updateProfile(req.token.userId, req.body)
+        res.status(200).json(updatedProfile)
     } catch (err) {
         console.error(err)
         res.sendStatus(500)
