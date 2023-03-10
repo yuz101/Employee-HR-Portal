@@ -33,7 +33,7 @@ router.get('/housing/:id', verifyToken, verifyHR, HRController.view_house_detail
 router.delete('/housing/:id', verifyToken, verifyHR, HRController.delete_house);
 
 // view all employees work authorization status
-router.get('/work-authorization-record', verifyToken, verifyHR, HRController.getWorkAuthorizationRecord);
+router.get('/work-authorization-record', verifyToken, HRController.getWorkAuthorizationRecord);
 
 // view all employees work authorization step
 router.get('/current-work-authorization-status-records', verifyToken, verifyHR, HRController.getAllCurrentWorkAuthorizationStatusRecords);
