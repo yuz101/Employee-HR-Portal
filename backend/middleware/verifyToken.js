@@ -34,6 +34,6 @@ exports.verifyHR = async (request, response, next) => {
         next();
     } catch (error) {
         console.log('Token validation failed.');
-        return res.status(401).json({ message: 'Unauthorized' });
+        return response.status(401).json({ message: 'Unauthorized' });
     }
 }
