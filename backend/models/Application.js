@@ -5,7 +5,7 @@ const refType = Schema.Types.ObjectId;
 const applicationSchema = new Schema(
     {
         userID: { type: refType, required: true },
-        status: { type: String, required: true, },
+        status: { type: String, required: true },
         email: { type: String, required: true },
         firstName: {
             type: String,

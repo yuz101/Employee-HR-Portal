@@ -21,7 +21,7 @@ export class EmployeeDocumentService {
 
   getAllDocuments(employeeId?: string): Observable<EmployeeDocumentLink[]> {
     if(employeeId) {
-      return this.http.get<EmployeeDocumentLink[]>(`${this.baseUrl}/documents/employeeId=${employeeId}`);
+      return this.http.get<EmployeeDocumentLink[]>(`${this.baseUrl}/documents?employeeId=${employeeId}`);
     } else {
       return this.http.get<EmployeeDocumentLink[]>(`${this.baseUrl}/documents`);
     }

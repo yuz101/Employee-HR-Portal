@@ -85,7 +85,6 @@ export class ProfileComponent {
     this.form = this.fb.group({
       username:['', Validators.required],
       email: ['', Validators.required],
-      password:  ['', Validators.required], 
       firstName:  ['', Validators.required],
       middleName:  ['', Validators.required],
       lastName:  ['', Validators.required],

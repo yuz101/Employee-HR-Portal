@@ -40,19 +40,15 @@
                     formControlName="middleName">
             </div>
         </div>
-        <div class="col-span-6 sm:col-span-6">
+        <div class="col-span-12 sm:col-span-6">
             <label class="block text-sm font-medium leading-6 text-gray-900">Profile Picture</label>
-            <div *ngIf="profilePreview">
-                <img [src]="profilePreview.downloadUrl" alt="profile" class="w-20 h-20 rounded-full">
-            </div>
-            <div class="mt-2 flex items-center">
-                <p-fileUpload [auto]="true" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.PROFILE)" [multiple]="false" accept="image/*">
-                    <ng-template pTemplate="content">
-                        <ul *ngIf='profile'>
-                            <li>{{profile.name}} - {{profile.size}} bytes</li>
-                        </ul>
-                    </ng-template>
-                </p-fileUpload>
+            <div class="flex items-center gap-5">
+                <div *ngIf="profilePreview">
+                    <img [src]="profilePreview.downloadUrl" alt="profile" class="w-20 h-20 rounded-full">
+                </div>
+                <div class="mt-2 flex items-center">
+                    <p-fileUpload [auto]="true" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.PROFILE)" [multiple]="false" accept="image/*"></p-fileUpload>
+                </div>
             </div>
         </div>
         <div formGroupName="address">
@@ -193,17 +189,17 @@
                     <option value="Other">Other</option>
                 </select>
             </div>
-            <div *ngIf="showVisaFileUpload">
+            <div>
                 <label for="visaFile">Visa File:</label>
-                <p-fileUpload name="file[]" [customUpload]="true"
-                    (uploadHandler)="customUpload($event, DocumentTypeEnum.PROFILE)" [multiple]="false"
-                    accept="application/pdf">
-                    <ng-template pTemplate="content">
-                        <ul *ngIf='profile'>
-                            <li>{{profile.name}} - {{profile.size}} bytes</li>
-                        </ul>
-                    </ng-template>
-                </p-fileUpload>
+                <div *ngIf="optReceiptPreview" class="my-5">
+                    <button type="button" (click)="showDocumentDialog(WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)"
+                            pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{optReceiptPreview.fileName}}"></button>
+                    <p-dialog [(visible)]="optReceiptDialog">
+                        <pdf-viewer [src]="optReceiptPreview.downloadUrl" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+                    style="height: 800px; width: 600px;"></pdf-viewer>
+                    </p-dialog>
+                </div>
+                <p-fileUpload *ngIf="showVisaFileUpload" [auto]="true" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)" [multiple]="false" accept="application/pdf"></p-fileUpload>
             </div>
             <div class="form-group">
                 <label for="startDate">Start Date:</label>
@@ -258,17 +254,15 @@
             </div>
             <div class="form-group">
                 <label for="driverLicenseFile">Driver's License File:</label>
-                <p-fileUpload name="file[]" [customUpload]="true"
-                    (uploadHandler)="customUpload($event, DocumentTypeEnum.PROFILE)" [multiple]="false"
-                    accept="application/pdf">
-                    <ng-template pTemplate="content">
-                        <ul *ngIf='profile'>
-                            <li>{{profile.name}} - {{profile.size}} bytes</li>
-                        </ul>
-                    </ng-template>
-                </p-fileUpload>
-                <!-- <input type="file" class="form-control-file" id="driverLicenseFile"
-                    (change)="onDirverFileChange($event)" [disabled]="disableButton"> -->
+                <div *ngIf="driverLicensePreview" class="my-5">
+                    <button type="button" (click)="showDocumentDialog(DocumentTypeEnum.DRIVER_LICENSE)"
+                        pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{driverLicensePreview.fileName}}"></button>
+                    <p-dialog [(visible)]="driverLicenseDialog">
+                        <pdf-viewer [src]="driverLicensePreview.downloadUrl" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+                    style="height: 800px; width: 600px;"></pdf-viewer>
+                    </p-dialog>
+                </div>
+                <p-fileUpload [auto]="true" name="file[]" [customUpload]="true" (uploadHandler)="customUpload($event, DocumentTypeEnum.DRIVER_LICENSE)" [multiple]="false" accept="application/pdf"></p-fileUpload>
             </div>
         </div>
 

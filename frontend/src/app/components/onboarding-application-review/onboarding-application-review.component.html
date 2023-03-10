@@ -97,8 +97,9 @@
                 <div class="col-span-6 sm:col-span-6">
                     <label class="block text-sm font-medium leading-6 text-gray-900">Profile Picture</label>
                     <div class="mt-2 flex items-center">
-                        <!-- <p-fileUpload mode="basic" name="demo[]" url="./upload.php" accept="image/*"
-                            (onUpload)="onBasicUpload($event)" [disabled]="disableButton"></p-fileUpload> -->
+                        <div *ngIf="profilePreview">
+                            <img [src]="profilePreview.downloadUrl" alt="profile" class="w-20 h-20 rounded-full">
+                        </div>
                     </div>
                 </div>
                 <div formGroupName="address">
@@ -187,21 +188,16 @@
                     <h3>Identify Type</h3>
                     <div class="form-group">
                         <label for="visaTitle">Visa Title:</label>
-                        <!-- <select
-                            class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            id="visaTitle" formControlName="visaTitle" [disabled]="disableButton">
-                            <option value="">--Select--</option>
-                            <option value="H1b">H1b</option>
-                            <option value="L2">L2</option>
-                            <option value="F1">F1</option>
-                            <option value="H4">H4</option>
-                            <option value="Other">Other</option>
-                        </select> -->
+                        <div *ngIf="optReceiptPreview" class="my-5">
+                            <button type="button" (click)="showDocumentDialog(WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT)"
+                                    pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{optReceiptPreview.fileName}}"></button>
+                            <p-dialog [(visible)]="optReceiptDialog">
+                                <pdf-viewer [src]="optReceiptPreview.downloadUrl" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+                            style="height: 800px; width: 600px;"></pdf-viewer>
+                            </p-dialog>
+                        </div>
                     </div>
-                    <!-- <div *ngIf="showVisaFileUpload">
-                        <label for="visaFile">Visa File:</label>
-                        <input type="file" id="visaFile" (change)="onVisaFileChange($event)" [disabled]="disableButton">
-                    </div> -->
+
                     <div class="form-group">
                         <label for="startDate">Start Date:</label>
                         <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="startDate"
@@ -236,11 +232,14 @@
                         <input type="text" pInputText class="relative block w-full p-inputtext-sm" id="expirationDate"
                             formControlName="expirationDate">
                     </div>
-                    <!-- <div class="form-group">
-                        <label for="driverLicenseFile">Driver's License File:</label>
-                        <input type="file" class="form-control-file" id="driverLicenseFile"
-                            (change)="onDirverFileChange($event)" [disabled]="disableButton">
-                    </div> -->
+                    <div *ngIf="driverLicensePreview" class="my-5">
+                        <button type="button" (click)="showDocumentDialog(DocumentTypeEnum.DRIVER_LICENSE)"
+                            pButton pRipple class="p-button-raised p-button-sm" icon="pi pi-info-circle" label="{{driverLicensePreview.fileName}}"></button>
+                        <p-dialog [(visible)]="driverLicenseDialog">
+                            <pdf-viewer [src]="driverLicensePreview.downloadUrl" [render-text]="true" [original-size]="false" [zoom-scale]="'page-width'"
+                        style="height: 800px; width: 600px;"></pdf-viewer>
+                        </p-dialog>
+                    </div>
                 </div>
 
                 <div formGroupName='reference'>
