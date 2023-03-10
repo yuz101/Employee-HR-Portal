@@ -33,11 +33,16 @@
                         label="Show"></p-button>
                     <p-dialog header="Work Authorization Details" [(visible)]="displayWorkAuthorization" [modal]="true"
                         [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
-                        <div class="flex flex-col mb-5">
-                            <div>Type: {{'OPT'}}</div>
-                            <div>Start Date: {{'today'}}</div>
-                            <div>End Date: {{'tomorrow'}}</div>
-                        </div>
+                        <ng-container *ngIf="!isLoadingApplicationInfo && !applicationError">
+                            <div class="flex flex-col mb-5">
+                                <div>Type: {{applicationInfo?.identifyType?.visaTitle}}</div>
+                                <div>Start Date: {{applicationInfo?.identifyType?.startDate}}</div>
+                                <div>End Date: {{applicationInfo?.identifyType?.endDate}}</div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!isLoadingApplicationInfo && applicationError">
+                            The application is not available.
+                        </ng-container>
                         <div class="flex flex-col">
                             <ng-container *ngIf="isLoadingAllDocumentLinks">
                                 <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>

@@ -51,6 +51,8 @@ export class OnboardingComponent implements OnInit {
 
   optReceiptDialog: boolean = false;
 
+  isSubmitting: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
@@ -60,7 +62,7 @@ export class OnboardingComponent implements OnInit {
     private router: Router,
     private employeeDocumentService: EmployeeDocumentService,
 
-  ) { 
+  ) {
     this.onboardingForm = this.formBuilder.group({
       userID: [''],
       status: ['Pending'],
@@ -119,45 +121,57 @@ export class OnboardingComponent implements OnInit {
   ngOnInit() {
 
     this.http.get<Onboarding>(`http://localhost:3000/application/applicationPID`)
-      .subscribe(response => {
-        if (response.status && response.status === 'Pending') {
-          this.showCarInformation = true;
-          this.showDriversLicense = true;
-          this.showVisaFileUpload = false;
-          this.disableButton = true;
+      .subscribe({
+        next: response => {
+          if (response.status && response.status === 'Pending') {
+            this.showCarInformation = true;
+            this.showDriversLicense = true;
+            this.showVisaFileUpload = false;
+            this.disableButton = true;
 
-          this.onboardingForm.patchValue(response);
-          this.onboardingForm.disable();
+            this.onboardingForm.patchValue(response);
+            this.onboardingForm.disable();
 
-        }
-        else if (response.status && response.status === 'Rejected') {
-          this.showCarInformation = true;
-          this.showDriversLicense = true;
-          this.showVisaFileUpload = true;
-          this.disableButton = false;
+          }
+          else if (response.status && response.status === 'Rejected') {
+            this.showCarInformation = true;
+            this.showDriversLicense = true;
+            this.showVisaFileUpload = true;
+            this.disableButton = false;
 
-          this.onboardingForm.patchValue(response);
-        }
-        else if (response.status === 'Approved') {
-          this.router.navigateByUrl('/onboarding')
-          this.showCarInformation = true;
-          this.showDriversLicense = true;
-          this.showVisaFileUpload = false;
-          this.disableButton = true;
+            this.onboardingForm.patchValue(response);
+          }
+          else if (response.status === 'Approved') {
+            this.router.navigateByUrl('/onboarding')
+            this.showCarInformation = true;
+            this.showDriversLicense = true;
+            this.showVisaFileUpload = false;
+            this.disableButton = true;
 
-          this.onboardingForm.patchValue(response);
-          this.onboardingForm.disable();
-        }
-        else {
+            this.onboardingForm.patchValue(response);
+            this.onboardingForm.disable();
+          }
+          else {
+            this.profileService.get().subscribe({
+              next: (profile: Employee) => {
+                this.onboardingForm.patchValue(profile)
+              }, error: (error) => {
+                // console.log(error);
+              }
+            })
+          }
+
+        },
+        error: error => {
+          console.log('in subscribe error before find profile by id');
           this.profileService.get().subscribe({
             next: (profile: Employee) => {
               this.onboardingForm.patchValue(profile)
             }, error: (error) => {
-              console.log(error);
+              // console.log(error);
             }
           })
         }
-
       });
 
     this.employeeDocumentService.getAllDocuments().subscribe({
@@ -166,11 +180,11 @@ export class OnboardingComponent implements OnInit {
         let downloadLinks = documents['downloadLinks']
         console.log(downloadLinks);
         for (let i = 0; i < downloadLinks.length; i++) {
-          if(downloadLinks[i].fileName === 'profile.jpg') {
+          if (downloadLinks[i].fileName === 'profile.jpg') {
             this.profilePreview = downloadLinks[i];
-          } else if(downloadLinks[i].fileName === 'driver-license.pdf') {
+          } else if (downloadLinks[i].fileName === 'driver-license.pdf') {
             this.driverLicensePreview = downloadLinks[i];
-          } else if(downloadLinks[i].fileName === 'opt-receipt.pdf') {
+          } else if (downloadLinks[i].fileName === 'opt-receipt.pdf') {
             this.optReceiptPreview = downloadLinks[i];
           } else {
             console.log('No file found');
@@ -205,23 +219,23 @@ export class OnboardingComponent implements OnInit {
 
   customUpload(event, type: DocumentTypeEnum | WorkAuthorizationDocumentTypeEnum) {
     console.log(type)
-     for(let file of event.files) {
-         switch (type) {
-          case DocumentTypeEnum.PROFILE:
-            this.profile = file;
-            this.uploadedFiles.push([this.profile, type]);
-            break;
-          case DocumentTypeEnum.DRIVER_LICENSE:
-            this.driverLicense = file;
-            this.uploadedFiles.push([this.driverLicense, type]);
-            break;
-          case WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT:
-            this.optReceipt = file;
-            this.uploadedFiles.push([this.optReceipt, type]);
-            break;
-          default:
-            break;
-        }
+    for (let file of event.files) {
+      switch (type) {
+        case DocumentTypeEnum.PROFILE:
+          this.profile = file;
+          this.uploadedFiles.push([this.profile, type]);
+          break;
+        case DocumentTypeEnum.DRIVER_LICENSE:
+          this.driverLicense = file;
+          this.uploadedFiles.push([this.driverLicense, type]);
+          break;
+        case WorkAuthorizationDocumentTypeEnum.OPT_RECEIPT:
+          this.optReceipt = file;
+          this.uploadedFiles.push([this.optReceipt, type]);
+          break;
+        default:
+          break;
+      }
     }
     console.log(this.uploadedFiles)
   }
@@ -250,7 +264,7 @@ export class OnboardingComponent implements OnInit {
   //修改response之后的动作，跳转回主页面
 
   submitForm() {
-    console.log(this.onboardingForm.value)
+    console.log('submitForm, this.onboardingForm.value=', this.onboardingForm.value)
     this.http.post('http://localhost:3000/application/application', this.onboardingForm.value)
       .subscribe(response => {
         console.log(response);
@@ -258,6 +272,7 @@ export class OnboardingComponent implements OnInit {
 
       });
 
+    console.log(this.uploadedFiles);
     this.uploadedFiles.map((item) => {
       this.employeeDocumentService.uploadDocument(item[0], item[1]).subscribe({
         next: (documentLink: EmployeeDocumentLink) => {
@@ -267,7 +282,11 @@ export class OnboardingComponent implements OnInit {
         }
       })
     })
-    window.location.reload()
+    this.isSubmitting = true;
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 4000);
+    
   }
-  
+
 }

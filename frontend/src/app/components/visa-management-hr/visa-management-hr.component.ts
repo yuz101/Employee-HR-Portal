@@ -9,6 +9,9 @@ import { EmployeeWorkAuthorizationStatusRecordsActions } from 'src/app/store/act
 import { Observable } from 'rxjs';
 import { Table } from 'primeng/table';
 import { EmployeeDocumentService } from 'src/app/services/employee-document.service';
+import { Onboarding } from 'src/app/models/onboarding.model';
+import { HttpClient } from '@angular/common/http';
+import { OnboardingApplicationService } from 'src/app/services/onboarding-application.service';
 
 @Component({
   selector: 'app-visa-management-hr',
@@ -25,12 +28,16 @@ export class VisaManagementHrComponent implements OnInit {
   displayWorkAuthorization: boolean;
   allWorkAuthorizationStatus = WorkAuthorizationStatusEnum;
   uploadedDocuments: EmployeeDocumentLink[] = [];
+  applicationInfo: Onboarding;
+  isLoadingApplicationInfo: boolean = true;
+  applicationError: boolean = false;
 
   constructor(
     private store: Store,
     public dialogService: DialogService,
     private workAuthorizationStatusService: EmployeeWorkAuthorizationStatusService,
     private employeeDocumentService: EmployeeDocumentService,
+    private applicationService: OnboardingApplicationService,
   ) { }
 
   ngOnInit() {
@@ -73,11 +80,26 @@ export class VisaManagementHrComponent implements OnInit {
 
   showWorkAuthorizationDialog(employeeId: string) {
     this.isLoadingAllDocumentLinks = true;
+    this.applicationError = false;
     this.displayWorkAuthorization = true;
     this.employeeDocumentService.getAllDocuments(employeeId)
       .subscribe((documents) => {
         this.uploadedDocuments = documents['downloadLinks'];
         this.isLoadingAllDocumentLinks = false;
+      });
+
+    this.applicationService.getOnboardingApplicationByID(employeeId)
+      .subscribe({
+        next: (application) => {
+          console.log('in not error');
+          this.applicationInfo = application;
+          console.log('in subscribe application', application);
+          this.isLoadingApplicationInfo = false;
+        }, error: (error) => {
+          console.log('In error');
+          this.applicationError = true;
+          this.isLoadingApplicationInfo = false;
+        }
       });
   }
 

@@ -16,11 +16,31 @@
                     <i class="pi pi-check-square text-green-500" style="font-size: 2rem"></i>
                     <span class="ml-3 text-2xl">Your Work Authorization Has Been Fully Approved</span>
                 </div>
+                <div *ngIf="uploadedFilePreview" class="my-5">
+                    <button type="button" (click)="uploadedFilePreviewDialog = true" pButton pRipple
+                        class="p-button-raised p-button-sm" icon="pi pi-info-circle"
+                        label="{{uploadedFilePreview.fileName}}"></button>
+                    <p-dialog [(visible)]="uploadedFilePreviewDialog">
+                        <pdf-viewer [src]="uploadedFilePreview.downloadLink" [render-text]="true"
+                            [original-size]="false" [zoom-scale]="'page-width'"
+                            style="height: 800px; width: 600px;"></pdf-viewer>
+                    </p-dialog>
+                </div>
             </ng-container>
             <ng-container *ngIf="!status.completed && currentStep.status === 'Pending for Review'">
                 <div class="flex flex-row items-center mt-[15rem]">
                     <i class="pi pi-clock text-yellow-500" style="font-size: 2rem"></i>
                     <span class="ml-3 text-2xl">Your Document Is Under Review</span>
+                </div>
+                <div *ngIf="uploadedFilePreview" class="my-5">
+                    <button type="button" (click)="uploadedFilePreviewDialog = true" pButton pRipple
+                        class="p-button-raised p-button-sm" icon="pi pi-info-circle"
+                        label="{{uploadedFilePreview.fileName}}"></button>
+                    <p-dialog [(visible)]="uploadedFilePreviewDialog">
+                        <pdf-viewer [src]="uploadedFilePreview.downloadLink" [render-text]="true"
+                            [original-size]="false" [zoom-scale]="'page-width'"
+                            style="height: 800px; width: 600px;"></pdf-viewer>
+                    </p-dialog>
                 </div>
             </ng-container>
             <ng-container *ngIf="!status.completed && !status.started">
